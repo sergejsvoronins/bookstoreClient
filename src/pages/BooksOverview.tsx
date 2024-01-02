@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { IBook, getAllBooks } from "../transport/books";
+import { Book, getAllBooks } from "../transport/books";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
 
 export function BooksOverview() {
-  const [books, setBooks] = useState<IBook[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     const getBooks = async () => {
@@ -16,12 +17,24 @@ export function BooksOverview() {
   console.log(books);
 
   return (
-    <div>
-      <ol>
+    <Container>
+      <Row>
         {books.map((b) => (
-          <li>{b.title}</li>
+          <Col xs={12} md={6} lg={4} xl={3}>
+            <Card>
+              <Card.Img variant="top" />
+              <Card.Body>
+                <Card.Title>{b.title}</Card.Title>
+                <Card.Text>{b.description}</Card.Text>
+              </Card.Body>
+              <Card.Footer>
+                <Card.Title>{b.price}</Card.Title>
+                <Button variant="primary">Köp</Button>
+              </Card.Footer>
+            </Card>
+          </Col>
         ))}
-      </ol>
-    </div>
+      </Row>
+    </Container>
   );
 }

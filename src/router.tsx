@@ -4,6 +4,13 @@ import { StartPage } from "./pages/StartPage";
 import { BooksOverview } from "./pages/BooksOverview";
 import { Main } from "./components/main/Main";
 import { SingleBook } from "./pages/SingleBook";
+import { AdminPage } from "./pages/AdminPage";
+import { BooksManager } from "./components/booksManager/BooksManager";
+import { UsersManager } from "./components/userManager/UsersManager";
+import { AuthorsManager } from "./components/authorsManager/AuthorsManager";
+import { CategoriesManager } from "./components/categoriesManager/CategoriesManager";
+import { CreateItem } from "./components/createItem/CreateItem";
+import { UpdateItem } from "./components/updateItem/UpdateItem";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +33,68 @@ export const router = createBrowserRouter([
           {
             path: "/books/:id",
             element: <SingleBook />,
+          },
+          {
+            path: "/admin",
+            element: <AdminPage />,
+            children: [
+              {
+                path: "/admin/books",
+                element: <BooksManager />,
+                children: [
+                  {
+                    path: "/admin/books/create",
+                    element: <CreateItem type="books" />,
+                  },
+                  {
+                    path: "/admin/books/update",
+                    element: <UpdateItem type="books" />,
+                  },
+                ],
+              },
+              {
+                path: "/admin/users",
+                element: <UsersManager />,
+                children: [
+                  {
+                    path: "/admin/users/create",
+                    element: <CreateItem type="users" />,
+                  },
+                  {
+                    path: "/admin/users/update",
+                    element: <UpdateItem type="users" />,
+                  },
+                ],
+              },
+              {
+                path: "/admin/authors",
+                element: <AuthorsManager />,
+                children: [
+                  {
+                    path: "/admin/authors/create",
+                    element: <CreateItem type="authors" />,
+                  },
+                  {
+                    path: "/admin/authors/update",
+                    element: <UpdateItem type="authors" />,
+                  },
+                ],
+              },
+              {
+                path: "/admin/categories",
+                element: <CategoriesManager />,
+                children: [
+                  {
+                    path: "/admin/categories/create",
+                    element: <CreateItem type="categories" />,
+                  },
+                  {
+                    path: "/admin/categories/update",
+                    element: <UpdateItem type="categories" />,
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
