@@ -7,16 +7,19 @@ import {
   Button,
   Offcanvas,
   Badge,
+  Overlay,
 } from "react-bootstrap";
 import { Bag, List, Person } from "react-bootstrap-icons";
 import "../navigation/Navigation.scss";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Category, getCategories } from "../../transport/books";
 import { useOutletContext } from "react-router-dom";
 import { CartContext, ICartContext } from "../../context/cartContext";
 export function Navigation() {
   const [isSmallScreen, setSmalScreen] = useState(window.innerWidth <= 768);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [show, setShow] = useState(false);
+  const target = useRef(null);
   const cartContext = useContext<ICartContext>(CartContext);
   useEffect(() => {
     const getCategoriesList = async () => {
@@ -98,15 +101,41 @@ export function Navigation() {
               {!isSmallScreen && "Account"} <Person />
             </Nav.Link>
           </Nav>
-          <Nav className="px-2 justify-content-end px-2">
-            <Nav.Link href="/">
+          <Nav className="px-2 justify-content-end px-2 position-relative">
+            <Nav.Link href="#" ref={target} onClick={() => setShow(!show)}>
               {!isSmallScreen && "Cart"} <Bag />
-              <Badge bg="danger">
-                {cartContext.cart.reduce((accumulator, item) => {
-                  return accumulator + item.amount;
-                }, 0)}
-              </Badge>
+              {cartContext.cart.length !== 0 && (
+                <Badge bg="danger">
+                  {cartContext.cart.reduce((accumulator, item) => {
+                    return accumulator + item.amount;
+                  }, 0)}
+                </Badge>
+              )}
             </Nav.Link>
+            <Overlay target={target.current} show={show} placement="bottom">
+              {({
+                placement: _placement,
+                arrowProps: _arrowProps,
+                show: _show,
+                popper: _popper,
+                hasDoneInitialMeasure: _hasDoneInitialMeasure,
+                ...props
+              }) => (
+                <div
+                  {...props}
+                  style={{
+                    position: "absolute",
+                    backgroundColor: "rgba(255, 100, 100, 0.85)",
+                    padding: "2px 10px",
+                    color: "white",
+                    borderRadius: 3,
+                    ...props.style,
+                  }}
+                >
+                  Cart
+                </div>
+              )}
+            </Overlay>
           </Nav>
         </Container>
       </Navbar>
