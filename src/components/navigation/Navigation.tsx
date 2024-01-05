@@ -6,12 +6,25 @@ import {
   Form,
   Button,
   Offcanvas,
+  Badge,
 } from "react-bootstrap";
 import { Bag, List, Person } from "react-bootstrap-icons";
 import "../navigation/Navigation.scss";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Category, getCategories } from "../../transport/books";
+import { useOutletContext } from "react-router-dom";
+import { CartContext, ICartContext } from "../../context/cartContext";
 export function Navigation() {
   const [isSmallScreen, setSmalScreen] = useState(window.innerWidth <= 768);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const cartContext = useContext<ICartContext>(CartContext);
+  useEffect(() => {
+    const getCategoriesList = async () => {
+      const response = await getCategories();
+      setCategories(response);
+    };
+    getCategoriesList();
+  }, []);
   useEffect(() => {
     const handleResize = () => {
       const innerWidth = window.innerWidth;
@@ -27,36 +40,44 @@ export function Navigation() {
 
   return (
     <>
-      <Navbar expand={"md"} className="bg-body-tertiary mb-3">
-        <Container fluid>
-          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${"md"}`}>
+      <Navbar expand={"lg"} className="bg-body-tertiary mb-3">
+        <Container>
+          <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
+          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${"lg"}`}>
             <List />
           </Navbar.Toggle>
           <Navbar.Offcanvas
-            id={`offcanvasNavbar-expand-${"md"}`}
-            aria-labelledby={`offcanvasNavbarLabel-expand-${"md"}`}
+            id={`offcanvasNavbar-expand-${"lg"}`}
+            aria-labelledby={`offcanvasNavbarLabel-expand-${"lg"}`}
             placement="start"
           >
             <Offcanvas.Header closeButton>
-              <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${"md"}`}>
-                Offcanvas
+              <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${"lg"}`}>
+                Menu
               </Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="justify-content-start flex-grow-1 pe-3">
-                <Nav.Link href="#action1">Hem</Nav.Link>
                 <NavDropdown
-                  title="Kategori"
-                  id={`offcanvasNavbarDropdown-expand-${"md"}`}
+                  title="Produkter"
+                  id={`offcanvasNavbarDropdown-expand-${"lg"}`}
                 >
                   <NavDropdown.Item href="/books">Visa alla</NavDropdown.Item>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item href="/books?category=kategori1">
-                    Kategori 1
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.4">
-                    Kategori 2
-                  </NavDropdown.Item>
+                  {categories.map((c) => {
+                    return (
+                      <NavDropdown.Item
+                        key={c.id}
+                        href={`/books?category=${c.id}`}
+                        className="p-3"
+                      >
+                        {c.name}
+                        <Badge bg="secondary" className="mx-1">
+                          {c.booksAmount}
+                        </Badge>
+                      </NavDropdown.Item>
+                    );
+                  })}
                 </NavDropdown>
                 <Nav.Link href="/admin">Adminsida</Nav.Link>
               </Nav>
@@ -80,6 +101,11 @@ export function Navigation() {
           <Nav className="px-2 justify-content-end px-2">
             <Nav.Link href="/">
               {!isSmallScreen && "Cart"} <Bag />
+              <Badge bg="danger">
+                {cartContext.cart.reduce((accumulator, item) => {
+                  return accumulator + item.amount;
+                }, 0)}
+              </Badge>
             </Nav.Link>
           </Nav>
         </Container>

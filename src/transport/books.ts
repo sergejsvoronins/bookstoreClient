@@ -87,6 +87,7 @@ export const addCategory = async (newCategory: NewCategory) => {
 const CategorySchema = z.object({
   id: z.number(),
   name: z.string(),
+  booksAmount: z.optional(z.number()),
 });
 const NewCategorySchema = CategorySchema.extend({
   id: z.optional(z.number()),

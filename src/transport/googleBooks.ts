@@ -26,9 +26,9 @@ interface IGoogleResponse {
   items: IGoogleBookInfo[];
 }
 
-export const getGoogleBooks = async (amount: number) => {
+export const getGoogleBooks = async (amount: number, index: number) => {
   let response = await axios.get<IGoogleResponse>(
-    `https://www.googleapis.com/books/v1/volumes?q=published:2023&maxResults=${amount}`
+    `https://www.googleapis.com/books/v1/volumes?q=lang:sv&maxResults=${amount}&startIndex=${index}`
   );
   return response.data;
 };
