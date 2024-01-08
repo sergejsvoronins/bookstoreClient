@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { Navigation } from "../navigation/Navigation";
 import { useState } from "react";
-import { Book } from "../../transport/books";
 import { CartContext, ICart } from "../../context/cartContext";
 
 export function Main() {
@@ -9,6 +8,7 @@ export function Main() {
 
   function updateCart(cart: ICart[]) {
     setCart(cart);
+    localStorage.setItem("cart", JSON.stringify(cart));
   }
   console.log(cart);
 

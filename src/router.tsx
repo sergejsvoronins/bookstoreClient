@@ -9,8 +9,8 @@ import { BooksManager } from "./components/booksManager/BooksManager";
 import { UsersManager } from "./components/userManager/UsersManager";
 import { AuthorsManager } from "./components/authorsManager/AuthorsManager";
 import { CategoriesManager } from "./components/categoriesManager/CategoriesManager";
-import { CreateItem } from "./components/createItem/CreateItem";
 import { UpdateItem } from "./components/updateItem/UpdateItem";
+import { CreateItem } from "./components/createItem/CreateItem";
 
 export const router = createBrowserRouter([
   {

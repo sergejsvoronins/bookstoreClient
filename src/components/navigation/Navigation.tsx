@@ -8,17 +8,22 @@ import {
   Offcanvas,
   Badge,
   Overlay,
+  ListGroup,
+  Image,
+  Row,
+  Col,
 } from "react-bootstrap";
 import { Bag, List, Person } from "react-bootstrap-icons";
 import "../navigation/Navigation.scss";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Category, getCategories } from "../../transport/books";
-import { useOutletContext } from "react-router-dom";
-import { CartContext, ICartContext } from "../../context/cartContext";
+import { CartContext, ICart, ICartContext } from "../../context/cartContext";
+import { CartToolPanel } from "../carttoolpanel/CartToolPanel";
 export function Navigation() {
   const [isSmallScreen, setSmalScreen] = useState(window.innerWidth <= 768);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [show, setShow] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const [showCart, setShowCart] = useState(false);
   const target = useRef(null);
   const cartContext = useContext<ICartContext>(CartContext);
   useEffect(() => {
@@ -40,7 +45,17 @@ export function Navigation() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
+  useEffect(() => {
+    try {
+      const cartString = localStorage.getItem("cart");
+      if (cartString) {
+        const cartData: ICart[] = JSON.parse(cartString);
+        cartContext.updateCart(cartData);
+      }
+    } catch (error) {
+      console.error("Error fetching cart from local storage:", error);
+    }
+  }, []);
   return (
     <>
       <Navbar expand={"lg"} className="bg-body-tertiary mb-3">
@@ -102,43 +117,36 @@ export function Navigation() {
             </Nav.Link>
           </Nav>
           <Nav className="px-2 justify-content-end px-2 position-relative">
-            <Nav.Link href="#" ref={target} onClick={() => setShow(!show)}>
+            <Nav.Link href="#" onClick={() => setShowCart((s) => !s)}>
               {!isSmallScreen && "Cart"} <Bag />
               {cartContext.cart.length !== 0 && (
                 <Badge bg="danger">
                   {cartContext.cart.reduce((accumulator, item) => {
                     return accumulator + item.amount;
-                  }, 0)}
+                  }, 0) < 99
+                    ? cartContext.cart.reduce((accumulator, item) => {
+                        return accumulator + item.amount;
+                      }, 0)
+                    : "+99"}
                 </Badge>
               )}
             </Nav.Link>
-            <Overlay target={target.current} show={show} placement="bottom">
-              {({
-                placement: _placement,
-                arrowProps: _arrowProps,
-                show: _show,
-                popper: _popper,
-                hasDoneInitialMeasure: _hasDoneInitialMeasure,
-                ...props
-              }) => (
-                <div
-                  {...props}
-                  style={{
-                    position: "absolute",
-                    backgroundColor: "rgba(255, 100, 100, 0.85)",
-                    padding: "2px 10px",
-                    color: "white",
-                    borderRadius: 3,
-                    ...props.style,
-                  }}
-                >
-                  Cart
-                </div>
-              )}
-            </Overlay>
           </Nav>
         </Container>
       </Navbar>
+      <Offcanvas
+        placement="end"
+        show={showCart}
+        onHide={() => setShowCart(false)}
+      >
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Varukorg</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body>
+          <CartToolPanel />
+        </Offcanvas.Body>
+        <Button className="m-3 p-3">Till kassan</Button>
+      </Offcanvas>
     </>
   );
 }

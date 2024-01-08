@@ -1,13 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { Book, getAllBooks } from "../../transport/books";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
 import "../booksoverview/BooksOverview.scss";
 import { ICartContext, CartContext } from "../../context/cartContext";
-
-interface ICart {
-  item: Book;
-  amount: number;
-}
 
 export function BooksOverview() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -33,7 +28,7 @@ export function BooksOverview() {
   return (
     <Container>
       <Row>
-        {books.length !== 0 &&
+        {books.length !== 0 ? (
           books
             .filter((f) => (categoryId ? f.categoryId === categoryId : f))
             .map((b) => {
@@ -56,7 +51,7 @@ export function BooksOverview() {
                         variant="primary"
                         onClick={() => {
                           let seenItem = cartContext.cart.find(
-                            (f) => f.item === b
+                            (f) => f.item.id === b.id
                           );
                           if (seenItem) {
                             const temp = [...cartContext.cart];
@@ -78,7 +73,14 @@ export function BooksOverview() {
                   </Card>
                 </Col>
               );
-            })}
+            })
+        ) : (
+          <Col className="d-flex justify-content-center">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Sidan laddas...</span>
+            </Spinner>
+          </Col>
+        )}
       </Row>
       {/* <LoadGoogleBooks /> */}
     </Container>
