@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export function NavSearch() {
-  const [searchText, setSearchText] = useState<string | null>(null);
+  const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
-
+  useEffect(() => {});
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    // e.preventDefault();
+    e.preventDefault();
     navigate(`/search?q=${searchText}`);
   };
+
   return (
     <Form onSubmit={handleSubmit} className="nav-search d-flex w-100">
       <Form.Control

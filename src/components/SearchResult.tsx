@@ -4,27 +4,27 @@ import { CartContext, ICartContext } from "../context/cartContext";
 import { AxiosError } from "axios";
 import { BooksOverview } from "./booksoverview/BooksOverview";
 import { Col, Row } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export function SearchResult() {
   const [searchText, setSearchText] = useState<string | null>(null);
   const [searchBooks, setSearchBooks] = useState<Book[]>([]);
   const [err, setErr] = useState<string | null>(null);
+
   const cartContext = useContext<ICartContext>(CartContext);
   const location = useLocation();
-
+  const navigate = useNavigate();
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
-    setSearchText(query.get("q"));
+    query.get("q") ? setSearchText(query.get("q")) : navigate("/");
   }, [location.search]);
 
   useEffect(() => {
-    if (searchText) {
+    if (searchText && searchText !== "") {
       const getSearchBooks = async () => {
         try {
           let response = await getSearchResult(searchText);
           setSearchBooks(response);
-          console.log(response);
         } catch (err) {
           if (err instanceof AxiosError) {
             setSearchBooks([]);

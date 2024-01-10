@@ -41,6 +41,10 @@ export const router = createBrowserRouter([
             element: <SearchResult />,
           },
           {
+            path: "/check-out",
+            element: <CheckOut />,
+          },
+          {
             path: "/admin",
             element: <AdminPage />,
             children: [
@@ -103,10 +107,6 @@ export const router = createBrowserRouter([
             ],
           },
         ],
-      },
-      {
-        path: "/check-out",
-        element: <CheckOut />,
       },
     ],
   },
