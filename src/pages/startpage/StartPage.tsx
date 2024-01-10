@@ -1,0 +1,30 @@
+import { useContext, useEffect, useState } from "react";
+import { Book, getAllBooks } from "../../transport/books";
+import { ICartContext, CartContext } from "../../context/cartContext";
+import { BooksOverview } from "../../components/booksoverview/BooksOverview";
+import { AxiosError } from "axios";
+
+export function StartPage() {
+  const [books, setBooks] = useState<Book[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const cartContext = useContext<ICartContext>(CartContext);
+  useEffect(() => {
+    const getBooks = async () => {
+      try {
+        const response = await getAllBooks();
+        setBooks(response);
+        setIsLoaded(true);
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          setBooks([]);
+          setErr(err.message);
+        }
+      }
+    };
+    if (isLoaded) return;
+    getBooks();
+  }, [isLoaded]);
+
+  return <BooksOverview books={books} err={err} cartContext={cartContext} />;
+}

@@ -1,60 +1,89 @@
-import { Col, Container, Row, Card, CardBody, Form } from "react-bootstrap";
-import "../carttoolpanel/CartToolPanel.scss";
-import { useContext, useEffect, useState } from "react";
-import { CartContext, ICart, ICartContext } from "../../context/cartContext";
+import {
+  Col,
+  Container,
+  Row,
+  Card,
+  CardBody,
+  Form,
+  Button,
+} from "react-bootstrap";
+import { useContext } from "react";
+import { CartContext, ICartContext } from "../../context/cartContext";
 
 export function CartToolPanel() {
   const cartContext = useContext<ICartContext>(CartContext);
-  const [cart, setCart] = useState<ICart[]>(cartContext.cart);
-  useEffect(() => {
-    cartContext.updateCart(cart);
-  }, [cart]);
 
+  function removeItem(index: number) {
+    let temp = [...cartContext.cart];
+    temp.splice(index, 1);
+    cartContext.updateCart(temp);
+  }
   return (
     <Container className="py-3">
-      <Row className="gap-2 flex-column">
-        {cart.map((item) => {
-          return (
-            <Col>
-              <Card className="cart-item p-2 flex-row">
-                <Card.Img variant="start" src={item.item.imgUrl || ""} />
-                <CardBody>
-                  <Row>
-                    <Card.Title className="fs-6">{item.item.title}</Card.Title>
-                  </Row>
-                  <Row>
-                    <Col className="w-50 p-0">
-                      <Form.Control
-                        className="form-control-sm text.center"
-                        type="number"
-                        value={item.amount}
-                        onChange={(e) => {
-                          setCart((oldstate) =>
-                            oldstate.map((b) =>
-                              b.item.id === item.item.id
-                                ? { ...b, amount: +e.target.value }
-                                : b
-                            )
-                          );
-                        }}
-                      />
-                    </Col>
-                    <Col className="w-50 text-center p-0">
-                      {item.item.price * item.amount} kr
-                    </Col>
-                  </Row>
-                </CardBody>
-              </Card>
-            </Col>
-          );
-        })}
-        <Col>
-          Summa:{" "}
-          {cart.reduce((accumulator, item) => {
-            return accumulator + item.amount * item.item.price;
-          }, 0)}
-        </Col>
-      </Row>
+      {cartContext.cart.length === 0 ? (
+        <Row>Varukorg är tom</Row>
+      ) : (
+        <Row className="gap-2 flex-column">
+          {cartContext.cart.map((item) => {
+            return (
+              <Col key={item.item.id}>
+                <Card className="cart-item p-2 flex-row">
+                  <Card.Img variant="start" src={item.item.imgUrl || ""} />
+                  <CardBody>
+                    <Row>
+                      <Card.Title>{item.item.title}</Card.Title>
+                      <Card.Text>{item.item.author}</Card.Text>
+                      <Card.Text>{item.item.year}</Card.Text>
+                    </Row>
+                    <Row>
+                      <Col className="w-50 p-0">
+                        <Form.Control
+                          className="form-control-sm text.center"
+                          type="number"
+                          value={item.amount}
+                          onChange={(e) => {
+                            cartContext.updateCart(
+                              cartContext.cart.map((b) =>
+                                b.item.id === item.item.id
+                                  ? { ...b, amount: +e.target.value }
+                                  : b
+                              )
+                            );
+                          }}
+                        />
+                      </Col>
+                      <Col className="w-50 text-center p-0">
+                        {item.item.price * item.amount} kr
+                      </Col>
+                    </Row>
+                    <Row className="justify-content-end">
+                      <Col className="fs-6 p-0 my-3" xs={6}>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={() => {
+                            const index: number =
+                              cartContext.cart.indexOf(item);
+                            removeItem(index);
+                          }}
+                        >
+                          Ta bort
+                        </Button>
+                      </Col>
+                    </Row>
+                  </CardBody>
+                </Card>
+              </Col>
+            );
+          })}
+          <Col>
+            Summa:{" "}
+            {cartContext.cart.reduce((accumulator, item) => {
+              return accumulator + item.amount * item.item.price;
+            }, 0)}
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 }

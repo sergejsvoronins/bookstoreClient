@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { z } from "zod";
 
 const BASE_URL = "http://localhost/bookstore";
@@ -16,7 +16,18 @@ export const getCategories = async () => {
   let response = await axios.get<Category[]>(`${BASE_URL}/categories`);
   return response.data;
 };
-
+export const getCategoiesBooks = async (id: number) => {
+  let response = await axios.get<Book[]>(`${BASE_URL}/categories/${id}`);
+  return response.data;
+};
+export const getSearchResult = async (searchText: string) => {
+  let response = await axios.get<Book[]>(`${BASE_URL}/search`, {
+    params: {
+      q: searchText,
+    },
+  });
+  return response.data;
+};
 // export const addBook = async (newBook: NewBook) => {
 //   try {
 //     let response = await axios.post(
@@ -102,8 +113,8 @@ const BookSchema = z.object({
   pages: z.number(),
   year: z.number(),
   language: z.string(),
-  authorId: z.number(),
-  categoryId: z.number(),
+  author: z.string(),
+  category: z.string(),
   price: z.number(),
   isbn: z.number(),
 });

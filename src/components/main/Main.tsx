@@ -10,7 +10,6 @@ export function Main() {
     setCart(cart);
     localStorage.setItem("cart", JSON.stringify(cart));
   }
-  console.log(cart);
 
   return (
     <>

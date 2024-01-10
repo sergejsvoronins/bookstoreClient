@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import { StartPage } from "./pages/StartPage";
-import { BooksOverview } from "./pages/booksoverview/BooksOverview";
+import { StartPage } from "./pages/startpage/StartPage";
 import { Main } from "./components/main/Main";
 import { SingleBook } from "./pages/SingleBook";
 import { AdminPage } from "./pages/AdminPage";
@@ -11,6 +10,9 @@ import { AuthorsManager } from "./components/authorsManager/AuthorsManager";
 import { CategoriesManager } from "./components/categoriesManager/CategoriesManager";
 import { UpdateItem } from "./components/updateItem/UpdateItem";
 import { CreateItem } from "./components/createItem/CreateItem";
+import { CheckOut } from "./pages/CheckOut";
+import { CategoryBooks } from "./pages/CategoryBooks";
+import { SearchResult } from "./components/SearchResult";
 
 export const router = createBrowserRouter([
   {
@@ -27,12 +29,16 @@ export const router = createBrowserRouter([
             index: true,
           },
           {
-            path: "/books",
-            element: <BooksOverview />,
+            path: "/book/:id",
+            element: <SingleBook />,
           },
           {
-            path: "/books/:id",
-            element: <SingleBook />,
+            path: "/category/:id",
+            element: <CategoryBooks />,
+          },
+          {
+            path: "/search",
+            element: <SearchResult />,
           },
           {
             path: "/admin",
@@ -97,6 +103,10 @@ export const router = createBrowserRouter([
             ],
           },
         ],
+      },
+      {
+        path: "/check-out",
+        element: <CheckOut />,
       },
     ],
   },
