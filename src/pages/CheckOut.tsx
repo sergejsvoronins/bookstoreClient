@@ -1,6 +1,15 @@
 import { useContext, useEffect } from "react";
-import { Col, Container, ListGroup, Row, Image, Form } from "react-bootstrap";
+import {
+  Col,
+  Container,
+  ListGroup,
+  Row,
+  Image,
+  Form,
+  Button,
+} from "react-bootstrap";
 import { CartContext, ICart, ICartContext } from "../context/cartContext";
+import { CustomerForm } from "../components/customerform/CustomerForm";
 
 export function CheckOut() {
   const cartContext = useContext<ICartContext>(CartContext);
@@ -90,10 +99,16 @@ export function CheckOut() {
             :-
           </Col>
         </Row>
+        <Row className="mb-3">
+          <Col>
+            <Button type="button">Gå vidare</Button>
+          </Col>
+        </Row>
         <ListGroup.Item className="fs-2">Steg 2 - Leveranssätt</ListGroup.Item>
         <ListGroup.Item className="fs-2">
           Steg 3 - Kund information
         </ListGroup.Item>
+        <CustomerForm />
         <ListGroup.Item className="fs-2">Steg 4 - Betalning</ListGroup.Item>
       </ListGroup>
     </Container>
