@@ -10,6 +10,8 @@ import {
 } from "react-bootstrap";
 import { CartContext, ICart, ICartContext } from "../context/cartContext";
 import { CustomerForm } from "../components/customerform/CustomerForm";
+import { CheckoutForm } from "../components/stripe/CheckoutForm";
+import { Payment } from "../components/stripe/Payment";
 
 export function CheckOut() {
   const cartContext = useContext<ICartContext>(CartContext);
@@ -110,6 +112,7 @@ export function CheckOut() {
         </ListGroup.Item>
         <CustomerForm />
         <ListGroup.Item className="fs-2">Steg 4 - Betalning</ListGroup.Item>
+        <Payment />
       </ListGroup>
     </Container>
   );

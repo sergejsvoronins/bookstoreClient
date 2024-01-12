@@ -13,6 +13,7 @@ import { CreateItem } from "./components/createItem/CreateItem";
 import { CheckOut } from "./pages/CheckOut";
 import { CategoryBooks } from "./pages/CategoryBooks";
 import { SearchResult } from "./components/SearchResult";
+import { Confirmation } from "./components/stripe/Confirmation";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
           {
             path: "/check-out",
             element: <CheckOut />,
+          },
+          {
+            path: "/confirmation",
+            element: <Confirmation />,
           },
           {
             path: "/admin",
