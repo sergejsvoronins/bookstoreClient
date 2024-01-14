@@ -7,7 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 
-export const CheckoutForm = () => {
+export const PaymentForm = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const stripe = useStripe();
@@ -16,6 +16,7 @@ export const CheckoutForm = () => {
   useEffect(() => {}, []);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!stripe || !elements) {
       return;
     }
@@ -37,7 +38,7 @@ export const CheckoutForm = () => {
   return (
     <Form className="my-3" onSubmit={handleSubmit}>
       <Row className="justify-content-center mb-5">
-        <Col lg={6}>
+        <Col md={8} lg={6}>
           <PaymentElement />
         </Col>
       </Row>

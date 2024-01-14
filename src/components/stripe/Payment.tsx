@@ -1,7 +1,8 @@
 import { Stripe, loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
-import { CheckoutForm } from "./CheckoutForm";
+import { PaymentForm } from "./PaymentForm";
+import { Row } from "react-bootstrap";
 
 export function Payment() {
   const [stripePromise, setStripePromise] =
@@ -11,7 +12,6 @@ export function Payment() {
     fetch("http://localhost:5252/config").then(async (r) => {
       const { publishableKey } = await r.json();
       setStripePromise(loadStripe(publishableKey));
-      console.log(publishableKey);
     });
   }, []);
   useEffect(() => {
@@ -27,7 +27,7 @@ export function Payment() {
     <>
       {stripePromise && clientSecret && (
         <Elements stripe={stripePromise} options={{ clientSecret }}>
-          <CheckoutForm />
+          <PaymentForm />
         </Elements>
       )}
     </>

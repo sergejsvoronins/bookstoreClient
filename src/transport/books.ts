@@ -1,7 +1,7 @@
 import axios from "axios";
 import { z } from "zod";
 
-const BASE_URL = "http://localhost/bookstore";
+export const BASE_URL = "http://localhost/bookstore";
 
 export const getAllBooks = async () => {
   let response = await axios.get<Book[]>(`${BASE_URL}/books`);

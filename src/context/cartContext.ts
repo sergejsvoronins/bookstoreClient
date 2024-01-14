@@ -5,10 +5,6 @@ export interface ICart {
   item: Book;
   amount: number;
 }
-// export interface ICartOutletContext {
-//   cart: ICart[];
-//   updateCart: (cart: ICart[]) => void;
-// }
 export interface ICartContext {
   cart: ICart[];
   updateCart: (cart: ICart[]) => void;
