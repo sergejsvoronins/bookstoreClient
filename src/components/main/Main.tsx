@@ -20,7 +20,7 @@ export function Main() {
 
   return (
     <>
-      <CartContext.Provider value={{ cart, updateCart }}>
+      <CartContext.Provider value={{ cart, updateCart, freight: 39 }}>
         {location.pathname !== "/check-out" ? <Navigation /> : <CheckOutNav />}
         <Outlet></Outlet>
       </CartContext.Provider>

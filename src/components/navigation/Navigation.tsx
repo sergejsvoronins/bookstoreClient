@@ -3,7 +3,6 @@ import {
   Container,
   NavDropdown,
   Nav,
-  Form,
   Button,
   Offcanvas,
   Badge,
@@ -17,11 +16,13 @@ import { CartContext, ICart, ICartContext } from "../../context/cartContext";
 import { CartToolPanel } from "../carttoolpanel/CartToolPanel";
 import { useNavigate } from "react-router-dom";
 import { NavSearch } from "../navsearch/NavSearch";
+import { IUserContext, UserContext } from "../../context/userContext";
 export function Navigation() {
   const [isSmallScreen, setSmalScreen] = useState(window.innerWidth <= 768);
   const [categories, setCategories] = useState<Category[]>([]);
   const [showCart, setShowCart] = useState(false);
   const cartContext = useContext<ICartContext>(CartContext);
+  const userContext = useContext<IUserContext>(UserContext);
   const navigate = useNavigate();
   useEffect(() => {
     const getCategoriesList = async () => {
@@ -96,23 +97,50 @@ export function Navigation() {
                     );
                   })}
                 </NavDropdown>
-                <Nav.Link href="/admin">Adminsida</Nav.Link>
+                {userContext.user?.accountLevel === "admin" && (
+                  <Nav.Link href="/admin">Adminsida</Nav.Link>
+                )}
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
           {!isSmallScreen && <NavSearch />}
 
           <Nav className="d-flex flex-row">
-            <Nav.Link href="/">
-              <Row className="justify-content-center p-0 m-0">
-                <Col className="text-center">
-                  <Person />
-                </Col>
-              </Row>
-              <Row className="justify-content-center p-0 m-0">
-                {!isSmallScreen && <Col className="text-center">Logga in</Col>}
-              </Row>
-            </Nav.Link>
+            {!userContext.user ? (
+              <Nav.Link href="/login">
+                <Row className="justify-content-center p-0 m-0">
+                  <Col className="text-center">
+                    <Person />
+                  </Col>
+                </Row>
+                <Row className="justify-content-center p-0 m-0">
+                  {!isSmallScreen && (
+                    <Col className="text-center">Logga in</Col>
+                  )}
+                </Row>
+              </Nav.Link>
+            ) : (
+              <NavDropdown
+                title="Min sida"
+                id="basic-nav-dropdown"
+                className="d-flex align-items-center"
+                drop="start"
+              >
+                <NavDropdown.Item href="#action/3.3">
+                  Mina beställningar
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.2">
+                  Personuppgifter
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item
+                  href="#action/3.4"
+                  onClick={() => userContext.setUser(null)}
+                >
+                  Logga ut
+                </NavDropdown.Item>
+              </NavDropdown>
+            )}
             <Nav.Link href="#" onClick={() => setShowCart((s) => !s)}>
               <Row className="justify-content-center p-0 m-0">
                 <Col className="text-center">

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Row, Col, Button, Form } from "react-bootstrap";
 import {
   IShipmentContext,
@@ -7,33 +7,45 @@ import {
 import { NewShipment } from "../../transport/orders";
 import { getCityByZip } from "../../transport/user";
 
-export function CustomerForm() {
+export function CustomerForm({
+  setShipmentIsOk,
+  setCartIsOk,
+}: {
+  setShipmentIsOk: (status: boolean) => void;
+  setCartIsOk: (status: boolean) => void;
+}) {
   const shipmentContext = useContext<IShipmentContext>(ShipmentContext);
   const [validated, setValidated] = useState(false);
   const [postErr, setPostErr] = useState(false);
-  const [shipment, setShipment] = useState<NewShipment>({
-    firstName: "",
-    lastName: "",
-    address: "",
-    zip: "",
-    city: "",
-    mobile: "",
-    email: "",
-  });
-
+  const [shipment, setShipment] = useState<NewShipment>(
+    shipmentContext.shipmentDetails || {
+      firstName: "",
+      lastName: "",
+      address: "",
+      zipCode: "",
+      city: "",
+      mobile: "",
+      email: "",
+    }
+  );
+  useEffect(() => {
+    shipmentContext.updateShipment(shipment);
+  }, [shipment]);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
+      event.preventDefault();
       event.stopPropagation();
-      return;
     }
     setValidated(true);
-    shipmentContext.updateShipment(shipment);
+    if (form.checkValidity()) {
+      setShipmentIsOk(true);
+    }
   };
-  const getCity = async (zip: string) => {
+  const getCity = async (zipCode: string) => {
     try {
-      let response = await getCityByZip(zip);
+      let response = await getCityByZip(zipCode);
       setShipment({ ...shipment, city: response.results[0].city });
       setPostErr(false);
     } catch (err) {
@@ -43,7 +55,6 @@ export function CustomerForm() {
       }
     }
   };
-  console.log(shipment);
 
   return (
     <Form
@@ -70,13 +81,15 @@ export function CustomerForm() {
         </Form.Group>
       </Row>
       <Row className="justify-content-center">
-        <Form.Group className="mb-3" as={Col} lg="6" controlId="zip">
+        <Form.Group className="mb-3" as={Col} lg="6" controlId="zipCode">
           <Form.Control
             type="number"
             placeholder="Postnummer"
             required
-            value={shipment.zip || ""}
-            onChange={(e) => setShipment({ ...shipment, zip: e.target.value })}
+            value={shipment.zipCode || ""}
+            onChange={(e) =>
+              setShipment({ ...shipment, zipCode: e.target.value })
+            }
             onBlur={(e) => getCity(e.target.value)}
             isInvalid={postErr}
           />
@@ -170,9 +183,22 @@ export function CustomerForm() {
           />
         </Form.Group>
       </Row>
-      <a href="#paymentForm">
-        <Button type="submit">Gå vidare</Button>
-      </a>
+      <Row>
+        <Col className="text-start">
+          <Button type="submit">Gå vidare</Button>
+        </Col>
+        <Col className="text-end">
+          <Button
+            type="button"
+            onClick={() => {
+              setValidated(false);
+              setCartIsOk(false);
+            }}
+          >
+            Tillbaka
+          </Button>
+        </Col>
+      </Row>
     </Form>
   );
 }

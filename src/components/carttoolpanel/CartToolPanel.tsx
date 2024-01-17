@@ -76,11 +76,12 @@ export function CartToolPanel() {
               </Col>
             );
           })}
-          <Col>
-            Summa:{" "}
+          <Col className="fs-5">
+            <span>Summa inkl moms: </span>
             {cartContext.cart.reduce((accumulator, item) => {
               return accumulator + item.amount * item.item.price;
-            }, 0)}
+            }, 0)}{" "}
+            :-
           </Col>
         </Row>
       )}

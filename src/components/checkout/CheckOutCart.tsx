@@ -1,15 +1,17 @@
 import { Row, Col, Image, Form, Button } from "react-bootstrap";
 import { CartContext, ICart, ICartContext } from "../../context/cartContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
-export function CheckOutCart({ setCartIsOk }: { setCartIsOk: () => void }) {
+export function CheckOutCart({
+  setCartIsOk,
+}: {
+  setCartIsOk: (status: boolean) => void;
+}) {
   const cartContext = useContext<ICartContext>(CartContext);
 
   useEffect(() => {
     try {
       const cartString = localStorage.getItem("cart");
-      console.log("här");
-
       if (cartString) {
         const cartData: ICart[] = JSON.parse(cartString);
         cartContext.updateCart(cartData);
@@ -80,19 +82,27 @@ export function CheckOutCart({ setCartIsOk }: { setCartIsOk: () => void }) {
           </Row>
         );
       })}
-      <Row className="fs-1 fw-bolder justify-content-between p-5">
+      <Row className="fs-3 fw-bolder justify-content-between px-5">
+        <Col xs={3}>Frakt:</Col>
+        <Col xs={9} className="text-end">
+          {cartContext.freight}
+          :-
+        </Col>
+      </Row>
+      <Row className="fs-1 fw-bolder justify-content-between px-5 py-3">
         <Col xs={3}>Totalt:</Col>
         <Col xs={9} className="text-end">
           {cartContext.cart.reduce((accumulator, item) => {
             return accumulator + item.amount * item.item.price;
-          }, 0)}{" "}
+          }, 0) + cartContext.freight}
           :-
         </Col>
       </Row>
+
       <Row className="mb-3">
         <Col>
           <a href="#customerForm">
-            <Button type="button" onClick={() => setCartIsOk()}>
+            <Button type="button" onClick={() => setCartIsOk(true)}>
               Gå vidare
             </Button>
           </a>

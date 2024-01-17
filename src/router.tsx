@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import { StartPage } from "./pages/startpage/StartPage";
+import { StartPage } from "./pages/StartPage";
 import { Main } from "./components/main/Main";
 import { SingleBook } from "./pages/SingleBook";
 import { AdminPage } from "./pages/AdminPage";
@@ -14,6 +14,7 @@ import { CheckOut } from "./pages/CheckOut";
 import { CategoryBooks } from "./pages/CategoryBooks";
 import { SearchResult } from "./components/SearchResult";
 import { Confirmation } from "./components/stripe/Confirmation";
+import { LoginPage } from "./pages/LoginPage";
 
 export const router = createBrowserRouter([
   {
@@ -110,6 +111,10 @@ export const router = createBrowserRouter([
                 ],
               },
             ],
+          },
+          {
+            path: "/login",
+            element: <LoginPage />,
           },
         ],
       },

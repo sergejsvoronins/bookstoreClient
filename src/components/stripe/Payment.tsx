@@ -1,10 +1,12 @@
 import { Stripe, loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PaymentForm } from "./PaymentForm";
 import { Row } from "react-bootstrap";
+import { ICartContext, CartContext } from "../../context/cartContext";
 
 export function Payment() {
+  const cartContext = useContext<ICartContext>(CartContext);
   const [stripePromise, setStripePromise] =
     useState<Promise<Stripe | null> | null>(null);
   const [clientSecret, setClientSecret] = useState("");
@@ -17,7 +19,15 @@ export function Payment() {
   useEffect(() => {
     fetch("http://localhost:5252/create-payment-intent", {
       method: "POST",
-      body: JSON.stringify({}),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        amount:
+          cartContext.cart.reduce((accumulator, item) => {
+            return accumulator + item.amount * item.item.price;
+          }, 0) * 100,
+      }),
     }).then(async (result) => {
       var { clientSecret } = await result.json();
       setClientSecret(clientSecret);
