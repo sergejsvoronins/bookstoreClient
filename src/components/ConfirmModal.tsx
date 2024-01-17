@@ -1,28 +1,39 @@
 import { Modal, Button } from "react-bootstrap";
+import { deleteBook } from "../transport/books";
+import { useNavigate } from "react-router-dom";
 
 interface IConfirmModal {
-  message: string;
+  bookId: number;
+  openConfirmModal: boolean;
+  closeConfirmModal: () => void;
 }
 
-export function ConfirmModal({ message }: IConfirmModal) {
+export function ConfirmModal({
+  bookId,
+  openConfirmModal,
+  closeConfirmModal,
+}: IConfirmModal) {
+  const navigate = useNavigate();
+  const removeBook = async () => {
+    try {
+      const response = await deleteBook(bookId);
+      navigate("/");
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
-    <div
-      className="modal show"
-      style={{ display: "block", position: "initial" }}
-    >
-      <Modal.Dialog>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal title</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          <p>{message}</p>
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="secondary">Close</Button>
-        </Modal.Footer>
-      </Modal.Dialog>
-    </div>
+    <Modal show={openConfirmModal} onHide={closeConfirmModal}>
+      <Modal.Header closeButton></Modal.Header>
+      <Modal.Body>Är du säker vill ta bort boken?</Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={closeConfirmModal}>
+          Avbryt
+        </Button>
+        <Button variant="danger" onClick={removeBook}>
+          Radera
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 }

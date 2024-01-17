@@ -11,7 +11,7 @@ function App() {
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <Outlet></Outlet>;
+      <Outlet></Outlet>
     </UserContext.Provider>
   );
 }

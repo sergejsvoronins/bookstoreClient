@@ -28,20 +28,10 @@ export const getSearchResult = async (searchText: string) => {
   });
   return response.data;
 };
-// export const addBook = async (newBook: NewBook) => {
-//   try {
-//     let response = await axios.post(
-//       `${BASE_URL}/books`,
-//       newBook
-//     );
-//     return response.data;
-//   } catch (err) {
-//     const axiosError = err as AxiosError<{ message: string; status: number }>;
-//     const errorMessage = axiosError.message;
-//     const error: CreateBookResponse = { id: null, message: errorMessage };
-//     return err;
-//   }
-// };
+export const getOneBook = async (id: number) => {
+  let response = await axios.get<Book>(`${BASE_URL}/books/${id}`);
+  return response.data;
+};
 export const addBook = async (newBook: NewBook) => {
   try {
     let response = await axios.post(`${BASE_URL}/books`, newBook);
@@ -60,6 +50,10 @@ export const addBook = async (newBook: NewBook) => {
   }
 };
 
+export const updateBook = async (book: NewBook) => {
+  let response = await axios.put(`${BASE_URL}/books/${book.id}`, book);
+  return response.data;
+};
 export const addAuthor = async (newAuthor: NewAuthor) => {
   try {
     let response = await axios.post(`${BASE_URL}/authors`, newAuthor);
@@ -94,7 +88,10 @@ export const addCategory = async (newCategory: NewCategory) => {
     console.error("Error adding category:", error);
   }
 };
-
+export const deleteBook = async (id: number) => {
+  let response = await axios.delete(`${BASE_URL}/books/${id}`);
+  return response.data;
+};
 const CategorySchema = z.object({
   id: z.number(),
   name: z.string(),
@@ -131,6 +128,8 @@ export type NewAuthor = z.infer<typeof NewAuthorSchema>;
 
 const NewBookSchema = BookSchema.extend({
   id: z.optional(z.number()),
+  authorId: z.optional(z.number()),
+  categoryId: z.optional(z.number()),
 });
 export type Book = z.infer<typeof BookSchema>;
 export type NewBook = z.infer<typeof NewBookSchema>;

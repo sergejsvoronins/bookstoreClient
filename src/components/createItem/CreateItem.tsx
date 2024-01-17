@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import { CreateBookForm } from "../forms/CreateBookForm";
+import { BookForm } from "../forms/BookForm";
 
 interface ICreateItem {
   type: string;
@@ -7,8 +7,8 @@ interface ICreateItem {
 export function CreateItem({ type }: ICreateItem) {
   function getForm(type: string) {
     switch (type) {
-      case "books":
-        return <CreateBookForm />;
+      // case "books":
+      //   return <BookForm />;
 
       default:
         return "Some form";

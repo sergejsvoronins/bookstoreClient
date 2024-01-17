@@ -1,6 +1,15 @@
-import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Spinner,
+  Accordion,
+} from "react-bootstrap";
 import { Book } from "../../transport/books";
 import { ICartContext } from "../../context/cartContext";
+import { useNavigate } from "react-router-dom";
 
 interface IBooksOverview {
   books: Book[];
@@ -9,6 +18,7 @@ interface IBooksOverview {
 }
 
 export function BooksOverview({ books, err, cartContext }: IBooksOverview) {
+  const navigate = useNavigate();
   return (
     <Container>
       <Row>
@@ -17,14 +27,14 @@ export function BooksOverview({ books, err, cartContext }: IBooksOverview) {
             return (
               <Col key={b.id} xs={6} md={4} lg={3}>
                 <Card>
-                  <div className="card-img p-4">
-                    <Card.Img
-                      variant="top"
-                      src={b.imgUrl || ""}
-                      className="image"
-                    />
-                  </div>
-                  <Card.Body>
+                  <Card.Body onClick={() => navigate(`/book/${b.id}`)}>
+                    <div className="card-img p-4">
+                      <Card.Img
+                        variant="top"
+                        src={b.imgUrl || ""}
+                        className="image"
+                      />
+                    </div>
                     <Card.Title className="h6">{b.title}</Card.Title>
                   </Card.Body>
                   <Card.Footer>
