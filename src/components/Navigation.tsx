@@ -8,15 +8,16 @@ import {
   Badge,
   Row,
   Col,
+  Accordion,
 } from "react-bootstrap";
 import { Bag, List, Person } from "react-bootstrap-icons";
 import { useContext, useEffect, useState } from "react";
-import { Category, getCategories } from "../../transport/books";
-import { CartContext, ICart, ICartContext } from "../../context/cartContext";
-import { CartToolPanel } from "../carttoolpanel/CartToolPanel";
+import { Category, getCategories } from "../transport/books";
+import { CartContext, ICart, ICartContext } from "../context/cartContext";
+import { CartToolPanel } from "./CartToolPanel";
 import { useNavigate } from "react-router-dom";
-import { NavSearch } from "../navsearch/NavSearch";
-import { IUserContext, UserContext } from "../../context/userContext";
+import { NavSearch } from "./NavSearch";
+import { IUserContext, UserContext } from "../context/userContext";
 export function Navigation() {
   const [isSmallScreen, setSmalScreen] = useState(window.innerWidth <= 768);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -56,50 +57,55 @@ export function Navigation() {
   }, []);
   return (
     <>
-      <Navbar expand={"lg"} className="bg-body-tertiary mb-3">
+      <Navbar expand={"xxl"} className="bg-body-tertiary mb-3">
         <Container fluid>
           <div className="d-flex">
-            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${"lg"}`}>
+            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${"xxl"}`}>
               <List />
             </Navbar.Toggle>
             <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
           </div>
           <Navbar.Offcanvas
-            id={`offcanvasNavbar-expand-${"lg"}`}
-            aria-labelledby={`offcanvasNavbarLabel-expand-${"lg"}`}
+            id={`offcanvasNavbar-expand-${"xxl"}`}
+            aria-labelledby={`offcanvasNavbarLabel-expand-${"xxl"}`}
             placement="start"
           >
             <Offcanvas.Header closeButton>
-              <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${"lg"}`}>
+              <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${"xxl"}`}>
                 Menu
               </Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Body>
-              <Nav className="justify-content-start flex-grow-1 pe-3">
-                <NavDropdown
-                  title="Produkter"
-                  id={`offcanvasNavbarDropdown-expand-${"lg"}`}
-                >
-                  <NavDropdown.Item href="/">Visa alla</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  {categories.map((c) => {
-                    return (
-                      <NavDropdown.Item
-                        key={c.id}
-                        href={`/category/${c.id}`}
-                        className="p-3"
-                      >
-                        {c.name}
-                        <Badge bg="secondary" className="mx-1">
-                          {c.booksAmount}
-                        </Badge>
-                      </NavDropdown.Item>
-                    );
-                  })}
-                </NavDropdown>
-                {userContext.user?.accountLevel === "admin" && (
-                  <Nav.Link href="/admin">Adminsida</Nav.Link>
-                )}
+            <Offcanvas.Body className="p-0">
+              <Nav className="justify-content-start flex-grow-1 p-0">
+                <Accordion>
+                  <Accordion.Item eventKey="0" className="rounded-0">
+                    <Accordion.Header>Kategorier</Accordion.Header>
+                    <Accordion.Body>
+                      {categories.map((c) => {
+                        return (
+                          <Nav.Link key={c.id} href={`/category/${c.id}`}>
+                            {c.name}
+                            <Badge bg="secondary" className="mx-1">
+                              {c.booksAmount}
+                            </Badge>
+                          </Nav.Link>
+                        );
+                      })}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  {userContext.user?.accountLevel === "admin" && (
+                    <Accordion.Item eventKey="1" className="rounded-0">
+                      <Accordion.Header>Adminsida</Accordion.Header>
+                      <Accordion.Body className="py-0 pe-0">
+                        <Nav.Link href="/admin/books">Skapa en bok</Nav.Link>
+                        <Nav.Link>Skapa/ändra författare</Nav.Link>
+                        <Nav.Link>Skapa/ändra kategori</Nav.Link>
+                        <Nav.Link>Hantera användare</Nav.Link>
+                        <Nav.Link>Hantera beställningar</Nav.Link>
+                      </Accordion.Body>
+                    </Accordion.Item>
+                  )}
+                </Accordion>
               </Nav>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
@@ -107,7 +113,7 @@ export function Navigation() {
 
           <Nav className="d-flex flex-row">
             {!userContext.user ? (
-              <Nav.Link href="/login">
+              <Nav.Link href="/account/login">
                 <Row className="justify-content-center p-0 m-0">
                   <Col className="text-center">
                     <Person />
@@ -134,8 +140,12 @@ export function Navigation() {
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item
-                  href="#action/3.4"
-                  onClick={() => userContext.setUser(null)}
+                  href="/"
+                  onClick={() => {
+                    localStorage.removeItem("user");
+                    localStorage.removeItem("cart");
+                    userContext.setUser(null);
+                  }}
                 >
                   Logga ut
                 </NavDropdown.Item>

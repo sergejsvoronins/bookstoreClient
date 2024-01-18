@@ -8,7 +8,7 @@ import {
   Button,
 } from "react-bootstrap";
 import { useContext } from "react";
-import { CartContext, ICartContext } from "../../context/cartContext";
+import { CartContext, ICartContext } from "../context/cartContext";
 
 export function CartToolPanel() {
   const cartContext = useContext<ICartContext>(CartContext);

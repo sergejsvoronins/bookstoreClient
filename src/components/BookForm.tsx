@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Row, Col, Form } from "react-bootstrap";
-import { Author, Category, NewBook } from "../../transport/books";
+import { Author, Category, NewBook } from "../transport/books";
 import { useParams } from "react-router-dom";
 
 interface IBookForm {

@@ -1,7 +1,6 @@
 import { Button, Modal } from "react-bootstrap";
 import {
   Author,
-  Book,
   Category,
   NewBook,
   getAuthors,
@@ -9,7 +8,7 @@ import {
   getOneBook,
   updateBook,
 } from "../transport/books";
-import { BookForm } from "./forms/BookForm";
+import { BookForm } from "./BookForm";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 

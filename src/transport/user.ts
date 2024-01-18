@@ -14,7 +14,13 @@ export const login = async (userInput: { email: string; password: string }) => {
   let response = await axios.post<LoginUser>(`${BASE_URL}/login`, userInput);
   return response.data;
 };
-
+export const createUser = async (user: NewUser) => {
+  let response = await axios.post<LoginUser>(`${BASE_URL}/users`, {
+    email: user.email,
+    password: user.password,
+  });
+  return response.data;
+};
 const LoginUserSchema = z.object({
   id: z.number(),
   accountLevel: z.string(),
@@ -37,10 +43,10 @@ const UserDataSchema = z.object({
 
 export type UserData = z.infer<typeof UserDataSchema>;
 
-const NewUserSchema = UserDataSchema.extend({
-  id: z.optional(z.number()),
-  accountLevel: z.optional(z.nullable(z.string())),
-  password: z.optional(z.nullable(z.string())),
+const NewUserSchema = z.object({
+  email: z.string(),
+  password: z.string(),
+  samePassword: z.string(),
 });
 
 export type NewUser = z.infer<typeof NewUserSchema>;

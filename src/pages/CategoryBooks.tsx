@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Book, getCategoiesBooks } from "../transport/books";
-import { BooksOverview } from "../components/booksoverview/BooksOverview";
+import { BooksOverview } from "../components/BooksOverview";
 import { AxiosError } from "axios";
 import { CartContext, ICartContext } from "../context/cartContext";
 

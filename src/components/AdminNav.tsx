@@ -1,11 +1,41 @@
-import { Container, Nav, NavDropdown } from "react-bootstrap";
+import { Accordion, Col, Container, Nav, Row } from "react-bootstrap";
 import { Outlet } from "react-router-dom";
 
 export function AdminNav() {
   return (
     <Container>
-      <Nav className="me-auto">
-        <NavDropdown title="Böcker" id="basic-nav-dropdown">
+      <Row>
+        <Col md={4}>
+          <Nav
+            className="me-auto flex-column flex-grow"
+            defaultActiveKey="/home"
+            variant="underline"
+          >
+            <Accordion>
+              <Accordion.Item eventKey="0">
+                <Accordion.Header>Böcker</Accordion.Header>
+                <Accordion.Body>
+                  <Nav.Link>Visa alla</Nav.Link>
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>Författare</Accordion.Header>
+                <Accordion.Body>Visa all</Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>Kategorier</Accordion.Header>
+                <Accordion.Body>Visa all</Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>Användare</Accordion.Header>
+                <Accordion.Body>Visa all</Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item eventKey="1">
+                <Accordion.Header>Beställningar</Accordion.Header>
+                <Accordion.Body>Visa all</Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+            {/* <NavDropdown title="Böcker" id="basic-nav-dropdown">
           <NavDropdown.Item href="/admin/books/create">Skapa</NavDropdown.Item>
           <NavDropdown.Item href="/admin/books/update">Ändra</NavDropdown.Item>
         </NavDropdown>
@@ -28,8 +58,13 @@ export function AdminNav() {
           <NavDropdown.Item href="/admin/categories/update">
             Ändra
           </NavDropdown.Item>
-        </NavDropdown>
-      </Nav>
+        </NavDropdown> */}
+          </Nav>
+        </Col>
+        <Col md={8}>
+          <Outlet></Outlet>
+        </Col>
+      </Row>
       {/* <Nav variant="tabs" defaultActiveKey="/admin">
         <Nav.Item>
           <Nav.Link href="/admin/books">Böcker</Nav.Link>
@@ -44,7 +79,6 @@ export function AdminNav() {
           <Nav.Link href="/admin/categories">Kategorier</Nav.Link>
         </Nav.Item>
       </Nav> */}
-      <Outlet></Outlet>
     </Container>
   );
 }

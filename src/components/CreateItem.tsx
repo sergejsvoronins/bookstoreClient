@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import { BookForm } from "../forms/BookForm";
+import { BookForm } from "./BookForm";
 
 interface ICreateItem {
   type: string;

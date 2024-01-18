@@ -22,7 +22,7 @@ export function SingleBook() {
   const [book, setBook] = useState<Book | null>(null);
   const [amount, setAmount] = useState("1");
   const cartContext = useContext<ICartContext>(CartContext);
-  const userContext = useContext<IUserContext>(UserContext);
+  // const userContext = useContext<IUserContext>(UserContext);
   const [openModal, setOpenModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   console.log(cartContext.cart);

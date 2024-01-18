@@ -1,18 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { Container, ListGroup } from "react-bootstrap";
 import { Book, getAllBooks } from "../transport/books";
-import { ICartContext, CartContext } from "../context/cartContext";
-import { BooksOverview } from "../components/BooksOverview";
 import { AxiosError } from "axios";
-import { IUserContext, UserContext } from "../context/userContext";
 
-export function StartPage() {
+export function AdminBooksPage() {
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const cartContext = useContext<ICartContext>(CartContext);
-  const userContext = useContext<IUserContext>(UserContext);
-  console.log(userContext.user);
-
   useEffect(() => {
     const getBooks = async () => {
       try {
@@ -29,6 +23,15 @@ export function StartPage() {
     if (isLoaded) return;
     getBooks();
   }, [isLoaded]);
-
-  return <BooksOverview books={books} err={err} cartContext={cartContext} />;
+  return (
+    <Container>
+      <ListGroup>
+        <ListGroup.Item>Cras justo odio</ListGroup.Item>
+        <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
+        <ListGroup.Item>Morbi leo risus</ListGroup.Item>
+        <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
+        <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+      </ListGroup>
+    </Container>
+  );
 }

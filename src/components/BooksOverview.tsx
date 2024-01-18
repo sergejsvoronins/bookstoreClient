@@ -7,8 +7,8 @@ import {
   Spinner,
   Accordion,
 } from "react-bootstrap";
-import { Book } from "../../transport/books";
-import { ICartContext } from "../../context/cartContext";
+import { Book } from "../transport/books";
+import { ICartContext } from "../context/cartContext";
 import { useNavigate } from "react-router-dom";
 
 interface IBooksOverview {
