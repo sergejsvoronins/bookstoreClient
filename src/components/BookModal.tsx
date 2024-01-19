@@ -32,6 +32,8 @@ export function BookModal({ openModal, closeModal }: IBookModal) {
     category: "",
     price: 0,
     isbn: 0,
+    categoryId: 0,
+    authorId: 0,
   });
   const [authorsList, setAuthorsList] = useState<Author[]>([]);
   const [categoriesList, setCategoriesList] = useState<Category[]>([]);
@@ -52,6 +54,8 @@ export function BookModal({ openModal, closeModal }: IBookModal) {
             category: response.category,
             price: response.price,
             isbn: response.isbn,
+            categoryId: response.categoryId,
+            authorId: response.authorId,
           });
         } catch (e) {
           console.log(e);
@@ -60,6 +64,24 @@ export function BookModal({ openModal, closeModal }: IBookModal) {
     };
     getBook();
   }, []);
+  useEffect(() => {
+    const author = authorsList.find((a) => a.id === book.authorId)?.name;
+    if (author) {
+      setBook({
+        ...book,
+        author: author,
+      });
+    }
+  }, [book.authorId]);
+  useEffect(() => {
+    const category = categoriesList.find((c) => c.id === book.categoryId)?.name;
+    if (category) {
+      setBook({
+        ...book,
+        category: category,
+      });
+    }
+  }, [book.categoryId]);
   useEffect(() => {
     const getLists = async () => {
       const authors = await getAuthors();
@@ -76,13 +98,11 @@ export function BookModal({ openModal, closeModal }: IBookModal) {
       const response = await updateBook({
         ...book,
         id: +id,
-        authorId: authorsList.find((a) => a.name === book.author)?.id,
-        categoryId: categoriesList.find((c) => c.name === book.category)?.id,
       });
       closeModal();
     }
   };
-  console.log(formIsValidated);
+  console.log(book);
 
   return (
     <>

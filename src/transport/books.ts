@@ -114,6 +114,8 @@ const BookSchema = z.object({
   category: z.string(),
   price: z.number(),
   isbn: z.number(),
+  authorId: z.number(),
+  categoryId: z.number(),
 });
 
 const AuthorSchema = z.object({
@@ -128,8 +130,6 @@ export type NewAuthor = z.infer<typeof NewAuthorSchema>;
 
 const NewBookSchema = BookSchema.extend({
   id: z.optional(z.number()),
-  authorId: z.optional(z.number()),
-  categoryId: z.optional(z.number()),
 });
 export type Book = z.infer<typeof BookSchema>;
 export type NewBook = z.infer<typeof NewBookSchema>;

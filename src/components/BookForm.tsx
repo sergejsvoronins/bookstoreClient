@@ -165,9 +165,9 @@ export function BookForm({
               isValid={newBook.author !== "" || id !== null}
               required
               as={Col}
-              value={newBook.author}
+              value={newBook.authorId}
               onChange={(e) => {
-                setNewBook({ ...newBook, author: e.target.value });
+                setNewBook({ ...newBook, authorId: +e.target.value });
               }}
             >
               {!id && <option>Välj författare</option>}
@@ -184,9 +184,9 @@ export function BookForm({
               isValid={newBook.category !== "" || id !== null}
               as={Col}
               aria-label="Default select example"
-              value={newBook.category}
+              value={newBook.categoryId}
               onChange={(e) =>
-                setNewBook({ ...newBook, category: e.target.value })
+                setNewBook({ ...newBook, categoryId: +e.target.value })
               }
             >
               {!id && <option>Välj kategori</option>}

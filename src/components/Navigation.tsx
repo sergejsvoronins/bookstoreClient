@@ -18,8 +18,7 @@ import { CartToolPanel } from "./CartToolPanel";
 import { useNavigate } from "react-router-dom";
 import { NavSearch } from "./NavSearch";
 import { IUserContext, UserContext } from "../context/userContext";
-export function Navigation() {
-  const [isSmallScreen, setSmalScreen] = useState(window.innerWidth <= 768);
+export function Navigation({ innerWidth }: { innerWidth: number }) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [showCart, setShowCart] = useState(false);
   const cartContext = useContext<ICartContext>(CartContext);
@@ -31,18 +30,6 @@ export function Navigation() {
       setCategories(response);
     };
     getCategoriesList();
-  }, []);
-  useEffect(() => {
-    const handleResize = () => {
-      const innerWidth = window.innerWidth;
-      setSmalScreen(innerWidth <= 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
   }, []);
   useEffect(() => {
     try {
@@ -57,106 +44,114 @@ export function Navigation() {
   }, []);
   return (
     <>
-      <Navbar expand={"xxl"} className="bg-body-tertiary mb-3">
-        <Container fluid>
-          <div className="d-flex">
-            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${"xxl"}`}>
-              <List />
-            </Navbar.Toggle>
-            <Navbar.Brand href="/">React-Bootstrap</Navbar.Brand>
-          </div>
-          <Navbar.Offcanvas
-            id={`offcanvasNavbar-expand-${"xxl"}`}
-            aria-labelledby={`offcanvasNavbarLabel-expand-${"xxl"}`}
-            placement="start"
-          >
-            <Offcanvas.Header closeButton>
-              <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${"xxl"}`}>
-                Menu
-              </Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body className="p-0">
-              <Nav className="justify-content-start flex-grow-1 p-0">
-                <Accordion>
-                  <Accordion.Item eventKey="0" className="rounded-0">
-                    <Accordion.Header>Kategorier</Accordion.Header>
-                    <Accordion.Body>
-                      {categories.map((c) => {
-                        return (
-                          <Nav.Link key={c.id} href={`/category/${c.id}`}>
-                            {c.name}
-                            <Badge bg="secondary" className="mx-1">
-                              {c.booksAmount}
-                            </Badge>
-                          </Nav.Link>
-                        );
-                      })}
+      <Navbar expand={"xs"} className="bg-body-tertiary mb-3">
+        <Navbar.Offcanvas
+          id={`offcanvasNavbar-expand-${"xs"}`}
+          aria-labelledby={`offcanvasNavbarLabel-expand-${"xs"}`}
+          placement="start"
+        >
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${"xs"}`}>
+              Menu
+            </Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body className="p-0">
+            <Nav className="justify-content-start flex-grow-1 p-0">
+              <Accordion>
+                <Accordion.Item eventKey="0" className="rounded-0">
+                  <Accordion.Header>Kategorier</Accordion.Header>
+                  <Accordion.Body>
+                    {categories.map((c) => {
+                      return (
+                        <Nav.Link key={c.id} href={`/category/${c.id}`}>
+                          {c.name}
+                          <Badge bg="secondary" className="mx-1">
+                            {c.booksAmount}
+                          </Badge>
+                        </Nav.Link>
+                      );
+                    })}
+                  </Accordion.Body>
+                </Accordion.Item>
+                {userContext.user?.accountLevel === "admin" && (
+                  <Accordion.Item eventKey="1" className="rounded-0">
+                    <Accordion.Header>Adminsida</Accordion.Header>
+                    <Accordion.Body className="py-0 pe-0">
+                      <Nav.Link href="/admin/books">Skapa en bok</Nav.Link>
+                      <Nav.Link>Skapa/ändra författare</Nav.Link>
+                      <Nav.Link>Skapa/ändra kategori</Nav.Link>
+                      <Nav.Link>Hantera användare</Nav.Link>
+                      <Nav.Link>Hantera beställningar</Nav.Link>
                     </Accordion.Body>
                   </Accordion.Item>
-                  {userContext.user?.accountLevel === "admin" && (
-                    <Accordion.Item eventKey="1" className="rounded-0">
-                      <Accordion.Header>Adminsida</Accordion.Header>
-                      <Accordion.Body className="py-0 pe-0">
-                        <Nav.Link href="/admin/books">Skapa en bok</Nav.Link>
-                        <Nav.Link>Skapa/ändra författare</Nav.Link>
-                        <Nav.Link>Skapa/ändra kategori</Nav.Link>
-                        <Nav.Link>Hantera användare</Nav.Link>
-                        <Nav.Link>Hantera beställningar</Nav.Link>
-                      </Accordion.Body>
-                    </Accordion.Item>
-                  )}
-                </Accordion>
-              </Nav>
-            </Offcanvas.Body>
-          </Navbar.Offcanvas>
-          {!isSmallScreen && <NavSearch />}
-
-          <Nav className="d-flex flex-row">
-            {!userContext.user ? (
-              <Nav.Link href="/account/login">
-                <Row className="justify-content-center p-0 m-0">
-                  <Col className="text-center">
-                    <Person />
-                  </Col>
-                </Row>
-                <Row className="justify-content-center p-0 m-0">
-                  {!isSmallScreen && (
-                    <Col className="text-center">Logga in</Col>
-                  )}
-                </Row>
-              </Nav.Link>
-            ) : (
-              <NavDropdown
-                title="Min sida"
-                id="basic-nav-dropdown"
-                className="d-flex align-items-center"
-                drop="start"
-              >
-                <NavDropdown.Item href="#action/3.3">
-                  Mina beställningar
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Personuppgifter
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item
-                  href="/"
-                  onClick={() => {
-                    localStorage.removeItem("user");
-                    localStorage.removeItem("cart");
-                    userContext.setUser(null);
-                  }}
+                )}
+              </Accordion>
+            </Nav>
+          </Offcanvas.Body>
+        </Navbar.Offcanvas>
+        <Row className="w-100 justify-content-between">
+          <Col xs={6} md={3} className="d-flex">
+            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${"xs"}`}>
+              <List />
+            </Navbar.Toggle>
+            <Navbar.Brand href="/">Bookstore</Navbar.Brand>
+          </Col>
+          {innerWidth >= 768 && (
+            <Col md={6}>
+              <NavSearch />
+            </Col>
+          )}
+          <Col xs={6} md={3} className="text-end">
+            <Nav className="d-flex flex-row justify-content-end gap-3">
+              {!userContext.user ? (
+                <Nav.Link href="/account/login">
+                  <Row className="justify-content-center p-0 m-0">
+                    <Col className="text-center">
+                      <Person />
+                    </Col>
+                  </Row>
+                  <Row className="justify-content-center p-0 m-0">
+                    {innerWidth >= 768 && (
+                      <Col className="text-center">Logga in</Col>
+                    )}
+                  </Row>
+                </Nav.Link>
+              ) : (
+                <NavDropdown
+                  title="Min sida"
+                  id="basic-nav-dropdown"
+                  className="d-flex align-items-center"
+                  drop="down-centered"
                 >
-                  Logga ut
-                </NavDropdown.Item>
-              </NavDropdown>
-            )}
-            <Nav.Link href="#" onClick={() => setShowCart((s) => !s)}>
-              <Row className="justify-content-center p-0 m-0">
-                <Col className="text-center">
-                  <Bag />{" "}
+                  <NavDropdown.Item href="#action/3.3">
+                    Mina beställningar
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.2">
+                    Personuppgifter
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item
+                    href="/"
+                    onClick={() => {
+                      localStorage.removeItem("user");
+                      localStorage.removeItem("cart");
+                      userContext.setUser(null);
+                    }}
+                  >
+                    Logga ut
+                  </NavDropdown.Item>
+                </NavDropdown>
+              )}
+              <Nav.Link href="#" onClick={() => setShowCart((s) => !s)}>
+                {/* <Row className="justify-content-center p-0 m-0"> */}
+                <Col className="text-center fs-5 position-relative">
+                  <Bag className="fs-3" />{" "}
                   {cartContext.cart.length !== 0 && (
-                    <Badge bg="danger">
+                    <Badge
+                      bg="dark"
+                      className="rounded-circle position-absolute translate-middle p-2 top-100"
+                      style={{ fontSize: "0.6rem" }}
+                    >
                       {cartContext.cart.reduce((accumulator, item) => {
                         return accumulator + item.amount;
                       }, 0) < 99
@@ -167,14 +162,16 @@ export function Navigation() {
                     </Badge>
                   )}
                 </Col>
-              </Row>
-              <Row className="justify-content-center p-0 m-0">
-                {!isSmallScreen && <Col className="text-center">Varukorg</Col>}
-              </Row>
-            </Nav.Link>
-          </Nav>
-          {isSmallScreen && <NavSearch />}
-        </Container>
+                {/* </Row> */}
+                {/* <Row className="justify-content-center p-0 m-0">
+                  {innerWidth >= 768 && (
+                    <Col className="text-center">Varukorg</Col>
+                  )}
+                </Row> */}
+              </Nav.Link>
+            </Nav>
+          </Col>
+        </Row>
       </Navbar>
       <Offcanvas
         placement="end"

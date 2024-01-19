@@ -20,12 +20,12 @@ interface IBooksOverview {
 export function BooksOverview({ books, err, cartContext }: IBooksOverview) {
   const navigate = useNavigate();
   return (
-    <Container>
+    <>
       <Row>
         {books.length !== 0 ? (
           books.map((b) => {
             return (
-              <Col key={b.id} xs={6} md={4} lg={3}>
+              <Col key={b.id} xs={6} md={4} lg={2}>
                 <Card>
                   <Card.Body onClick={() => navigate(`/book/${b.id}`)}>
                     <div className="card-img p-4">
@@ -79,6 +79,6 @@ export function BooksOverview({ books, err, cartContext }: IBooksOverview) {
         )}
       </Row>
       {/* <LoadGoogleBooks /> */}
-    </Container>
+    </>
   );
 }
