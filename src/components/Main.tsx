@@ -7,8 +7,10 @@ import { LoginUser } from "../transport/user";
 import { IUserContext, UserContext } from "../context/userContext";
 import { NavSearch } from "./NavSearch";
 import { StartPageCarousel } from "./startPageCarousel";
+import { Container } from "react-bootstrap";
 
 export interface MainOutletContext {
+  innerWidth: number;
   // searchText: string;
   // setSearchText: (text: string) => void;
   userIsCreated: boolean;
@@ -17,7 +19,7 @@ export interface MainOutletContext {
 
 export function Main() {
   const [cart, setCart] = useState<ICart[]>([]);
-  const [innerWidth, setInnerWidth] = useState(0);
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
   const location = useLocation();
   const userContext = useContext<IUserContext>(UserContext);
   const [userIsCreated, setUserIsCreated] = useState(false);
@@ -54,15 +56,13 @@ export function Main() {
     <>
       <CartContext.Provider value={{ cart, updateCart, freight: 39 }}>
         {location.pathname !== "/check-out" ? (
-          <>
-            <Navigation innerWidth={innerWidth} />
-            {innerWidth > 768 && <StartPageCarousel />}
-            {innerWidth < 768 && <NavSearch />}
-          </>
+          <Navigation innerWidth={innerWidth} />
         ) : (
           <CheckOutNav />
         )}
-        <Outlet context={{ userIsCreated, setUserIsCreated }}></Outlet>
+        <Outlet
+          context={{ userIsCreated, setUserIsCreated, innerWidth }}
+        ></Outlet>
       </CartContext.Provider>
     </>
   );

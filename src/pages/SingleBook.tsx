@@ -14,7 +14,6 @@ import {
 } from "react-bootstrap";
 import { ICartContext, CartContext, ICart } from "../context/cartContext";
 import { IUserContext, UserContext } from "../context/userContext";
-import { BookModal } from "../components/BookModal";
 import { ConfirmModal } from "../components/ConfirmModal";
 
 export function SingleBook() {
@@ -196,7 +195,7 @@ export function SingleBook() {
           </Row>
         </Card>
       )}
-      {book && <BookModal openModal={openModal} closeModal={closeModal} />}
+      {/* {book && <BookModal openModal={openModal} closeModal={closeModal} />} */}
       {id && (
         <ConfirmModal
           openConfirmModal={openConfirmModal}

@@ -9,13 +9,15 @@ export function StartPageCarousel() {
   };
   return (
     <Carousel
+      className="mb-3"
       activeIndex={index}
       onSelect={handleSelect}
       style={{ height: "200px" }}
     >
       <Carousel.Item>
         <Image
-          style={{ height: "100%", objectFit: "contain" }}
+          style={{ height: "100%", objectFit: "cover" }}
+          alt="Placeholder for reklam"
           src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1772&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         />
         <Carousel.Caption>

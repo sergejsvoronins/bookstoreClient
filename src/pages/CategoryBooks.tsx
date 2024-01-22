@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Book, getCategoiesBooks } from "../transport/books";
+import { Book, getCategoryBooks } from "../transport/books";
 import { BooksOverview } from "../components/BooksOverview";
 import { AxiosError } from "axios";
 import { CartContext, ICartContext } from "../context/cartContext";
@@ -14,8 +14,8 @@ export function CategoryBooks() {
     if (id) {
       const getBooks = async () => {
         try {
-          let response = await getCategoiesBooks(+id);
-          setBooks(response);
+          let response = await getCategoryBooks(+id);
+          setBooks(response.books);
         } catch (err) {
           if (err instanceof AxiosError) {
             setErr(err.message);

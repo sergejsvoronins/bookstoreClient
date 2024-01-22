@@ -1,12 +1,4 @@
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  Spinner,
-  Accordion,
-} from "react-bootstrap";
+import { Row, Col, Card, Button, Spinner } from "react-bootstrap";
 import { Book } from "../transport/books";
 import { ICartContext } from "../context/cartContext";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +13,7 @@ export function BooksOverview({ books, err, cartContext }: IBooksOverview) {
   const navigate = useNavigate();
   return (
     <>
-      <Row>
+      <Row className="mt-3">
         {books.length !== 0 ? (
           books.map((b) => {
             return (

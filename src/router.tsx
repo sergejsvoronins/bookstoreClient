@@ -18,6 +18,7 @@ import { SingleBook } from "./pages/SingleBook";
 import { StartPage } from "./pages/StartPage";
 import { UserAccountConfirmation } from "./pages/userAccountConfirmation";
 import App from "./App";
+import { CreateBook } from "./trash/CreateBook";
 import { AdminBooksPage } from "./pages/AdminBooksPage";
 
 export const router = createBrowserRouter([
@@ -54,68 +55,58 @@ export const router = createBrowserRouter([
             path: "/confirmation",
             element: <Confirmation />,
           },
-          // {
-          //   path: "/admin",
-          //   element: <AdminPage />,
-          //   children: [
-          //     {
-          //       path: "/admin/books",
-          //       element: <BooksManager />,
-          //       children: [
-          //         {
-          //           path: "/admin/books/create",
-          //           element: <CreateItem type="books" />,
-          //         },
-          //         {
-          //           path: "/admin/books/update",
-          //           element: <UpdateItem type="books" />,
-          //         },
-          //       ],
-          //     },
-          //     {
-          //       path: "/admin/users",
-          //       element: <UsersManager />,
-          //       children: [
-          //         {
-          //           path: "/admin/users/create",
-          //           element: <CreateItem type="users" />,
-          //         },
-          //         {
-          //           path: "/admin/users/update",
-          //           element: <UpdateItem type="users" />,
-          //         },
-          //       ],
-          //     },
-          //     {
-          //       path: "/admin/authors",
-          //       element: <AuthorsManager />,
-          //       children: [
-          //         {
-          //           path: "/admin/authors/create",
-          //           element: <CreateItem type="authors" />,
-          //         },
-          //         {
-          //           path: "/admin/authors/update",
-          //           element: <UpdateItem type="authors" />,
-          //         },
-          //       ],
-          //     },
-          //     {
-          //       path: "/admin/categories",
-          //       element: <CategoriesManager />,
-          //       children: [
-          //         {
-          //           path: "/admin/categories/create",
-          //           element: <CreateItem type="categories" />,
-          //         },
-          //         {
-          //           path: "/admin/categories/update",
-          //           element: <UpdateItem type="categories" />,
-          //         },
-          //       ],
-          //     },
-          //   ],
-          // },
+          {
+            path: "/admin",
+            element: <AdminPage />,
+            children: [
+              {
+                path: "/admin/books",
+                element: <AdminBooksPage />,
+              },
+              {
+                path: "/admin/users",
+                element: <UsersManager />,
+                children: [
+                  {
+                    path: "/admin/users/create",
+                    element: <CreateItem type="users" />,
+                  },
+                  {
+                    path: "/admin/users/update",
+                    element: <UpdateItem type="users" />,
+                  },
+                ],
+              },
+              {
+                path: "/admin/authors",
+                element: <AuthorsManager />,
+                children: [
+                  {
+                    path: "/admin/authors/create",
+                    element: <CreateItem type="authors" />,
+                  },
+                  {
+                    path: "/admin/authors/update",
+                    element: <UpdateItem type="authors" />,
+                  },
+                ],
+              },
+              {
+                path: "/admin/categories",
+                element: <CategoriesManager />,
+                children: [
+                  {
+                    path: "/admin/categories/create",
+                    element: <CreateItem type="categories" />,
+                  },
+                  {
+                    path: "/admin/categories/update",
+                    element: <UpdateItem type="categories" />,
+                  },
+                ],
+              },
+            ],
+          },
           {
             path: "/account/login",
             element: <LoginPage />,
@@ -128,10 +119,10 @@ export const router = createBrowserRouter([
             path: "/account/:id/confirmation",
             element: <UserAccountConfirmation />,
           },
-          {
-            path: "/admin/books",
-            element: <AdminBooksPage />,
-          },
+          // {
+          //   path: "/admin/books",
+          //   element: <AdminBooksPage />,
+          // },
         ],
       },
       {

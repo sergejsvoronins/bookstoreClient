@@ -6,21 +6,27 @@ interface IConfirmModal {
   bookId: number;
   openConfirmModal: boolean;
   closeConfirmModal: () => void;
+  onConfirm: () => void;
+  setAlertMessage: (message: string) => void;
 }
 
 export function ConfirmModal({
   bookId,
   openConfirmModal,
   closeConfirmModal,
+  onConfirm,
+  setAlertMessage,
 }: IConfirmModal) {
   const navigate = useNavigate();
   const removeBook = async () => {
     try {
       const response = await deleteBook(bookId);
-      navigate("/");
+      navigate("/admin/books");
     } catch (e) {
       console.log(e);
     }
+    setAlertMessage(`Boken med ID: ${bookId} är borttagen`);
+    onConfirm();
   };
   return (
     <Modal show={openConfirmModal} onHide={closeConfirmModal}>

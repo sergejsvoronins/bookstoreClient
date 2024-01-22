@@ -1,6 +1,5 @@
 import {
   Navbar,
-  Container,
   NavDropdown,
   Nav,
   Button,
@@ -77,11 +76,11 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
                   <Accordion.Item eventKey="1" className="rounded-0">
                     <Accordion.Header>Adminsida</Accordion.Header>
                     <Accordion.Body className="py-0 pe-0">
-                      <Nav.Link href="/admin/books">Skapa en bok</Nav.Link>
-                      <Nav.Link>Skapa/ändra författare</Nav.Link>
-                      <Nav.Link>Skapa/ändra kategori</Nav.Link>
-                      <Nav.Link>Hantera användare</Nav.Link>
-                      <Nav.Link>Hantera beställningar</Nav.Link>
+                      <Nav.Link href="/admin/books">Böcker</Nav.Link>
+                      <Nav.Link>Författare</Nav.Link>
+                      <Nav.Link>Kategorier</Nav.Link>
+                      <Nav.Link>Beställningar</Nav.Link>
+                      <Nav.Link>Användare</Nav.Link>
                     </Accordion.Body>
                   </Accordion.Item>
                 )}
@@ -105,11 +104,11 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
             <Nav className="d-flex flex-row justify-content-end gap-3">
               {!userContext.user ? (
                 <Nav.Link href="/account/login">
-                  <Row className="justify-content-center p-0 m-0">
-                    <Col className="text-center">
-                      <Person />
-                    </Col>
-                  </Row>
+                  {/* <Row className="justify-content-center p-0 m-0"> */}
+                  <Col className="text-center fs-5">
+                    <Person className="fs-3" />
+                  </Col>
+                  {/* </Row> */}
                   <Row className="justify-content-center p-0 m-0">
                     {innerWidth >= 768 && (
                       <Col className="text-center">Logga in</Col>

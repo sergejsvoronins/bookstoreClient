@@ -1,24 +1,40 @@
-import { useState } from "react";
-import { Row, Col, Form } from "react-bootstrap";
-import { Author, Category, NewBook } from "../transport/books";
+import { useEffect, useState } from "react";
+import { Row, Col, Form, Button } from "react-bootstrap";
+import {
+  Author,
+  Category,
+  NewBook,
+  getAuthors,
+  getCategories,
+} from "../transport/books";
 import { useParams } from "react-router-dom";
 
 interface IBookForm {
   newBook: NewBook;
   setNewBook: (book: NewBook) => void;
   setFormIsValidated: (status: boolean) => void;
-  authorsList: Author[];
-  categoriesList: Category[];
 }
 export function BookForm({
   newBook,
   setNewBook,
   setFormIsValidated,
-  authorsList,
-  categoriesList,
 }: IBookForm) {
   const { id } = useParams();
+  const [authorsList, setAuthorsList] = useState<Author[]>([]);
+  const [categoriesList, setCategoriesList] = useState<Category[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [validated, setValidated] = useState(false);
+  useEffect(() => {
+    const getLists = async () => {
+      const authors = await getAuthors();
+      const categories = await getCategories();
+      setAuthorsList(authors);
+      setCategoriesList(categories);
+      setIsLoaded(true);
+    };
+    if (isLoaded) return;
+    getLists();
+  }, [isLoaded]);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -36,7 +52,7 @@ export function BookForm({
 
   return (
     <>
-      <Form noValidate validated={validated} onChange={handleSubmit}>
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Row className="mb-3">
           <Form.Group
             as={Col}
@@ -48,8 +64,8 @@ export function BookForm({
             <Form.Control
               required
               type="text"
-              isInvalid={!/\S/.test(newBook.title) || newBook.title[0] === " "}
-              isValid={id !== null}
+              // isInvalid={!/\S/.test(newBook.title) || newBook.title[0] === " "}
+              isValid={!!id}
               onChange={(e) =>
                 setNewBook({ ...newBook, title: e.target.value })
               }
@@ -86,7 +102,7 @@ export function BookForm({
             <Form.Control
               type="text"
               value={newBook.imgUrl || ""}
-              isValid={id !== null}
+              isValid={!!id}
               onChange={(e) =>
                 setNewBook({ ...newBook, imgUrl: e.target.value })
               }
@@ -103,9 +119,9 @@ export function BookForm({
             <Form.Control
               type="number"
               required
-              isValid={id !== null}
-              isInvalid={newBook.pages === 0}
-              value={newBook.pages}
+              isValid={!!id}
+              // isInvalid={newBook.pages === 0}
+              value={newBook.pages ? newBook.pages : ""}
               onChange={(e) =>
                 setNewBook({ ...newBook, pages: +e.target.value })
               }
@@ -124,9 +140,9 @@ export function BookForm({
             <Form.Control
               type="number"
               required
-              isInvalid={newBook.year === 0}
-              isValid={id !== null}
-              value={newBook.year}
+              // isInvalid={newBook.year === 0}
+              // isValid={id !== null}
+              value={newBook.year ? newBook.year : ""}
               onChange={(e) =>
                 setNewBook({ ...newBook, year: +e.target.value })
               }
@@ -145,11 +161,11 @@ export function BookForm({
             <Form.Control
               type="text"
               required
-              isValid={id !== null}
-              value={newBook.language}
-              isInvalid={
-                !/\S/.test(newBook.language) || newBook.language[0] === " "
-              }
+              isValid={!!id}
+              // value={newBook.language}
+              // isInvalid={
+              //   !/\S/.test(newBook.language) || newBook.language[0] === " "
+              // }
               onChange={(e) =>
                 setNewBook({ ...newBook, language: e.target.value })
               }
@@ -158,19 +174,32 @@ export function BookForm({
               Ange språk
             </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group as={Col} xs="12" className="py-3">
+          <Form.Group
+            as={Col}
+            xs="12"
+            className="py-3"
+            controlId="validationAuthor"
+          >
             <Form.Label>Författare</Form.Label>
             <Form.Select
-              isInvalid={newBook.author === ""}
-              isValid={newBook.author !== "" || id !== null}
+              // isInvalid={newBook.author === ""}
+              isValid={newBook.authorId !== 0}
               required
               as={Col}
               value={newBook.authorId}
               onChange={(e) => {
-                setNewBook({ ...newBook, authorId: +e.target.value });
+                const authorId = +e.target.value;
+                setNewBook({
+                  ...newBook,
+                  authorId,
+                  author:
+                    authorId === 0
+                      ? ""
+                      : authorsList.find((a) => a.id === authorId)?.name || "",
+                });
               }}
             >
-              {!id && <option>Välj författare</option>}
+              {!id && <option value={0}>Välj författare</option>}
               {authorsList.map((a) => (
                 <option key={a.id} value={a.id}>
                   {a.name}
@@ -178,20 +207,39 @@ export function BookForm({
               ))}
             </Form.Select>
           </Form.Group>
-          <Form.Group as={Col} xs="12" className="py-3">
+          <Form.Group
+            as={Col}
+            xs="12"
+            className="py-3"
+            controlId="validationCategory"
+          >
             <Form.Label>Kategori</Form.Label>
             <Form.Select
-              isValid={newBook.category !== "" || id !== null}
+              isInvalid={newBook.category === ""}
+              // isValid={newBook.categoryId > 0}
               as={Col}
               aria-label="Default select example"
               value={newBook.categoryId}
-              onChange={(e) =>
-                setNewBook({ ...newBook, categoryId: +e.target.value })
-              }
+              onChange={(e) => {
+                const categoryId = +e.target.value;
+                setNewBook({
+                  ...newBook,
+                  categoryId,
+                  category:
+                    categoryId === 0
+                      ? ""
+                      : categoriesList.find((c) => c.id === categoryId)?.name ||
+                        "",
+                });
+              }}
             >
-              {!id && <option>Välj kategori</option>}
+              {!id && <option value={0}>Välj kategori</option>}
               {categoriesList.map((c) => (
-                <option key={c.id} value={c.id}>
+                <option
+                  key={c.id}
+                  value={c.id}
+                  onChange={(e) => console.log(e)}
+                >
                   {c.name}
                 </option>
               ))}
@@ -206,10 +254,10 @@ export function BookForm({
             <Form.Label>Pris</Form.Label>
             <Form.Control
               type="number"
-              isInvalid={newBook.price === 0}
+              // isInvalid={newBook.price === 0}
               required
-              isValid={id !== null}
-              value={newBook.price}
+              isValid={!!id}
+              value={newBook.price ? newBook.price : ""}
               onChange={(e) =>
                 setNewBook({ ...newBook, price: +e.target.value })
               }
@@ -226,20 +274,19 @@ export function BookForm({
           >
             <Form.Label>ISBN</Form.Label>
             <Form.Control
-              isInvalid={newBook.price === 0}
-              type="number"
+              // isInvalid={newBook.price === 0}
               value={newBook.isbn}
-              isValid={id !== null}
+              type="number"
+              isValid={!!id}
               required
-              onChange={(e) =>
-                setNewBook({ ...newBook, isbn: +e.target.value })
-              }
+              onChange={(e) => setNewBook({ ...newBook, isbn: e.target.value })}
             />
             <Form.Control.Feedback type="invalid">
               Ange ISBN
             </Form.Control.Feedback>
           </Form.Group>
         </Row>
+        <Button type="submit">Skapa</Button>
       </Form>
     </>
   );

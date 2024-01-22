@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Book } from "react-bootstrap-icons";
 import { z } from "zod";
 
 export const BASE_URL = "http://localhost/bookstore";
@@ -16,8 +17,8 @@ export const getCategories = async () => {
   let response = await axios.get<Category[]>(`${BASE_URL}/categories`);
   return response.data;
 };
-export const getCategoiesBooks = async (id: number) => {
-  let response = await axios.get<Book[]>(`${BASE_URL}/categories/${id}`);
+export const getCategoryBooks = async (id: number) => {
+  let response = await axios.get<CategoryBooks>(`${BASE_URL}/categories/${id}`);
   return response.data;
 };
 export const getSearchResult = async (searchText: string) => {
@@ -101,6 +102,7 @@ const NewCategorySchema = CategorySchema.extend({
   id: z.optional(z.number()),
 });
 export type Category = z.infer<typeof CategorySchema>;
+
 export type NewCategory = z.infer<typeof NewCategorySchema>;
 const BookSchema = z.object({
   id: z.number(),
@@ -113,11 +115,18 @@ const BookSchema = z.object({
   author: z.string(),
   category: z.string(),
   price: z.number(),
-  isbn: z.number(),
+  isbn: z.string(),
   authorId: z.number(),
   categoryId: z.number(),
 });
+export type Book = z.infer<typeof BookSchema>;
 
+const CategoryBooksShecma = z.object({
+  id: z.number(),
+  name: z.string(),
+  books: z.array(BookSchema),
+});
+export type CategoryBooks = z.infer<typeof CategoryBooksShecma>;
 const AuthorSchema = z.object({
   id: z.number(),
   name: z.string(),
@@ -131,7 +140,6 @@ export type NewAuthor = z.infer<typeof NewAuthorSchema>;
 const NewBookSchema = BookSchema.extend({
   id: z.optional(z.number()),
 });
-export type Book = z.infer<typeof BookSchema>;
 export type NewBook = z.infer<typeof NewBookSchema>;
 
 const CreateBookResponseSchema = z.object({

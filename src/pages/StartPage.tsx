@@ -6,6 +6,9 @@ import { AxiosError } from "axios";
 import { IUserContext, UserContext } from "../context/userContext";
 import { Container } from "react-bootstrap";
 import { StartPageCarousel } from "../components/startPageCarousel";
+import { useOutletContext } from "react-router-dom";
+import { MainOutletContext } from "../components/Main";
+import { NavSearch } from "../components/NavSearch";
 
 export function StartPage() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -13,6 +16,7 @@ export function StartPage() {
   const [err, setErr] = useState<string | null>(null);
   const cartContext = useContext<ICartContext>(CartContext);
   const userContext = useContext<IUserContext>(UserContext);
+  const { innerWidth } = useOutletContext<MainOutletContext>();
   console.log(userContext.user);
 
   useEffect(() => {
@@ -33,9 +37,13 @@ export function StartPage() {
   }, [isLoaded]);
 
   return (
-    <Container className="mt-3">
+    <>
       {/* <StartPageCarousel /> */}
-      <BooksOverview books={books} err={err} cartContext={cartContext} />;
-    </Container>
+      {innerWidth > 768 && <StartPageCarousel />}
+      {innerWidth < 768 && <NavSearch />}
+      <Container className="mt-3">
+        <BooksOverview books={books} err={err} cartContext={cartContext} />;
+      </Container>
+    </>
   );
 }

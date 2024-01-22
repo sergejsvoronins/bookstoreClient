@@ -1,114 +1,145 @@
-import { useEffect, useState } from "react";
 import {
   Alert,
   Button,
-  Card,
-  Col,
+  Collapse,
   Container,
-  Form,
-  ListGroup,
-  Row,
-  Toast,
+  Dropdown,
+  Fade,
+  Nav,
+  Table,
 } from "react-bootstrap";
-import {
-  Author,
-  Book,
-  Category,
-  NewBook,
-  addBook,
-  getAllBooks,
-  getAuthors,
-  getCategories,
-} from "../transport/books";
+import { Gear } from "react-bootstrap-icons";
+import { BookFormModal } from "../components/BookFormModal";
+import { useContext, useEffect, useState } from "react";
+import { Book, getAllBooks } from "../transport/books";
 import { AxiosError } from "axios";
-import { NavSearch } from "../components/NavSearch";
-import { BookForm } from "../components/BookForm";
-const emptyBook: NewBook = {
-  title: "",
-  description: null,
-  imgUrl: null,
-  pages: 0,
-  year: 0,
-  language: "",
-  author: "",
-  category: "",
-  price: 0,
-  isbn: 0,
-  categoryId: 0,
-  authorId: 0,
-};
+import { ConfirmModal } from "../components/ConfirmModal";
+import { IUserContext, UserContext } from "../context/userContext";
+import { NotFoundPage } from "./NotFoundPage";
+
 export function AdminBooksPage() {
-  const [book, setBook] = useState<NewBook>(emptyBook);
-  const [toastBook, setToastBook] = useState<number | null>(null);
-  const [authorsList, setAuthorsList] = useState<Author[]>([]);
-  const [categoriesList, setCategoriesList] = useState<Category[]>([]);
-  const [formIsValidated, setFormIsValidated] = useState(false);
-  const [bookIsCreated, setBookIsCreated] = useState(false);
+  const [books, setBooks] = useState<Book[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [bookId, setBookId] = useState<number | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  const [deleteBookId, setDeleteBookId] = useState<number | null>(null);
+  const userContext = useContext<IUserContext>(UserContext);
   useEffect(() => {
-    const getLists = async () => {
-      const authors = await getAuthors();
-      const categories = await getCategories();
-      setAuthorsList(authors);
-      setCategoriesList(categories);
-      setIsLoaded(true);
+    const getBooks = async () => {
+      try {
+        const response = await getAllBooks();
+        setBooks(response);
+        setIsLoaded(true);
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          setBooks([]);
+          setErr(err.message);
+        }
+      }
     };
     if (isLoaded) return;
-    getLists();
+    getBooks();
+    setBookId(null);
   }, [isLoaded]);
-  const handleSubmit = async () => {
-    if (formIsValidated) {
-      const response = await addBook(book);
-      setToastBook(response?.id);
-      setBook(emptyBook);
-      setBookIsCreated(true);
+  useEffect(() => {
+    if (alertMessage) {
+      window.scrollTo(0, 0);
+      setTimeout(() => {
+        setAlertMessage(null);
+        console.log("timeout");
+      }, 3000);
     }
+  }, [alertMessage]);
+  const closeModal = () => {
+    setOpenModal(false);
+    setIsLoaded(false);
+    setBookId(null);
   };
-  console.log(book);
 
   return (
     <Container>
-      <Row className="justify-content-center">
-        <Col md={8} lg={6}>
-          <Toast
-            className="d-inline-block m-1"
-            bg="secondary"
-            onClose={() => {
-              setBook(emptyBook);
-              setToastBook(null);
-            }}
-            show={toastBook !== null}
-          >
-            <Toast.Header className="justify-content-end">
-              <img
-                src="holder.js/20x20?text=%20"
-                className="rounded me-2"
-                alt=""
-              />
-              <strong className="me-auto">Boken är skapad</strong>
-              {/* <small>11 mins ago</small> */}
-            </Toast.Header>
-            <Toast.Body className="dark text-white">
-              BookID: {toastBook}
-            </Toast.Body>
-          </Toast>
-          <Card>
-            <Card.Header>Skapa en ny book</Card.Header>
-            <Card.Body>
-              <BookForm
-                newBook={book}
-                setNewBook={setBook}
-                authorsList={authorsList}
-                categoriesList={categoriesList}
-                setFormIsValidated={setFormIsValidated}
-              />
-            </Card.Body>
-            <Card.Footer>
-              <Button onClick={handleSubmit}>Skapa</Button>
-            </Card.Footer>
-          </Card>
-        </Col>
-      </Row>
+      <Nav className="mb-3 justify-content-between">
+        <h3>Bokhantering</h3>
+        <Button
+          onClick={() => {
+            setAlertMessage(null);
+            setOpenModal(true);
+          }}
+        >
+          Skapa ny
+        </Button>
+      </Nav>
+      <Fade in={!!alertMessage}>
+        <div id="alertMessage">
+          <Alert variant="success">{alertMessage}</Alert>
+        </div>
+      </Fade>
+      <BookFormModal
+        openModal={openModal}
+        closeModal={closeModal}
+        setAlertMessage={setAlertMessage}
+        id={bookId}
+      />
+      <Table bordered hover size="sm">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Titel</th>
+            <th>BookId</th>
+            <th>Alternativ</th>
+          </tr>
+        </thead>
+        <tbody>
+          {books.map((b, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{b.title}</td>
+              <td>{b.id}</td>
+              <td>
+                <Dropdown>
+                  <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                    <Gear />
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      onClick={() => {
+                        setBookId(b.id);
+                        setOpenModal(true);
+                        setAlertMessage(null);
+                      }}
+                    >
+                      Ändra
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => {
+                        setDeleteBookId(b.id);
+                      }}
+                    >
+                      Radera
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+      {deleteBookId && (
+        <ConfirmModal
+          openConfirmModal={!!deleteBookId}
+          closeConfirmModal={() => {
+            setDeleteBookId(null);
+          }}
+          onConfirm={() => {
+            setIsLoaded(false);
+            setDeleteBookId(null);
+          }}
+          bookId={deleteBookId}
+          setAlertMessage={setAlertMessage}
+        />
+      )}
     </Container>
   );
 }
