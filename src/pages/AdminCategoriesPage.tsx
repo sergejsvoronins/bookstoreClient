@@ -8,35 +8,35 @@ import {
   Table,
 } from "react-bootstrap";
 import { Gear } from "react-bootstrap-icons";
-import { BookFormModal } from "../components/BookFormModal";
 import { useEffect, useState } from "react";
-import { Book, deleteBook, getAllBooks } from "../transport/books";
+import { Category, deleteCategory, getCategories } from "../transport/books";
 import { AxiosError } from "axios";
 import { ConfirmModal } from "../components/ConfirmModal";
+import { CategoryFormModal } from "../components/CategoryFormModal";
 
-export function AdminBooksPage() {
-  const [books, setBooks] = useState<Book[]>([]);
+export function AdminCategoriesPage() {
+  const [categoriesList, setCategoriesList] = useState<Category[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [bookId, setBookId] = useState<number | null>(null);
+  const [categryId, setCategoryId] = useState<number | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
-  const [deleteBookId, setDeleteBookId] = useState<number | null>(null);
+  const [deleteCategoryId, setDeleteCategoryId] = useState<number | null>(null);
   useEffect(() => {
-    const getBooks = async () => {
+    const getCategoriesList = async () => {
       try {
-        const response = await getAllBooks();
-        setBooks(response);
+        const response = await getCategories();
+        setCategoriesList(response);
         setIsLoaded(true);
       } catch (err) {
         if (err instanceof AxiosError) {
-          setBooks([]);
+          setCategoriesList([]);
           console.log(err.message);
         }
       }
     };
     if (isLoaded) return;
-    getBooks();
-    setBookId(null);
+    getCategoriesList();
+    setCategoryId(null);
   }, [isLoaded]);
   useEffect(() => {
     if (alertMessage) {
@@ -50,24 +50,24 @@ export function AdminBooksPage() {
   const closeModal = () => {
     setOpenModal(false);
     setIsLoaded(false);
-    setBookId(null);
+    setCategoryId(null);
   };
-  const removeBook = async () => {
-    if (deleteBookId) {
+  const removeCategory = async () => {
+    if (deleteCategoryId) {
       try {
-        const response = await deleteBook(deleteBookId);
+        const response = await deleteCategory(deleteCategoryId);
         setIsLoaded(false);
+        setAlertMessage(`Kategori med ID: ${deleteCategoryId} är borttagen`);
+        setDeleteCategoryId(null);
       } catch (e) {
         console.log(e);
       }
-      setAlertMessage(`Boken med ID: ${deleteBookId} är borttagen`);
-      setDeleteBookId(null);
     }
   };
   return (
     <Container>
       <Nav className="mb-3 justify-content-between">
-        <h3>Bokhantering</h3>
+        <h3>Kategori hantering</h3>
         <Button
           onClick={() => {
             setAlertMessage(null);
@@ -82,27 +82,27 @@ export function AdminBooksPage() {
           <Alert variant="success">{alertMessage}</Alert>
         </div>
       </Fade>
-      <BookFormModal
+      <CategoryFormModal
         openModal={openModal}
+        id={categryId}
         closeModal={closeModal}
         setAlertMessage={setAlertMessage}
-        id={bookId}
       />
       <Table bordered hover size="sm">
         <thead>
           <tr>
             <th>#</th>
-            <th>Titel</th>
-            <th>BookId</th>
+            <th>Kategori</th>
+            <th>Id</th>
             <th>Alternativ</th>
           </tr>
         </thead>
         <tbody>
-          {books.map((b, index) => (
+          {categoriesList.map((c, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
-              <td>{b.title}</td>
-              <td>{b.id}</td>
+              <td>{c.name}</td>
+              <td>{c.id}</td>
               <td>
                 <Dropdown>
                   <Dropdown.Toggle variant="secondary" id="dropdown-basic">
@@ -111,7 +111,7 @@ export function AdminBooksPage() {
                   <Dropdown.Menu>
                     <Dropdown.Item
                       onClick={() => {
-                        setBookId(b.id);
+                        setCategoryId(c.id);
                         setOpenModal(true);
                         setAlertMessage(null);
                       }}
@@ -120,7 +120,7 @@ export function AdminBooksPage() {
                     </Dropdown.Item>
                     <Dropdown.Item
                       onClick={() => {
-                        setDeleteBookId(b.id);
+                        setDeleteCategoryId(c.id);
                       }}
                     >
                       Radera
@@ -132,13 +132,13 @@ export function AdminBooksPage() {
           ))}
         </tbody>
       </Table>
-      {deleteBookId && (
+      {deleteCategoryId && (
         <ConfirmModal
-          openConfirmModal={!!deleteBookId}
+          openConfirmModal={!!deleteCategoryId}
           closeConfirmModal={() => {
-            setDeleteBookId(null);
+            setDeleteCategoryId(null);
           }}
-          action={removeBook}
+          action={removeCategory}
         />
       )}
     </Container>

@@ -33,6 +33,14 @@ export const getOneBook = async (id: number) => {
   let response = await axios.get<Book>(`${BASE_URL}/books/${id}`);
   return response.data;
 };
+export const getOneCategory = async (id: number) => {
+  let response = await axios.get<NewCategory>(`${BASE_URL}/categories/${id}`);
+  return response.data;
+};
+export const getOneAuthor = async (id: number) => {
+  let response = await axios.get<Author>(`${BASE_URL}/authors/${id}`);
+  return response.data;
+};
 export const addBook = async (newBook: NewBook) => {
   try {
     let response = await axios.post(`${BASE_URL}/books`, newBook);
@@ -89,8 +97,27 @@ export const addCategory = async (newCategory: NewCategory) => {
     console.error("Error adding category:", error);
   }
 };
+export const updateCategory = async (category: NewCategory) => {
+  let response = await axios.put(
+    `${BASE_URL}/categories/${category.id}`,
+    category
+  );
+  return response.data;
+};
+export const updateAuthor = async (author: NewAuthor) => {
+  let response = await axios.put(`${BASE_URL}/authors/${author.id}`, author);
+  return response.data;
+};
 export const deleteBook = async (id: number) => {
   let response = await axios.delete(`${BASE_URL}/books/${id}`);
+  return response.data;
+};
+export const deleteCategory = async (id: number) => {
+  let response = await axios.delete(`${BASE_URL}/categories/${id}`);
+  return response.data;
+};
+export const deleteAuthor = async (id: number) => {
+  let response = await axios.delete(`${BASE_URL}/authors/${id}`);
   return response.data;
 };
 const CategorySchema = z.object({

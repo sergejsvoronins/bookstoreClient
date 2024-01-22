@@ -77,10 +77,10 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
                     <Accordion.Header>Adminsida</Accordion.Header>
                     <Accordion.Body className="py-0 pe-0">
                       <Nav.Link href="/admin/books">Böcker</Nav.Link>
-                      <Nav.Link>Författare</Nav.Link>
-                      <Nav.Link>Kategorier</Nav.Link>
-                      <Nav.Link>Beställningar</Nav.Link>
-                      <Nav.Link>Användare</Nav.Link>
+                      <Nav.Link href="/admin/authors">Författare</Nav.Link>
+                      <Nav.Link href="/admin/categories">Kategorier</Nav.Link>
+                      <Nav.Link href="/admin/orders">Beställningar</Nav.Link>
+                      <Nav.Link href="/admin/users">Användare</Nav.Link>
                     </Accordion.Body>
                   </Accordion.Item>
                 )}

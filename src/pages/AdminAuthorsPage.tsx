@@ -8,35 +8,35 @@ import {
   Table,
 } from "react-bootstrap";
 import { Gear } from "react-bootstrap-icons";
-import { BookFormModal } from "../components/BookFormModal";
 import { useEffect, useState } from "react";
-import { Book, deleteBook, getAllBooks } from "../transport/books";
+import { Author, getAuthors, deleteAuthor } from "../transport/books";
 import { AxiosError } from "axios";
 import { ConfirmModal } from "../components/ConfirmModal";
+import { AuthorFormModal } from "../components/AuthorFormModal";
 
-export function AdminBooksPage() {
-  const [books, setBooks] = useState<Book[]>([]);
+export function AdminAuthorsPage() {
+  const [authorsList, setAuthorsList] = useState<Author[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [bookId, setBookId] = useState<number | null>(null);
+  const [authorId, setAuthorId] = useState<number | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
-  const [deleteBookId, setDeleteBookId] = useState<number | null>(null);
+  const [deleteAuthorId, setDeleteAuthorId] = useState<number | null>(null);
   useEffect(() => {
-    const getBooks = async () => {
+    const getAuthorsLIst = async () => {
       try {
-        const response = await getAllBooks();
-        setBooks(response);
+        const response = await getAuthors();
+        setAuthorsList(response);
         setIsLoaded(true);
       } catch (err) {
         if (err instanceof AxiosError) {
-          setBooks([]);
+          setAuthorsList([]);
           console.log(err.message);
         }
       }
     };
     if (isLoaded) return;
-    getBooks();
-    setBookId(null);
+    getAuthorsLIst();
+    setAuthorId(null);
   }, [isLoaded]);
   useEffect(() => {
     if (alertMessage) {
@@ -50,24 +50,24 @@ export function AdminBooksPage() {
   const closeModal = () => {
     setOpenModal(false);
     setIsLoaded(false);
-    setBookId(null);
+    setAuthorId(null);
   };
-  const removeBook = async () => {
-    if (deleteBookId) {
+  const removeAuthor = async () => {
+    if (deleteAuthorId) {
       try {
-        const response = await deleteBook(deleteBookId);
+        const response = await deleteAuthor(deleteAuthorId);
         setIsLoaded(false);
+        setAlertMessage(`Förfatare med ID: ${deleteAuthorId} är borttagen`);
+        setDeleteAuthorId(null);
       } catch (e) {
         console.log(e);
       }
-      setAlertMessage(`Boken med ID: ${deleteBookId} är borttagen`);
-      setDeleteBookId(null);
     }
   };
   return (
     <Container>
       <Nav className="mb-3 justify-content-between">
-        <h3>Bokhantering</h3>
+        <h3>Kategori hantering</h3>
         <Button
           onClick={() => {
             setAlertMessage(null);
@@ -82,27 +82,27 @@ export function AdminBooksPage() {
           <Alert variant="success">{alertMessage}</Alert>
         </div>
       </Fade>
-      <BookFormModal
+      <AuthorFormModal
         openModal={openModal}
+        id={authorId}
         closeModal={closeModal}
         setAlertMessage={setAlertMessage}
-        id={bookId}
       />
       <Table bordered hover size="sm">
         <thead>
           <tr>
             <th>#</th>
-            <th>Titel</th>
-            <th>BookId</th>
+            <th>Kategori</th>
+            <th>Id</th>
             <th>Alternativ</th>
           </tr>
         </thead>
         <tbody>
-          {books.map((b, index) => (
+          {authorsList.map((a, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
-              <td>{b.title}</td>
-              <td>{b.id}</td>
+              <td>{a.name}</td>
+              <td>{a.id}</td>
               <td>
                 <Dropdown>
                   <Dropdown.Toggle variant="secondary" id="dropdown-basic">
@@ -111,7 +111,7 @@ export function AdminBooksPage() {
                   <Dropdown.Menu>
                     <Dropdown.Item
                       onClick={() => {
-                        setBookId(b.id);
+                        setAuthorId(a.id);
                         setOpenModal(true);
                         setAlertMessage(null);
                       }}
@@ -120,7 +120,7 @@ export function AdminBooksPage() {
                     </Dropdown.Item>
                     <Dropdown.Item
                       onClick={() => {
-                        setDeleteBookId(b.id);
+                        setDeleteAuthorId(a.id);
                       }}
                     >
                       Radera
@@ -132,13 +132,13 @@ export function AdminBooksPage() {
           ))}
         </tbody>
       </Table>
-      {deleteBookId && (
+      {deleteAuthorId && (
         <ConfirmModal
-          openConfirmModal={!!deleteBookId}
+          openConfirmModal={!!deleteAuthorId}
           closeConfirmModal={() => {
-            setDeleteBookId(null);
+            setDeleteAuthorId(null);
           }}
-          action={removeBook}
+          action={removeAuthor}
         />
       )}
     </Container>

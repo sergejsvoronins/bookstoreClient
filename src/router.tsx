@@ -1,11 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AuthorsManager } from "./components/AuthorsManager";
-import { BooksManager } from "./components/BooksManager";
-import { CategoriesManager } from "./components/CategoriesManager";
-import { CreateItem } from "./components/CreateItem";
 import { Main } from "./components/Main";
 import { SearchResult } from "./components/SearchResult";
-import { UpdateItem } from "./components/UpdateItem";
 import { UsersManager } from "./components/UsersManager";
 import { Confirmation } from "./components/stripe/Confirmation";
 import { AdminPage } from "./pages/AdminPage";
@@ -18,8 +14,9 @@ import { SingleBook } from "./pages/SingleBook";
 import { StartPage } from "./pages/StartPage";
 import { UserAccountConfirmation } from "./pages/userAccountConfirmation";
 import App from "./App";
-import { CreateBook } from "./trash/CreateBook";
 import { AdminBooksPage } from "./pages/AdminBooksPage";
+import { AdminCategoriesPage } from "./pages/AdminCategoriesPage";
+import { AdminAuthorsPage } from "./pages/AdminAuthorsPage";
 
 export const router = createBrowserRouter([
   {
@@ -66,44 +63,14 @@ export const router = createBrowserRouter([
               {
                 path: "/admin/users",
                 element: <UsersManager />,
-                children: [
-                  {
-                    path: "/admin/users/create",
-                    element: <CreateItem type="users" />,
-                  },
-                  {
-                    path: "/admin/users/update",
-                    element: <UpdateItem type="users" />,
-                  },
-                ],
               },
               {
                 path: "/admin/authors",
-                element: <AuthorsManager />,
-                children: [
-                  {
-                    path: "/admin/authors/create",
-                    element: <CreateItem type="authors" />,
-                  },
-                  {
-                    path: "/admin/authors/update",
-                    element: <UpdateItem type="authors" />,
-                  },
-                ],
+                element: <AdminAuthorsPage />,
               },
               {
                 path: "/admin/categories",
-                element: <CategoriesManager />,
-                children: [
-                  {
-                    path: "/admin/categories/create",
-                    element: <CreateItem type="categories" />,
-                  },
-                  {
-                    path: "/admin/categories/update",
-                    element: <UpdateItem type="categories" />,
-                  },
-                ],
+                element: <AdminCategoriesPage />,
               },
             ],
           },
@@ -119,10 +86,6 @@ export const router = createBrowserRouter([
             path: "/account/:id/confirmation",
             element: <UserAccountConfirmation />,
           },
-          // {
-          //   path: "/admin/books",
-          //   element: <AdminBooksPage />,
-          // },
         ],
       },
       {
