@@ -48,7 +48,7 @@ export const deleteUser = async (id: number) => {
 };
 export type LoginUser = z.infer<typeof LoginUserSchema>;
 
-const UserDataSchema = z.object({
+export const UserDataSchema = z.object({
   id: z.number(),
   firstName: z.optional(z.nullable(z.string())),
   lastName: z.optional(z.nullable(z.string())),

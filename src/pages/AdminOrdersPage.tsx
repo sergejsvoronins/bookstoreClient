@@ -5,31 +5,52 @@ import { AxiosError } from "axios";
 import { ConfirmModal } from "../components/ConfirmModal";
 import { UserData, deleteUser, getAllUsers } from "../transport/user";
 import { UserFormModal } from "../components/UserFormModal";
+import { Outlet } from "react-router-dom";
+import {
+  OrderOverview,
+  getAllGuestOrders,
+  getAllUserOrders,
+} from "../transport/orders";
+import { format, parseISO } from "date-fns";
+import { OrdersOverview } from "../components/OrdersOverview";
 
-export function AdminUsersPage() {
+export function AdminOrdersPage() {
   const [users, setUsers] = useState<UserData[]>([]);
+  const [guestOrders, setGuestOrders] = useState<OrderOverview[]>([]);
+  const [userOrders, setUserOrders] = useState<OrderOverview[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [showGuestsOrders, setShowGuestOrders] = useState(false);
   const [userId, setUserId] = useState<number | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [deleteUserId, setDeleteUserId] = useState<number | null>(null);
   useEffect(() => {
-    const getUsers = async () => {
+    const getGuestOrders = async () => {
       try {
-        const response = await getAllUsers();
-        setUsers(response);
-        setIsLoaded(true);
+        const response = await getAllGuestOrders();
+        setGuestOrders(response);
       } catch (err) {
         if (err instanceof AxiosError) {
-          setUsers([]);
+          setGuestOrders([]);
           console.log(err.message);
         }
       }
     };
-    if (isLoaded) return;
-    getUsers();
-    setUserId(null);
-  }, [isLoaded]);
+    const getUserOrders = async () => {
+      try {
+        const response = await getAllUserOrders();
+        setUserOrders(response);
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          setUserOrders([]);
+          console.log(err.message);
+        }
+      }
+    };
+
+    getGuestOrders();
+    getUserOrders();
+  }, []);
   useEffect(() => {
     if (alertMessage) {
       window.scrollTo(0, 0);
@@ -57,68 +78,46 @@ export function AdminUsersPage() {
       }
     }
   };
+
   return (
     <Container>
       <Nav className="mb-3 justify-content-between">
-        <h3>Användare hantering</h3>
+        <h3>Order hantering</h3>
       </Nav>
-      <Fade in={!!alertMessage}>
+      <Nav fill variant="pills" defaultActiveKey="client">
+        <Nav.Item onClick={() => setShowGuestOrders(false)}>
+          <Nav.Link eventKey="client">
+            {" "}
+            <span>Kundbeställningar </span>
+            <span className="text-success">
+              ({userOrders.filter((o) => o.orderStatus === "new").length} nya)
+            </span>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item onClick={() => setShowGuestOrders(true)}>
+          <Nav.Link eventKey="guest">
+            <span>Gästbesällningar </span>
+            <span className="text-success">
+              ({guestOrders.filter((o) => o.orderStatus === "new").length} nya)
+            </span>
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+      {/* <Fade in={!!alertMessage}>
         <div id="alertMessage">
           <Alert variant="success">{alertMessage}</Alert>
         </div>
-      </Fade>
-      <UserFormModal
+      </Fade> */}
+      {/* <UserFormModal
         openModal={openModal}
         id={userId}
         closeModal={closeModal}
         setAlertMessage={setAlertMessage}
+      /> */}
+      <OrdersOverview
+        data={showGuestsOrders ? guestOrders : userOrders}
+        type={showGuestsOrders ? "guest" : "client"}
       />
-      <Table bordered hover size="sm" responsive>
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Epost</th>
-            <th>Behörighet</th>
-            <th>Alternativ</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((u) => (
-            <tr key={u.id}>
-              <td>{u.id}</td>
-              <td>{u.email}</td>
-              <td>{u.accountLevel}</td>
-              <td>
-                {u.id !== 1 && (
-                  <Dropdown>
-                    <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                      <Gear />
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item
-                        onClick={() => {
-                          setUserId(u.id);
-                          setOpenModal(true);
-                          setAlertMessage(null);
-                        }}
-                      >
-                        Ändra
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={() => {
-                          setDeleteUserId(u.id);
-                        }}
-                      >
-                        Radera
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
       {deleteUserId && (
         <ConfirmModal
           openConfirmModal={!!deleteUserId}

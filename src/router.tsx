@@ -16,6 +16,7 @@ import { AdminBooksPage } from "./pages/AdminBooksPage";
 import { AdminCategoriesPage } from "./pages/AdminCategoriesPage";
 import { AdminAuthorsPage } from "./pages/AdminAuthorsPage";
 import { AdminUsersPage } from "./pages/AdminUsersPage";
+import { AdminOrdersPage } from "./pages/AdminOrdersPage";
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +71,14 @@ export const router = createBrowserRouter([
               {
                 path: "/admin/categories",
                 element: <AdminCategoriesPage />,
+              },
+              {
+                path: "/admin/orders",
+                element: <AdminOrdersPage />,
+              },
+              {
+                path: "/admin/orders/:id",
+                element: <AdminOrdersPage />,
               },
             ],
           },

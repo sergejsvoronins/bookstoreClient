@@ -1,6 +1,16 @@
 import axios from "axios";
 import { z } from "zod";
 import { BASE_URL } from "./books";
+import { UserDataSchema } from "./user";
+
+export const getAllGuestOrders = async () => {
+  let response = await axios.get<OrderOverview[]>(`${BASE_URL}/orders`);
+  return response.data;
+};
+export const getAllUserOrders = async () => {
+  let response = await axios.get<OrderOverview[]>(`${BASE_URL}/user-orders`);
+  return response.data;
+};
 
 export const addShipment = async (shipment: NewShipment) => {
   try {
@@ -61,3 +71,29 @@ const NewOrderSchema = z.object({
   books: z.array(BooksSchema),
 });
 export type NewOrder = z.infer<typeof NewOrderSchema>;
+
+const orderStatuses = z.enum([
+  "new",
+  "processing",
+  "shipped",
+  "completed",
+  "canceled",
+  "returned",
+]);
+
+const OrderOverviewSchema = z.object({
+  id: z.number(),
+  orderStatus: orderStatuses,
+  orderDate: z.number(),
+});
+export type OrderOverview = z.infer<typeof OrderOverviewSchema>;
+
+const OrderDetailsSchema = OrderOverviewSchema.extend({
+  totalPrice: z.number(),
+  shipmentId: z.number(),
+  shipmmentDetails: NewShipmentSchema,
+  books: z.array(BooksSchema),
+  userId: z.optional(z.number()),
+  userInfo: z.optional(UserDataSchema),
+});
+export type OrderDetailsSchema = z.infer<typeof OrderDetailsSchema>;
