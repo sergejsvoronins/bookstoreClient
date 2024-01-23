@@ -1,11 +1,11 @@
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
+import { useState, useEffect } from "react";
 import {
   NewAuthor,
-  addAuthor,
   getOneAuthor,
+  addAuthor,
   updateAuthor,
-} from "../transport/books";
-import { useState, useEffect } from "react";
+} from "../transport/authors";
 
 interface IModal {
   id?: number | null;

@@ -1,8 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import { AuthorsManager } from "./components/AuthorsManager";
 import { Main } from "./components/Main";
 import { SearchResult } from "./components/SearchResult";
-import { UsersManager } from "./components/UsersManager";
 import { Confirmation } from "./components/stripe/Confirmation";
 import { AdminPage } from "./pages/AdminPage";
 import { CategoryBooks } from "./pages/CategoryBooks";
@@ -60,10 +58,10 @@ export const router = createBrowserRouter([
                 path: "/admin/books",
                 element: <AdminBooksPage />,
               },
-              {
-                path: "/admin/users",
-                element: <UsersManager />,
-              },
+              // {
+              //   path: "/admin/users",
+              //   element: <UsersManager />,
+              // },
               {
                 path: "/admin/authors",
                 element: <AdminAuthorsPage />,

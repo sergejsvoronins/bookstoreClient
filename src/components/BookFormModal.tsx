@@ -1,15 +1,8 @@
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
-import {
-  Author,
-  Category,
-  NewBook,
-  addBook,
-  getAuthors,
-  getCategories,
-  getOneBook,
-  updateBook,
-} from "../transport/books";
+import { NewBook, addBook, getOneBook, updateBook } from "../transport/books";
 import { useState, useEffect } from "react";
+import { Author, getAuthors } from "../transport/authors";
+import { Category, getCategories } from "../transport/categories";
 
 interface IBookModal {
   id?: number | null;

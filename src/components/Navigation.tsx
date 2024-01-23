@@ -11,12 +11,12 @@ import {
 } from "react-bootstrap";
 import { Bag, List, Person } from "react-bootstrap-icons";
 import { useContext, useEffect, useState } from "react";
-import { Category, getCategories } from "../transport/books";
 import { CartContext, ICart, ICartContext } from "../context/cartContext";
 import { CartToolPanel } from "./CartToolPanel";
 import { useNavigate } from "react-router-dom";
 import { NavSearch } from "./NavSearch";
 import { IUserContext, UserContext } from "../context/userContext";
+import { Category, getCategories } from "../transport/categories";
 export function Navigation({ innerWidth }: { innerWidth: number }) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [showCart, setShowCart] = useState(false);

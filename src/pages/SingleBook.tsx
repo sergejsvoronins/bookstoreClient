@@ -9,21 +9,15 @@ import {
   Container,
   Form,
   Nav,
-  Navbar,
   Row,
 } from "react-bootstrap";
-import { ICartContext, CartContext, ICart } from "../context/cartContext";
-import { IUserContext, UserContext } from "../context/userContext";
-import { ConfirmModal } from "../components/ConfirmModal";
+import { ICartContext, CartContext } from "../context/cartContext";
 
 export function SingleBook() {
   const { id } = useParams();
   const [book, setBook] = useState<Book | null>(null);
   const [amount, setAmount] = useState("1");
   const cartContext = useContext<ICartContext>(CartContext);
-  // const userContext = useContext<IUserContext>(UserContext);
-  const [openModal, setOpenModal] = useState(false);
-  const [openConfirmModal, setOpenConfirmModal] = useState(false);
   console.log(cartContext.cart);
 
   useEffect(() => {
@@ -38,31 +32,9 @@ export function SingleBook() {
       }
     };
     getBook();
-  }, [openModal]);
-
-  const closeModal = () => {
-    setOpenModal(false);
-  };
+  }, []);
   return (
     <Container>
-      <Row className="mb-2">
-        {
-          /*userContext.user && userContext.user?.accountLevel  === "admin"*/ true && (
-            <Navbar
-              bg="light"
-              data-bs-theme="light"
-              className="justify-content-end pe-3"
-            >
-              <Nav>
-                <Nav.Link onClick={() => setOpenModal(true)}>Ändra</Nav.Link>
-                <Nav.Link onClick={() => setOpenConfirmModal(true)}>
-                  Radera
-                </Nav.Link>
-              </Nav>
-            </Navbar>
-          )
-        }
-      </Row>
       {book && (
         <Card>
           <Row className="justify-content-center">
@@ -194,14 +166,6 @@ export function SingleBook() {
             </Col>
           </Row>
         </Card>
-      )}
-      {/* {book && <BookModal openModal={openModal} closeModal={closeModal} />} */}
-      {id && (
-        <ConfirmModal
-          openConfirmModal={openConfirmModal}
-          closeConfirmModal={() => setOpenConfirmModal(false)}
-          bookId={+id}
-        />
       )}
     </Container>
   );

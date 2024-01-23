@@ -9,10 +9,10 @@ import {
 } from "react-bootstrap";
 import { Gear } from "react-bootstrap-icons";
 import { useEffect, useState } from "react";
-import { Author, getAuthors, deleteAuthor } from "../transport/books";
 import { AxiosError } from "axios";
 import { ConfirmModal } from "../components/ConfirmModal";
 import { AuthorFormModal } from "../components/AuthorFormModal";
+import { Author, getAuthors, deleteAuthor } from "../transport/authors";
 
 export function AdminAuthorsPage() {
   const [authorsList, setAuthorsList] = useState<Author[]>([]);
@@ -67,7 +67,7 @@ export function AdminAuthorsPage() {
   return (
     <Container>
       <Nav className="mb-3 justify-content-between">
-        <h3>Kategori hantering</h3>
+        <h3>Författare hantering</h3>
         <Button
           onClick={() => {
             setAlertMessage(null);
@@ -92,7 +92,7 @@ export function AdminAuthorsPage() {
         <thead>
           <tr>
             <th>#</th>
-            <th>Kategori</th>
+            <th>Namn</th>
             <th>Id</th>
             <th>Alternativ</th>
           </tr>

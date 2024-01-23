@@ -9,10 +9,14 @@ import {
 } from "react-bootstrap";
 import { Gear } from "react-bootstrap-icons";
 import { useEffect, useState } from "react";
-import { Category, deleteCategory, getCategories } from "../transport/books";
 import { AxiosError } from "axios";
 import { ConfirmModal } from "../components/ConfirmModal";
 import { CategoryFormModal } from "../components/CategoryFormModal";
+import {
+  Category,
+  deleteCategory,
+  getCategories,
+} from "../transport/categories";
 
 export function AdminCategoriesPage() {
   const [categoriesList, setCategoriesList] = useState<Category[]>([]);
@@ -92,7 +96,7 @@ export function AdminCategoriesPage() {
         <thead>
           <tr>
             <th>#</th>
-            <th>Kategori</th>
+            <th>Namn</th>
             <th>Id</th>
             <th>Alternativ</th>
           </tr>

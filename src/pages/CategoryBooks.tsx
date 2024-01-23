@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Book, getCategoryBooks } from "../transport/books";
+import { Book } from "../transport/books";
 import { BooksOverview } from "../components/BooksOverview";
 import { AxiosError } from "axios";
 import { CartContext, ICartContext } from "../context/cartContext";
+import { getCategoryBooks } from "../transport/categories";
 
 export function CategoryBooks() {
   const { id } = useParams();

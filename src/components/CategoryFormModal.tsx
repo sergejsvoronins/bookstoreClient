@@ -1,11 +1,11 @@
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
+import { useState, useEffect } from "react";
 import {
   NewCategory,
-  addCategory,
   getCategoryBooks,
+  addCategory,
   updateCategory,
-} from "../transport/books";
-import { useState, useEffect } from "react";
+} from "../transport/categories";
 
 interface IModal {
   id?: number | null;
