@@ -1,6 +1,6 @@
 import axios from "axios";
 import { z } from "zod";
-import { BASE_URL } from "./books";
+import { BASE_URL, BookSchema } from "./books";
 import { UserDataSchema } from "./user";
 
 export const getAllGuestOrders = async () => {
@@ -11,7 +11,18 @@ export const getAllUserOrders = async () => {
   let response = await axios.get<OrderOverview[]>(`${BASE_URL}/user-orders`);
   return response.data;
 };
-
+export const getGuestOrderMetaData = async (id: string) => {
+  let response = await axios.get<OrderDetailsSchema>(
+    `${BASE_URL}/orders/${id}`
+  );
+  return response.data;
+};
+export const getClientOrderMetaData = async (id: string) => {
+  let response = await axios.get<OrderDetailsSchema>(
+    `${BASE_URL}/user-order/${id}`
+  );
+  return response.data;
+};
 export const addShipment = async (shipment: NewShipment) => {
   try {
     let response = await axios.post(`${BASE_URL}/shipments`, shipment);
@@ -46,7 +57,20 @@ export const addOrder = async (order: NewOrder) => {
     console.error("Error adding order:", error);
   }
 };
-
+export const updateGuestOrder = async (order: OrderOverview) => {
+  let response = await axios.put<boolean>(
+    `${BASE_URL}/orders/${order.id}`,
+    order
+  );
+  return response.data;
+};
+export const updateClientOrder = async (order: OrderOverview) => {
+  let response = await axios.put<boolean>(
+    `${BASE_URL}/user-orders/${order.id}`,
+    order
+  );
+  return response.data;
+};
 const NewShipmentSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
@@ -62,6 +86,8 @@ export type NewShipment = z.infer<typeof NewShipmentSchema>;
 const BooksSchema = z.object({
   bookId: z.number(),
   amount: z.number(),
+  title: z.optional(z.string()),
+  bookPrice: z.optional(z.number()),
 });
 
 const NewOrderSchema = z.object({
@@ -72,7 +98,7 @@ const NewOrderSchema = z.object({
 });
 export type NewOrder = z.infer<typeof NewOrderSchema>;
 
-const orderStatuses = z.enum([
+const OrderStatusesSchema = z.enum([
   "new",
   "processing",
   "shipped",
@@ -83,17 +109,17 @@ const orderStatuses = z.enum([
 
 const OrderOverviewSchema = z.object({
   id: z.number(),
-  orderStatus: orderStatuses,
-  orderDate: z.number(),
+  orderStatus: OrderStatusesSchema,
+  orderDate: z.optional(z.number()),
 });
 export type OrderOverview = z.infer<typeof OrderOverviewSchema>;
-
+export type OrderStatuses = z.infer<typeof OrderStatusesSchema>;
 const OrderDetailsSchema = OrderOverviewSchema.extend({
   totalPrice: z.number(),
   shipmentId: z.number(),
-  shipmmentDetails: NewShipmentSchema,
+  shipmentDetails: NewShipmentSchema,
   books: z.array(BooksSchema),
   userId: z.optional(z.number()),
-  userInfo: z.optional(UserDataSchema),
+  userinfo: z.optional(UserDataSchema),
 });
 export type OrderDetailsSchema = z.infer<typeof OrderDetailsSchema>;

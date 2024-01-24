@@ -269,8 +269,8 @@ export function BookFormModal({
               >
                 <Form.Label>Kategori</Form.Label>
                 <Form.Select
-                  isInvalid={newBook.category === ""}
-                  // isValid={newBook.categoryId > 0}
+                  // isInvalid={newBook.category === ""}
+                  isValid={newBook.categoryId > 0}
                   as={Col}
                   aria-label="Default select example"
                   value={newBook.categoryId}

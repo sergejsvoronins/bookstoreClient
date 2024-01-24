@@ -2,12 +2,14 @@ import { Dropdown, Table } from "react-bootstrap";
 import { OrderOverview } from "../transport/orders";
 import { format } from "date-fns";
 import { Gear } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
 
 interface IOrdersOverview {
   data: OrderOverview[];
   type: "guest" | "client";
 }
-export function OrdersOverview({ data }: IOrdersOverview) {
+export function OrdersOverview({ data, type }: IOrdersOverview) {
+  const navigate = useNavigate();
   return (
     <Table bordered hover size="sm" responsive>
       <thead>
@@ -24,7 +26,7 @@ export function OrdersOverview({ data }: IOrdersOverview) {
           return (
             <tr key={i}>
               <td>{i + 1}</td>
-              <td>{format(o.orderDate * 1000, "yyyy-MM-dd")}</td>
+              <td>{o.orderDate && format(o.orderDate * 1000, "yyyy-MM-dd")}</td>
               <td>{o.id}</td>
               <td>{o.orderStatus}</td>
               <td>
@@ -35,6 +37,7 @@ export function OrdersOverview({ data }: IOrdersOverview) {
                   <Dropdown.Menu>
                     <Dropdown.Item
                       onClick={() => {
+                        navigate(`/admin/orders/${o.id}?type=${type}`);
                         // setUserId(u.id);
                         // setOpenModal(true);
                         // setAlertMessage(null);

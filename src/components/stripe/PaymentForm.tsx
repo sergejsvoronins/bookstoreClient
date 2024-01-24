@@ -45,6 +45,7 @@ export const PaymentForm = () => {
           const responseShipment = await addShipment(
             shipmentContext.shipmentDetails
           );
+
           if (responseShipment) {
             try {
               const responseOrder = await addOrder({
