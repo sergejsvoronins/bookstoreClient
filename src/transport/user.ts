@@ -44,7 +44,7 @@ export const updateUserLevel = async (user: NewUser) => {
 };
 
 export const deleteUser = async (id: number) => {
-  let response = await axios.delete(`${BASE_URL}/users/${id}`);
+  await axios.delete(`${BASE_URL}/users/${id}`);
 };
 export type LoginUser = z.infer<typeof LoginUserSchema>;
 

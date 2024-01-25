@@ -1,18 +1,19 @@
 import { Container, Nav } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { OrderDetailsPage } from "./OrderDetailsPage";
 import { useEffect, useState } from "react";
 import {
-  OrderDetailsSchema,
+  OrderDetails,
   getClientOrderMetaData,
   getGuestOrderMetaData,
 } from "../transport/orders";
 
 export function AdminOrderInfoPage() {
   const { id } = useParams();
-  const [order, setOrder] = useState<OrderDetailsSchema | null>(null);
+  const [order, setOrder] = useState<OrderDetails | null>(null);
   const query = new URLSearchParams(window.location.search);
   const type = query.get("type");
+  const navigate = useNavigate();
   useEffect(() => {
     if (id) {
       const getOrderDetails = async (id: string) => {
@@ -33,7 +34,12 @@ export function AdminOrderInfoPage() {
   return (
     <Container>
       <Nav>
-        <Nav.Link href="/admin/orders">Tillbaka</Nav.Link>
+        <Nav.Link
+          // href="/app/admin/orders"
+          onClick={() => navigate("/admin/orders")}
+        >
+          Tillbaka
+        </Nav.Link>
       </Nav>
       {order && (type === "guest" || type === "client") && (
         <OrderDetailsPage data={order} type={type} />

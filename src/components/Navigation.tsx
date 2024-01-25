@@ -62,7 +62,10 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
                   <Accordion.Body>
                     {categories.map((c) => {
                       return (
-                        <Nav.Link key={c.id} href={`/category/${c.id}`}>
+                        <Nav.Link
+                          key={c.id}
+                          onClick={() => navigate(`/category/${c.id}`)}
+                        >
                           {c.name}
                           <Badge bg="secondary" className="mx-1">
                             {c.booksAmount}
@@ -76,11 +79,36 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
                   <Accordion.Item eventKey="1" className="rounded-0">
                     <Accordion.Header>Adminsida</Accordion.Header>
                     <Accordion.Body className="py-0 pe-0">
-                      <Nav.Link href="/admin/books">Böcker</Nav.Link>
-                      <Nav.Link href="/admin/authors">Författare</Nav.Link>
-                      <Nav.Link href="/admin/categories">Kategorier</Nav.Link>
-                      <Nav.Link href="/admin/orders">Beställningar</Nav.Link>
-                      <Nav.Link href="/admin/users">Användare</Nav.Link>
+                      <Nav.Link
+                        // href="/admin/books"
+                        onClick={() => navigate("/admin/books")}
+                      >
+                        Böcker
+                      </Nav.Link>
+                      <Nav.Link
+                        // href="/admin/authors"
+                        onClick={() => navigate("/admin/authors")}
+                      >
+                        Författare
+                      </Nav.Link>
+                      <Nav.Link
+                        // href="/admin/categories"
+                        onClick={() => navigate("/admin/categories")}
+                      >
+                        Kategorier
+                      </Nav.Link>
+                      <Nav.Link
+                        // href="/admin/orders"
+                        onClick={() => navigate("/admin/orders")}
+                      >
+                        Beställningar
+                      </Nav.Link>
+                      <Nav.Link
+                        // href="/admin/users"
+                        onClick={() => navigate("/admin/users")}
+                      >
+                        Användare
+                      </Nav.Link>
                     </Accordion.Body>
                   </Accordion.Item>
                 )}
@@ -93,7 +121,12 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${"xs"}`}>
               <List />
             </Navbar.Toggle>
-            <Navbar.Brand href="/">Bookstore</Navbar.Brand>
+            <Navbar.Brand
+              // href="/books"
+              onClick={() => navigate("/books")}
+            >
+              Bookstore
+            </Navbar.Brand>
           </Col>
           {innerWidth >= 768 && (
             <Col md={6}>
@@ -103,7 +136,10 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
           <Col xs={6} md={3} className="text-end">
             <Nav className="d-flex flex-row justify-content-end gap-3">
               {!userContext.user ? (
-                <Nav.Link href="/account/login">
+                <Nav.Link
+                  // href="/account/login"
+                  onClick={() => navigate("/login")}
+                >
                   {/* <Row className="justify-content-center p-0 m-0"> */}
                   <Col className="text-center fs-5">
                     <Person className="fs-3" />
@@ -122,26 +158,33 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
                   className="d-flex align-items-center"
                   drop="down-centered"
                 >
-                  <NavDropdown.Item href="#action/3.3">
+                  <NavDropdown.Item
+                    href="#"
+                    onClick={() => navigate("/account/orders")}
+                  >
                     Mina beställningar
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.2">
+                  <NavDropdown.Item
+                    href="#"
+                    onClick={() => navigate("/account/profile")}
+                  >
                     Personuppgifter
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item
-                    href="/"
+                    // href="/"
                     onClick={() => {
                       localStorage.removeItem("user");
                       localStorage.removeItem("cart");
                       userContext.setUser(null);
+                      navigate("/books");
                     }}
                   >
                     Logga ut
                   </NavDropdown.Item>
                 </NavDropdown>
               )}
-              <Nav.Link href="#" onClick={() => setShowCart((s) => !s)}>
+              <Nav.Link onClick={() => setShowCart((s) => !s)}>
                 {/* <Row className="justify-content-center p-0 m-0"> */}
                 <Col className="text-center fs-5 position-relative">
                   <Bag className="fs-3" />{" "}

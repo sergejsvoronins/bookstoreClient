@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Collapse, Container, ListGroup } from "react-bootstrap";
 import { CustomerForm } from "../components/checkout/CustomerForm";
 import { Payment } from "../components/stripe/Payment";
 import { ShipmentContext } from "../context/shipmentContext";
 import { NewShipment } from "../transport/orders";
 import { CheckOutCart } from "../components/checkout/CheckOutCart";
+import { IUserContext, UserContext } from "../context/userContext";
 
 export function CheckOut() {
   const [cartIsOk, setCartIsOk] = useState(false);

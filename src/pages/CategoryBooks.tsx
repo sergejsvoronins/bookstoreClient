@@ -25,7 +25,7 @@ export function CategoryBooks() {
       };
       getBooks();
     }
-  }, []);
+  }, [id]);
 
   return <BooksOverview books={books} err={err} cartContext={cartContext} />;
 }

@@ -31,7 +31,7 @@ export function LoginPage() {
         saveLogin
           ? localStorage.setItem("user", JSON.stringify(response))
           : localStorage.removeItem("user");
-        navigate("/");
+        navigate("/books");
       }
     } catch (e) {
       if (e instanceof AxiosError) {
@@ -43,7 +43,7 @@ export function LoginPage() {
     setUserIsCreated(false);
   }, []);
   useEffect(() => {
-    userContext.user && navigate("/");
+    userContext.user && navigate("/books");
   }, []);
   return (
     <Container>
@@ -94,7 +94,12 @@ export function LoginPage() {
                     </Button>
                   </Col>
                   <Col className="text-end">
-                    <a href="/account/create">Registrera dig</a>
+                    <a
+                      // href="/account/create"
+                      onClick={() => navigate("/create")}
+                    >
+                      Registrera dig
+                    </a>
                   </Col>
                 </Row>
               </Form>

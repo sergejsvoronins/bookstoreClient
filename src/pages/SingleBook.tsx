@@ -42,7 +42,12 @@ export function SingleBook() {
               <Card.Header>
                 <Nav defaultActiveKey="/" as="ul">
                   <Nav.Item as="li">
-                    <Nav.Link href="/">Tillbaka</Nav.Link>
+                    <Nav.Link
+                      // href="/"
+                      onClick={() => navigate("/books")}
+                    >
+                      Tillbaka
+                    </Nav.Link>
                   </Nav.Item>
                 </Nav>
               </Card.Header>

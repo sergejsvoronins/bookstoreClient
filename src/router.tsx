@@ -17,8 +17,10 @@ import { AdminCategoriesPage } from "./pages/AdminCategoriesPage";
 import { AdminAuthorsPage } from "./pages/AdminAuthorsPage";
 import { AdminUsersPage } from "./pages/AdminUsersPage";
 import { AdminOrdersPage } from "./pages/AdminOrdersPage";
-import { OrdersOverview } from "./components/OrdersOverview";
 import { AdminOrderInfoPage } from "./pages/AdminOrderInfoPage";
+import { AccountOrdersPage } from "./pages/AccountOrdersPage";
+import { AccountUserDataPage } from "./pages/AccountUserDataPage";
+import { AccountPage } from "./pages/AccountPage";
 
 export const router = createBrowserRouter([
   {
@@ -30,7 +32,7 @@ export const router = createBrowserRouter([
         element: <Main />,
         children: [
           {
-            path: "/",
+            path: "/books",
             element: <StartPage />,
             index: true,
           },
@@ -85,16 +87,30 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: "/account/login",
+            path: "/login",
             element: <LoginPage />,
           },
           {
-            path: "/account/create",
+            path: "/create",
             element: <CreateAccountPage />,
           },
           {
             path: "/account/:id/confirmation",
             element: <UserAccountConfirmation />,
+          },
+          {
+            path: "/account",
+            element: <AccountPage />,
+            children: [
+              {
+                path: "/account/orders",
+                element: <AccountOrdersPage />,
+              },
+              {
+                path: "/account/profile",
+                element: <AccountUserDataPage />,
+              },
+            ],
           },
         ],
       },

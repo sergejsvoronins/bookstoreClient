@@ -37,7 +37,7 @@ export function OrdersOverview({ data, type }: IOrdersOverview) {
                   <Dropdown.Menu>
                     <Dropdown.Item
                       onClick={() => {
-                        navigate(`/admin/orders/${o.id}?type=${type}`);
+                        navigate(`/app/admin/orders/${o.id}?type=${type}`);
                         // setUserId(u.id);
                         // setOpenModal(true);
                         // setAlertMessage(null);

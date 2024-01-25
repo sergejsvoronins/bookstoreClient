@@ -1,7 +1,9 @@
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { ChevronLeft } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
 
 export function CheckOutNav() {
+  const navigate = useNavigate();
   return (
     <Navbar className="bg-body-tertiary">
       <Container fluid>
@@ -10,7 +12,7 @@ export function CheckOutNav() {
           className="justify-content-between"
         >
           <Nav>
-            <Nav.Link href="/">
+            <Nav.Link onClick={() => navigate("/")}>
               <ChevronLeft />
               Fortsätt handla
             </Nav.Link>
@@ -19,7 +21,7 @@ export function CheckOutNav() {
             <Navbar.Brand>Bookstore</Navbar.Brand>
           </Nav>
           <Nav>
-            <Nav.Link href="#">Logga in</Nav.Link>
+            <Nav.Link onClick={() => navigate("/books")}>Logga in</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

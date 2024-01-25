@@ -12,15 +12,11 @@ export const getAllUserOrders = async () => {
   return response.data;
 };
 export const getGuestOrderMetaData = async (id: string) => {
-  let response = await axios.get<OrderDetailsSchema>(
-    `${BASE_URL}/orders/${id}`
-  );
+  let response = await axios.get<OrderDetails>(`${BASE_URL}/orders/${id}`);
   return response.data;
 };
 export const getClientOrderMetaData = async (id: string) => {
-  let response = await axios.get<OrderDetailsSchema>(
-    `${BASE_URL}/user-order/${id}`
-  );
+  let response = await axios.get<OrderDetails>(`${BASE_URL}/user-order/${id}`);
   return response.data;
 };
 export const addShipment = async (shipment: NewShipment) => {
@@ -39,6 +35,12 @@ export const addShipment = async (shipment: NewShipment) => {
   } catch (error) {
     console.error("Error adding shipment:", error);
   }
+};
+export const getOneUserOrders = async (id: number) => {
+  let response = await axios.get<OrderDetails[]>(
+    `${BASE_URL}/user-orders/${id}`
+  );
+  return response.data;
 };
 export const addOrder = async (order: NewOrder) => {
   try {
@@ -122,4 +124,4 @@ const OrderDetailsSchema = OrderOverviewSchema.extend({
   userId: z.optional(z.number()),
   userinfo: z.optional(UserDataSchema),
 });
-export type OrderDetailsSchema = z.infer<typeof OrderDetailsSchema>;
+export type OrderDetails = z.infer<typeof OrderDetailsSchema>;

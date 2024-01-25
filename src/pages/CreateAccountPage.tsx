@@ -8,6 +8,7 @@ const emptyUser: NewUser = {
   email: "",
   password: "",
   samePassword: "",
+  accountLevel: "",
 };
 
 export function CreateAccountPage() {

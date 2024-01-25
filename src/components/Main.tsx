@@ -5,14 +5,9 @@ import { CartContext, ICart } from "../context/cartContext";
 import { CheckOutNav } from "./checkout/CheckOutNav";
 import { LoginUser } from "../transport/user";
 import { IUserContext, UserContext } from "../context/userContext";
-import { NavSearch } from "./NavSearch";
-import { StartPageCarousel } from "./startPageCarousel";
-import { Container } from "react-bootstrap";
 
 export interface MainOutletContext {
   innerWidth: number;
-  // searchText: string;
-  // setSearchText: (text: string) => void;
   userIsCreated: boolean;
   setUserIsCreated: (status: boolean) => void;
 }
@@ -25,8 +20,6 @@ export function Main() {
   const [userIsCreated, setUserIsCreated] = useState(false);
   useEffect(() => {
     const handleResize = () => {
-      // const innerWidth = window.innerWidth;
-      // setSmalScreen(innerWidth <= 768);
       setInnerWidth(window.innerWidth);
     };
 
