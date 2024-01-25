@@ -46,6 +46,22 @@ export const updateUserLevel = async (user: NewUser) => {
 export const deleteUser = async (id: number) => {
   await axios.delete(`${BASE_URL}/users/${id}`);
 };
+
+export const updateUserData = async (user: UserData) => {
+  let response = await axios.put<UserData>(
+    `${BASE_URL}/users/${user.id}`,
+    user
+  );
+  return response.data;
+};
+
+export const updatePassword = async (object: UpdatePassword) => {
+  let response = await axios.put<boolean>(
+    `${BASE_URL}/user-password/${object.id}`,
+    object
+  );
+  return response.data;
+};
 export type LoginUser = z.infer<typeof LoginUserSchema>;
 
 export const UserDataSchema = z.object({
@@ -80,3 +96,10 @@ const PostApiSchema = z.object({
 });
 
 export type PostApi = z.infer<typeof PostApiSchema>;
+
+const UpdatePasswordSchema = z.object({
+  id: z.number(),
+  password: z.string(),
+  oldPassword: z.string(),
+});
+export type UpdatePassword = z.infer<typeof UpdatePasswordSchema>;

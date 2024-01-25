@@ -135,55 +135,30 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
           )}
           <Col xs={6} md={3} className="text-end">
             <Nav className="d-flex flex-row justify-content-end gap-3">
-              {!userContext.user ? (
-                <Nav.Link
-                  // href="/account/login"
-                  onClick={() => navigate("/login")}
-                >
-                  {/* <Row className="justify-content-center p-0 m-0"> */}
-                  <Col className="text-center fs-5">
-                    <Person className="fs-3" />
-                  </Col>
-                  {/* </Row> */}
-                  <Row className="justify-content-center p-0 m-0">
-                    {innerWidth >= 768 && (
-                      <Col className="text-center">Logga in</Col>
-                    )}
-                  </Row>
-                </Nav.Link>
-              ) : (
-                <NavDropdown
-                  title="Min sida"
-                  id="basic-nav-dropdown"
-                  className="d-flex align-items-center"
-                  drop="down-centered"
-                >
-                  <NavDropdown.Item
-                    href="#"
-                    onClick={() => navigate("/account/orders")}
-                  >
-                    Mina beställningar
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    href="#"
-                    onClick={() => navigate("/account/profile")}
-                  >
-                    Personuppgifter
-                  </NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item
-                    // href="/"
-                    onClick={() => {
-                      localStorage.removeItem("user");
-                      localStorage.removeItem("cart");
-                      userContext.setUser(null);
-                      navigate("/books");
-                    }}
-                  >
-                    Logga ut
-                  </NavDropdown.Item>
-                </NavDropdown>
-              )}
+              <Nav.Link
+                // href="/account/login"
+                onClick={() => {
+                  if (userContext.user) {
+                    navigate("/account/orders");
+                  } else {
+                    navigate("/login");
+                  }
+                }}
+              >
+                {/* <Row className="justify-content-center p-0 m-0"> */}
+                <Col className="text-center fs-5">
+                  <Person className="fs-3" />
+                </Col>
+                {/* </Row> */}
+                <Row className="justify-content-center p-0 m-0">
+                  {innerWidth >= 768 && (
+                    <Col className="text-center">
+                      {" "}
+                      {!userContext.user ? "Logga in" : "Mina sidor"}
+                    </Col>
+                  )}
+                </Row>
+              </Nav.Link>
               <Nav.Link onClick={() => setShowCart((s) => !s)}>
                 {/* <Row className="justify-content-center p-0 m-0"> */}
                 <Col className="text-center fs-5 position-relative">

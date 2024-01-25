@@ -1,6 +1,6 @@
 import axios from "axios";
 import { z } from "zod";
-import { BASE_URL, BookSchema } from "./books";
+import { BASE_URL } from "./books";
 import { UserDataSchema } from "./user";
 
 export const getAllGuestOrders = async () => {
@@ -87,6 +87,7 @@ export type NewShipment = z.infer<typeof NewShipmentSchema>;
 
 const BooksSchema = z.object({
   bookId: z.number(),
+  imgUrl: z.optional(z.nullable(z.string())),
   amount: z.number(),
   title: z.optional(z.string()),
   bookPrice: z.optional(z.number()),

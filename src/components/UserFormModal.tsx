@@ -1,11 +1,6 @@
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import {
-  NewUser,
-  UserData,
-  getOneUser,
-  updateUserLevel,
-} from "../transport/user";
+import { NewUser, getOneUser, updateUserLevel } from "../transport/user";
 
 interface IModal {
   id?: number | null;
@@ -43,7 +38,6 @@ export function UserFormModal({
     };
     getUser();
   }, [id]);
-  console.log(user);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
