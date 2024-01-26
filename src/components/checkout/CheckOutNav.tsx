@@ -21,7 +21,7 @@ export function CheckOutNav() {
             <Navbar.Brand>Bookstore</Navbar.Brand>
           </Nav>
           <Nav>
-            <Nav.Link onClick={() => navigate("/books")}>Logga in</Nav.Link>
+            <Nav.Link onClick={() => navigate("/login")}>Logga in</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Book, getOneBook } from "../transport/books";
 import {
   Accordion,
@@ -18,8 +18,7 @@ export function SingleBook() {
   const [book, setBook] = useState<Book | null>(null);
   const [amount, setAmount] = useState("1");
   const cartContext = useContext<ICartContext>(CartContext);
-  console.log(cartContext.cart);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const getBook = async () => {
       if (id) {
@@ -44,7 +43,7 @@ export function SingleBook() {
                   <Nav.Item as="li">
                     <Nav.Link
                       // href="/"
-                      onClick={() => navigate("/books")}
+                      onClick={() => navigate("/")}
                     >
                       Tillbaka
                     </Nav.Link>

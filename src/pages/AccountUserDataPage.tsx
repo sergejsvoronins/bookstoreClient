@@ -1,4 +1,4 @@
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Alert, Button, Col, Fade, Form, Row } from "react-bootstrap";
 import {
   UserData,
   getOneUser,
@@ -18,6 +18,10 @@ export function AccountUserDataPage() {
   });
   const [changeData, setChangeData] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
+  const [alert, setAlert] = useState<{
+    message: string;
+    variant: string;
+  } | null>(null);
   const [newPassword, setNewPassword] = useState<{
     password: string;
     confirmedPassword: string;
@@ -36,12 +40,29 @@ export function AccountUserDataPage() {
       getUser();
     }
   }, [dataIsLoaded]);
+  useEffect(() => {
+    if (alert) {
+      window.scrollTo(0, 0);
+      setTimeout(() => {
+        setAlert(null);
+      }, 3000);
+    }
+  }, [alert]);
   const updateUserInfo = async () => {
     try {
       const response = await updateUserData(userData);
+      response &&
+        setAlert({
+          message: "Dina uppgifter har uppdaterats",
+          variant: "success",
+        });
       setDataIsLoaded(false);
       setChangeData(false);
     } catch (e) {
+      setAlert({
+        message: "Det gick inte uppdatera dina uppgifter",
+        variant: "danger",
+      });
       console.log(e);
     }
   };
@@ -55,58 +76,42 @@ export function AccountUserDataPage() {
     }
     setValidated(true);
     if (form.checkValidity() === true) {
-      let response = await updatePassword({
-        id: userData.id,
-        password: newPassword.password,
-        oldPassword: newPassword.oldPasswrod,
-      });
+      try {
+        let response = await updatePassword({
+          id: userData.id,
+          password: newPassword.password,
+          oldPassword: newPassword.oldPasswrod,
+        });
+        console.log(response);
+
+        response &&
+          setAlert({
+            message: "Ditt lösenord har uppdaterats",
+            variant: "success",
+          });
+      } catch (e) {
+        if (e) {
+          setAlert({
+            message:
+              "Ditt gamla lösenordet stämmer inte eller det nya i fel format",
+            variant: "danger",
+          });
+        }
+      }
       setChangePassword(false);
-      console.log(response);
     }
   };
   return (
     <Row>
+      <Fade in={!!alert}>
+        <div id="alertMessage">
+          <Alert variant={alert?.variant}>{alert?.message}</Alert>
+        </div>
+      </Fade>
       <Col xs={12} md={6}>
         <h4 className="mb-5">Kontoinformation</h4>
-        <Row className="gap-5 w-100 mb-5">
-          <Col xs={4}>
-            {!changeData ? (
-              <Button
-                className="rounded-pill"
-                variant="dark"
-                onClick={() => setChangeData(true)}
-              >
-                Ändra uppgifter
-              </Button>
-            ) : (
-              <Button
-                className="rounded-pill"
-                variant="dark"
-                onClick={updateUserInfo}
-              >
-                Spara uppgifter
-              </Button>
-            )}
-          </Col>
-          <Col xs={4}>
-            <Button
-              className="rounded-pill"
-              variant="dark"
-              onClick={() => {
-                setChangePassword(!changePassword);
-                setNewPassword({
-                  password: "",
-                  confirmedPassword: "",
-                  oldPasswrod: "",
-                });
-              }}
-            >
-              Ändra lösenord
-            </Button>
-          </Col>
-        </Row>
       </Col>
-      <Col xs={12} md={6}>
+      <Col xs={12} lg={6}>
         <Row>
           <Row>
             <Col xs={12} md={6}>
@@ -126,7 +131,7 @@ export function AccountUserDataPage() {
               ) : (
                 <Form.Control
                   type="text"
-                  className="rounded-pill ms-1 px-3 mb-2"
+                  className="rounded-pill ms-1 px-3 mb-4"
                   value={userData.firstName || ""}
                   onChange={(e) =>
                     setUserData({ ...userData, firstName: e.target.value })
@@ -141,7 +146,7 @@ export function AccountUserDataPage() {
               ) : (
                 <Form.Control
                   type="text"
-                  className="rounded-pill ms-1 px-3 mb-2"
+                  className="rounded-pill ms-1 px-3 mb-4"
                   value={userData.lastName || ""}
                   onChange={(e) =>
                     setUserData({ ...userData, lastName: e.target.value })
@@ -158,7 +163,7 @@ export function AccountUserDataPage() {
               ) : (
                 <Form.Control
                   type="text"
-                  className="rounded-pill ms-1 px-3 mb-2"
+                  className="rounded-pill ms-1 px-3 mb-4"
                   value={userData.address || ""}
                   onChange={(e) =>
                     setUserData({ ...userData, address: e.target.value })
@@ -173,7 +178,7 @@ export function AccountUserDataPage() {
               ) : (
                 <Form.Control
                   type="text"
-                  className="rounded-pill ms-1 px-3 mb-2"
+                  className="rounded-pill ms-1 px-3 mb-4"
                   value={userData.city || ""}
                   onChange={(e) =>
                     setUserData({ ...userData, city: e.target.value })
@@ -190,7 +195,7 @@ export function AccountUserDataPage() {
               ) : (
                 <Form.Control
                   type="text"
-                  className="rounded-pill ms-1 px-3 mb-2"
+                  className="rounded-pill ms-1 px-3 mb-4"
                   value={userData.mobile || ""}
                   onChange={(e) =>
                     setUserData({ ...userData, mobile: e.target.value })
@@ -212,39 +217,55 @@ export function AccountUserDataPage() {
             <Col lg={3}>
               <Form.Control
                 type="password"
-                className="rounded-pill ms-1 px-3 mb-2"
+                className="rounded-pill ms-1 px-3 mb-4"
                 placeholder="Nuvarande lösenord"
                 value={newPassword.oldPasswrod}
+                isValid={newPassword.oldPasswrod.length > 5}
+                minLength={6}
                 onChange={(e) =>
                   setNewPassword({
                     ...newPassword,
                     oldPasswrod: e.target.value,
                   })
                 }
-              />
+              />{" "}
+              <Form.Control.Feedback
+                type="invalid"
+                className="position-static ms-3 mb-2"
+              >
+                Det ska vara minst 6 tecken
+              </Form.Control.Feedback>
             </Col>
             <Col lg={3}>
               <Form.Control
                 type="password"
-                className="rounded-pill ms-1 px-3 mb-2"
+                className="rounded-pill ms-1 px-3 mb-4"
                 placeholder="Nytt lösenörd"
                 value={newPassword.password}
+                isValid={newPassword.oldPasswrod.length > 5}
+                minLength={6}
                 onChange={(e) =>
                   setNewPassword({ ...newPassword, password: e.target.value })
                 }
               />
+              <Form.Control.Feedback
+                type="invalid"
+                className="position-static ms-3 mb-2"
+              >
+                Det ska vara minst 6 tecken
+              </Form.Control.Feedback>
             </Col>
             <Col lg={3}>
               <Form.Control
                 type="password"
-                className="rounded-pill ms-1 px-3 mb-2"
+                className="rounded-pill ms-1 px-3 mb-4"
                 placeholder="Upprepa nytt lösenord"
                 isInvalid={
                   newPassword.password !== newPassword.confirmedPassword &&
                   newPassword.confirmedPassword !== ""
                 }
                 isValid={
-                  newPassword.password === newPassword.confirmedPassword &&
+                  newPassword.password === newPassword.confirmedPassword ||
                   newPassword.confirmedPassword !== ""
                 }
                 onChange={(e) =>
@@ -254,7 +275,10 @@ export function AccountUserDataPage() {
                   })
                 }
               />{" "}
-              <Form.Control.Feedback type="invalid">
+              <Form.Control.Feedback
+                type="invalid"
+                className="position-static ms-3 mb-2"
+              >
                 Lösenord stämmer inte
               </Form.Control.Feedback>
             </Col>
@@ -271,6 +295,47 @@ export function AccountUserDataPage() {
           </Row>
         </Form>
       )}
+      <Row className="my-3">
+        <Col xs={4} md={3} lg={2}>
+          {!changeData ? (
+            <Button
+              className="rounded-pill"
+              variant="dark"
+              onClick={() => {
+                setChangeData(true);
+                setChangePassword(false);
+              }}
+            >
+              Ändra uppgifter
+            </Button>
+          ) : (
+            <Button
+              className="rounded-pill"
+              variant="dark"
+              onClick={updateUserInfo}
+            >
+              Spara uppgifter
+            </Button>
+          )}
+        </Col>
+        <Col xs={4} md={3} lg={2}>
+          <Button
+            className="rounded-pill"
+            variant="dark"
+            onClick={() => {
+              setChangePassword(!changePassword);
+              setChangeData(false);
+              setNewPassword({
+                password: "",
+                confirmedPassword: "",
+                oldPasswrod: "",
+              });
+            }}
+          >
+            Ändra lösenord
+          </Button>
+        </Col>
+      </Row>
     </Row>
   );
 }

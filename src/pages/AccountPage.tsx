@@ -49,7 +49,7 @@ export function AccountPage() {
                   localStorage.removeItem("user");
                   localStorage.removeItem("cart");
                   setUser(null);
-                  navigate("/books");
+                  navigate("/");
                 }}
               >
                 Logga ut

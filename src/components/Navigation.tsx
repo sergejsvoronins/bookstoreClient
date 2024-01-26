@@ -123,7 +123,7 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
             </Navbar.Toggle>
             <Navbar.Brand
               // href="/books"
-              onClick={() => navigate("/books")}
+              onClick={() => navigate("/")}
             >
               Bookstore
             </Navbar.Brand>

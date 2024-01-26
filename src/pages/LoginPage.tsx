@@ -43,7 +43,7 @@ export function LoginPage() {
     setUserIsCreated(false);
   }, []);
   useEffect(() => {
-    userContext.user && navigate("/books");
+    userContext.user && navigate("/");
   }, []);
   return (
     <Container>
