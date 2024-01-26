@@ -37,11 +37,13 @@ export function SearchResult() {
   }, [searchText]);
 
   return (
-    <>
-      <Row className="justify-content-center">
-        <Col>Rusultat för: {searchText}</Col>
+    <Container className="mt-5">
+      <Row className="mb-5">
+        <Col>
+          <h5>Rusultat för: {searchText}</h5>
+        </Col>
       </Row>
-      <Row>
+      <Row className="mb-5">
         <Col>
           <BooksOverview
             books={searchBooks}
@@ -50,6 +52,6 @@ export function SearchResult() {
           />
         </Col>
       </Row>
-    </>
+    </Container>
   );
 }

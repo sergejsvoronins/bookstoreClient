@@ -59,6 +59,23 @@ export const addOrder = async (order: NewOrder) => {
     console.error("Error adding order:", error);
   }
 };
+export const addUserOrder = async (order: NewOrder) => {
+  try {
+    let response = await axios.post(`${BASE_URL}/user-orders`, order);
+    if (response.status === 201) {
+      const id = response.data.id;
+      const message = {
+        id,
+        message: "Order created successfully",
+      };
+      return message;
+    } else {
+      throw new Error(`Error adding order: ${response.statusText}`);
+    }
+  } catch (error) {
+    console.error("Error adding order:", error);
+  }
+};
 export const updateGuestOrder = async (order: OrderOverview) => {
   let response = await axios.put<boolean>(
     `${BASE_URL}/orders/${order.id}`,
@@ -96,6 +113,7 @@ const BooksSchema = z.object({
 const NewOrderSchema = z.object({
   id: z.optional(z.number()),
   totalPrice: z.number(),
+  userId: z.optional(z.nullable(z.number())),
   shipmentId: z.number(),
   books: z.array(BooksSchema),
 });

@@ -31,7 +31,7 @@ export function LoginPage() {
         saveLogin
           ? localStorage.setItem("user", JSON.stringify(response))
           : localStorage.removeItem("user");
-        navigate("/books");
+        navigate("/");
       }
     } catch (e) {
       if (e instanceof AxiosError) {
@@ -46,9 +46,9 @@ export function LoginPage() {
     userContext.user && navigate("/");
   }, []);
   return (
-    <Container>
+    <Container className="mb-5">
       <Row className="justify-content-center">
-        <Col md={8} lg={6}>
+        <Col sm={8} md={6} xl={4}>
           <Card>
             <Card.Body>
               {errorMessage && (

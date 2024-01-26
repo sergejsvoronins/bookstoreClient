@@ -10,12 +10,14 @@ import {
   IShipmentContext,
   ShipmentContext,
 } from "../../context/shipmentContext";
-import { addOrder, addShipment } from "../../transport/orders";
+import { addOrder, addShipment, addUserOrder } from "../../transport/orders";
 import { CartContext, ICartContext } from "../../context/cartContext";
 import { useNavigate } from "react-router-dom";
+import { IUserContext, UserContext } from "../../context/userContext";
 
 export const PaymentForm = () => {
   const shipmentContext = useContext<IShipmentContext>(ShipmentContext);
+  const { user } = useContext<IUserContext>(UserContext);
   const cartContext = useContext<ICartContext>(CartContext);
   const [isProcessing, setIsProcessing] = useState(false);
   const stripe = useStripe();
@@ -48,21 +50,41 @@ export const PaymentForm = () => {
 
           if (responseShipment) {
             try {
-              const responseOrder = await addOrder({
-                totalPrice:
-                  cartContext.cart.reduce((accumulator, item) => {
-                    return accumulator + item.amount * item.item.price;
-                  }, 0) + cartContext.freight,
-                shipmentId: +responseShipment.id,
-                books: cartContext.cart.map((b) => {
-                  return { bookId: b.item.id, amount: b.amount };
-                }),
-              });
+              if (user) {
+                const responseOrder = await addUserOrder({
+                  totalPrice:
+                    cartContext.cart.reduce((accumulator, item) => {
+                      return accumulator + item.amount * item.item.price;
+                    }, 0) + cartContext.freight,
+                  userId: user.id,
+                  shipmentId: +responseShipment.id,
+                  books: cartContext.cart.map((b) => {
+                    return {
+                      bookId: b.item.id,
+                      amount: b.amount,
+                    };
+                  }),
+                });
+                navigate(
+                  `/confirmation?paymentId=${paymentIntent.id}&orderId=${responseOrder?.id}`
+                );
+              } else {
+                const responseOrder = await addOrder({
+                  totalPrice:
+                    cartContext.cart.reduce((accumulator, item) => {
+                      return accumulator + item.amount * item.item.price;
+                    }, 0) + cartContext.freight,
+                  shipmentId: +responseShipment.id,
+                  books: cartContext.cart.map((b) => {
+                    return { bookId: b.item.id, amount: b.amount };
+                  }),
+                });
+                navigate(
+                  `/confirmation?paymentId=${paymentIntent.id}&orderId=${responseOrder?.id}`
+                );
+              }
               localStorage.removeItem("cart");
               cartContext.updateCart([]);
-              navigate(
-                `/confirmation?paymentId=${paymentIntent.id}&orderId=${responseOrder?.id}`
-              );
             } catch (e) {
               console.log(e);
               navigate("/");
