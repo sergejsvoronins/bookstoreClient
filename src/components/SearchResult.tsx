@@ -3,7 +3,7 @@ import { Book, getSearchResult } from "../transport/books";
 import { CartContext, ICartContext } from "../context/cartContext";
 import { AxiosError } from "axios";
 import { BooksOverview } from "./BooksOverview";
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export function SearchResult() {

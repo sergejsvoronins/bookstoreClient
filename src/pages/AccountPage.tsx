@@ -40,7 +40,18 @@ export function AccountPage() {
     <Container>
       {user && (
         <>
-          <Row>
+          <Row className="my-5">
+            <Col className="d-flex justify-content-between">
+              <Button
+                variant="primary"
+                className="rounded-pill"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                Startsida
+              </Button>
+            </Col>
             <Col className="d-flex justify-content-end">
               <Button
                 variant="danger"

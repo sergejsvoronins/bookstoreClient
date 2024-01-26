@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export function CheckOutNav() {
   const navigate = useNavigate();
   return (
-    <Navbar className="bg-body-tertiary">
+    <Navbar className="bg-body-tertiary mb-5">
       <Container fluid>
         <Navbar.Collapse
           id="responsive-navbar-nav"

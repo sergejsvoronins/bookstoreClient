@@ -9,6 +9,7 @@ import { StartPageCarousel } from "../components/startPageCarousel";
 import { useOutletContext } from "react-router-dom";
 import { MainOutletContext } from "../components/Main";
 import { NavSearch } from "../components/NavSearch";
+import { TopBooks } from "../components/TopBooks";
 
 export function StartPage() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -38,11 +39,16 @@ export function StartPage() {
 
   return (
     <>
-      {/* <StartPageCarousel /> */}
       {innerWidth > 768 && <StartPageCarousel />}
       {innerWidth < 768 && <NavSearch />}
+
       <Container className="mt-3">
-        <BooksOverview books={books} err={err} cartContext={cartContext} />;
+        <h3 className="mb-5">Top böcker</h3>
+        <hr className="mb-5" />
+        <TopBooks />
+        <h3 className="mb-5">Upptäck vårt sortiment</h3>
+        <hr className="mb-5" />
+        <BooksOverview books={books} err={err} cartContext={cartContext} />
       </Container>
     </>
   );

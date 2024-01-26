@@ -9,6 +9,11 @@ export const getAllBooks = async () => {
   return response.data;
 };
 
+export const getTopFive = async () => {
+  let response = await axios.get<BookTop[]>(`${BASE_URL}/top-books`);
+  return response.data;
+};
+
 export const getSearchResult = async (searchText: string) => {
   let response = await axios.get<Book[]>(`${BASE_URL}/search`, {
     params: {
@@ -50,17 +55,22 @@ export const deleteBook = async (id: number) => {
   return response.data;
 };
 
-export const BookSchema = z.object({
+const BookTopSchema = z.object({
   id: z.number(),
   title: z.string(),
-  description: z.nullable(z.string()),
   imgUrl: z.nullable(z.string()),
+  price: z.number(),
+  amount: z.optional(z.number()),
+});
+export type BookTop = z.infer<typeof BookTopSchema>;
+
+export const BookSchema = BookTopSchema.extend({
+  description: z.nullable(z.string()),
   pages: z.number(),
   year: z.number(),
   language: z.string(),
   author: z.string(),
   category: z.string(),
-  price: z.number(),
   isbn: z.string(),
   authorId: z.number(),
   categoryId: z.number(),

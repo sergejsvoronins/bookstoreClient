@@ -9,16 +9,16 @@ export function StartPageCarousel() {
   };
   return (
     <Carousel
-      className="mb-3"
+      className="mb-5"
       activeIndex={index}
       onSelect={handleSelect}
-      style={{ height: "200px" }}
+      style={{ height: "250px" }}
     >
       <Carousel.Item>
         <Image
           style={{ height: "100%", objectFit: "cover" }}
           alt="Placeholder for reklam"
-          src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1772&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src="../../public/images/books-5937716_1280-fotor-2024012615188.png"
         />
         <Carousel.Caption>
           <h3>First slide label</h3>
@@ -26,14 +26,14 @@ export function StartPageCarousel() {
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <Image src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1772&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+        <Image src="../../public/images/books-5937716_1280-fotor-2024012615188.png" />
         <Carousel.Caption>
           <h3>Second slide label</h3>
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
-        <Image src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1772&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+        <Image src="../../public/images/books-5937716_1280-fotor-2024012615188.png" />
         <Carousel.Caption>
           <h3>Third slide label</h3>
           <p>

@@ -1,4 +1,4 @@
-import { Row, Col, Card, Button, Spinner } from "react-bootstrap";
+import { Row, Col, Card, Button } from "react-bootstrap";
 import { Book } from "../transport/books";
 import { ICartContext } from "../context/cartContext";
 import { useNavigate } from "react-router-dom";
@@ -14,25 +14,36 @@ export function BooksOverview({ books, err, cartContext }: IBooksOverview) {
   return (
     <>
       <Row className="mt-3">
-        {books.length !== 0 ? (
+        {books.length !== 0 &&
           books.map((b, i) => {
             return (
-              <Col key={b.id} xs={6} md={4} lg={2}>
-                <Card>
-                  <Card.Body onClick={() => navigate(`/book/${b.id}`)}>
-                    <div className="card-img p-4">
-                      <Card.Img
-                        variant="top"
-                        src={b.imgUrl || ""}
-                        className="image"
-                      />
-                    </div>
-                    <Card.Title className="h6">{b.title}</Card.Title>
+              <Col key={i} xs={4} sm={3} md={2}>
+                <Card className="p-0 rounded-0 shadow-none mb-3">
+                  <Card.Img
+                    variant="top"
+                    src={b.imgUrl || ""}
+                    className="rounded-0"
+                    style={{ height: "160px" }}
+                  />
+                  <Card.Body
+                    className="p-0"
+                    onClick={() => navigate(`/book/${b.id}`)}
+                  >
+                    <Card.Text
+                      style={{
+                        fontSize: "0.6rem",
+                        lineHeight: "18px",
+                        height: "60px",
+                      }}
+                    >
+                      {b.title}
+                    </Card.Text>
                   </Card.Body>
-                  <Card.Footer>
+                  <Card.Footer className="p-0 border-0">
                     <Card.Title>{b.price} SEK</Card.Title>
                     <Button
                       variant="primary"
+                      className="w-100"
                       onClick={() => {
                         if (cartContext) {
                           let seenItem = cartContext.cart.find(
@@ -59,16 +70,7 @@ export function BooksOverview({ books, err, cartContext }: IBooksOverview) {
                 </Card>
               </Col>
             );
-          })
-        ) : err === null ? (
-          <Col className="d-flex justify-content-center">
-            <Spinner animation="border" role="status">
-              <span className="visually-hidden">Sidan laddas...</span>
-            </Spinner>
-          </Col>
-        ) : (
-          <Col>Det finns inga böcker i denna kategori</Col>
-        )}
+          })}
       </Row>
       {/* <LoadGoogleBooks /> */}
     </>

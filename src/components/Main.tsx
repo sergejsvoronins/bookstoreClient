@@ -5,6 +5,7 @@ import { CartContext, ICart } from "../context/cartContext";
 import { CheckOutNav } from "./checkout/CheckOutNav";
 import { LoginUser } from "../transport/user";
 import { IUserContext, UserContext } from "../context/userContext";
+import { Footer } from "./Footer";
 
 export interface MainOutletContext {
   innerWidth: number;
@@ -56,6 +57,7 @@ export function Main() {
         <Outlet
           context={{ userIsCreated, setUserIsCreated, innerWidth }}
         ></Outlet>
+        <Footer />
       </CartContext.Provider>
     </>
   );
