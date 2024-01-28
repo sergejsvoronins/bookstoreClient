@@ -12,7 +12,10 @@ export const getOneAuthor = async (id: number) => {
 };
 export const addAuthor = async (newAuthor: NewAuthor) => {
   try {
-    let response = await axios.post(`${BASE_URL}/authors`, newAuthor);
+    let response = await axios.post<{ id: number; message: string }>(
+      `${BASE_URL}/authors`,
+      newAuthor
+    );
     if (response.status === 201) {
       const id = response.data.id;
       const message = {

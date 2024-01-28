@@ -87,78 +87,86 @@ export function CheckOutCart({
           //     </section>
           //   </Col>
           // </Row>
-          <Row className="cart-item mb-4 flex-row mx-0 p-5">
-            <Col className="px-0 d-flex" xs={4} md={3}>
+          <Row className="cart-item mb-4 flex-row mx-0 py-5 px-1">
+            <Col className="px-0 d-flex" xs={4} md={3} lg={2}>
               <Image
                 src={item.item.imgUrl || ""}
                 className="rounded-0 mb-2 w-100"
               />
             </Col>
-            <Col xs={9}>
-              <Row className="justify-content-end">
-                <Col className="d-flex justify-content-end p-0 mb-2" xs={6}>
-                  <Trash3
-                    className="delete-item"
-                    onClick={() => {
-                      const index: number = cartContext.cart.indexOf(item);
-                      removeItem(index);
-                    }}
-                  />
-                </Col>
-              </Row>
+            <Col
+              xs={8}
+              md={9}
+              lg={10}
+              className="d-flex flex-column justify-content-between mt-3"
+            >
               <Row>
                 <h6
                   style={{
-                    fontSize: "0.8rem",
-                    lineHeight: "18px",
+                    lineHeight: "1rem",
                   }}
-                  className="mb-3"
+                  className="mb-3  pe-0 fs-5"
                 >
                   {item.item.title}
                 </h6>
                 <p
                   style={{
-                    fontSize: "0.8rem",
-                    lineHeight: "18px",
+                    lineHeight: "1rem",
                   }}
-                  className="pe-0"
+                  className="pe-0 fs-5"
                 >
                   {item.item.author}
                 </p>
                 <p
                   style={{
-                    fontSize: "0.8rem",
-                    lineHeight: "18px",
+                    lineHeight: "1rem",
                   }}
-                  className="mb-3 pe-0"
+                  className="mb-3 pe-0 fs-5"
                 >
                   {item.item.year}
                 </p>
               </Row>
+              <Row className="justify-content-end mb-3">
+                <Col
+                  xs={6}
+                  className="d-flex justify-content-end align-items-center fw-bolder fs-1 px-0"
+                >
+                  {item.item.price * item.amount} SEK
+                </Col>
+              </Row>
             </Col>
-            <Col xs={12} className="d-flex justify-content-between my-3 px-0">
-              <Col xs={6}>
+            <Col
+              xs={12}
+              className="d-flex justify-content-between my-3 w-100 px-0"
+            >
+              <Col xs={6} sm={4} md={3} lg={2}>
                 <BookItemAmountInput cartItem={item} />
               </Col>
-              <Col
-                xs={6}
-                className="d-flex justify-content-end align-items-center fw-bolder fs-4 px-0"
-              >
-                {item.item.price * item.amount} SEK
+              <Col className="d-flex justify-content-end p-0" xs={6}>
+                <Button
+                  className="rounded-pill"
+                  variant="outline-danger"
+                  onClick={() => {
+                    const index: number = cartContext.cart.indexOf(item);
+                    removeItem(index);
+                  }}
+                >
+                  Ta bort
+                </Button>
               </Col>
             </Col>
             <hr />
           </Row>
         );
       })}
-      <Row className="fs-3 fw-bolder justify-content-between px-5">
+      <Row className="fs-3 fw-bolder justify-content-between">
         <Col xs={3}>Frakt:</Col>
         <Col xs={9} className="text-end">
           {cartContext.freight}
           :-
         </Col>
       </Row>
-      <Row className="fs-1 fw-bolder justify-content-between px-5 py-3">
+      <Row className="fs-1 fw-bolder justify-content-between py-3">
         <Col xs={3}>Totalt:</Col>
         <Col xs={9} className="text-end">
           {cartContext.cart.reduce((accumulator, item) => {

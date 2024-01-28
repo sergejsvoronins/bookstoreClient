@@ -1,73 +1,65 @@
 import { useEffect, useState } from "react";
-import {
-  Author,
-  Category,
-  NewAuthor,
-  NewCategory,
-  addAuthor,
-  addBook,
-  addCategory,
-  getAuthors,
-  getCategories,
-} from "../transport/books";
+import { addBook } from "../transport/books";
 import { IGoogleBookInfo, getGoogleBooks } from "../transport/googleBooks";
+import { Author, NewAuthor, addAuthor, getAuthors } from "../transport/authors";
+import {
+  Category,
+  NewCategory,
+  addCategory,
+  getCategories,
+} from "../transport/categories";
 
 export function LoadGoogleBooks() {
   const [authorsList, setAuthorsList] = useState<Author[]>([]);
   const [categoriesList, setCategoriesList] = useState<Category[]>([]);
-  const [authorsAreLoaded, setAuthorsAreLoaded] = useState(false);
-  const [categoriesAreLoaded, setCategoriesAReLoaded] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [listsAreLoaded, setListsAreLoaded] = useState(false);
+  const [categoriesAreLoaded, setCategoriesAReLoaded] = useState(true);
+  const [authorsIsLoaded, setAuthorsIsloaded] = useState(true);
   const [googleBooks, setGoogleBooks] = useState<IGoogleBookInfo[]>([]);
   const [index, setIndex] = useState(0);
-
+  const [newAuthors, setNewAuthors] = useState<NewAuthor[]>([]);
+  const [newCategories, setNewCategories] = useState<NewCategory[]>([]);
   useEffect(() => {
-    const getBooks = async (amount: number, index: number) => {
-      let response = await getGoogleBooks(amount, index);
-
-      setGoogleBooks([...googleBooks, ...response.items]);
-      //   const authors: NewAuthor[] = [];
-      //   const categories: NewCategory[] = [];
-      //   response.items.map((b) => {
-      //     b.volumeInfo.authors &&
-      //       b.volumeInfo.authors.map((a) => {
-      //         const seen = authors.some((f) => f.name === a);
-      //         if (!seen) authors.push({ name: a });
-      //       });
-      //     b.volumeInfo.categories &&
-      //       b.volumeInfo.categories.map((c) => {
-      //         const seen = categories.some((f) => f.name === c);
-      //         if (!seen) categories.push({ name: c });
-      //       });
-      //   });
-      //   console.log(response);
-
-      //   console.log(authors);
-      //   console.log(categories);
-      //   console.log(isLoaded);
-      //   console.log(authorsAreLoaded);
-      //   const addAuthors = () => {
-      //     authors.map((a) => addAuthor(a));
-      //     setAuthorsAreLoaded(true);
-      //   };
-      //   const AddCategories = () => {
-      //     categories.map((c) => addCategory(c));
-      //     setCategoriesAReLoaded(true);
-      //   };
-      //   // isLoaded && !authorsAreLoaded && addAuthors();
-      //   // isLoaded && authorsAreLoaded && !categoriesAreLoaded && AddCategories();
+    const getList = async () => {
+      try {
+        const authors = await getAuthors();
+        setAuthorsList(authors);
+      } catch (err) {
+        if (err) {
+          setAuthorsList([]);
+          return;
+        }
+      }
+      setAuthorsIsloaded(true);
     };
-    if (isLoaded) return;
-    getBooks(40, 0);
-    setIsLoaded(true);
-  }, []);
-  const getMyBooks = async (index: number) => {
-    let response = await getGoogleBooks(40, index);
-    console.log(response.items);
-  };
 
+    if (authorsIsLoaded) return;
+    getList();
+  }, [authorsIsLoaded]);
   useEffect(() => {
+    const getList = async () => {
+      try {
+        const categories = await getCategories();
+        setCategoriesList(categories);
+      } catch (err) {
+        if (err) {
+          setCategoriesList([]);
+          return;
+        }
+      }
+      setCategoriesAReLoaded(true);
+    };
+
+    if (categoriesAreLoaded) return;
+    getList();
+  }, [categoriesAreLoaded]);
+  const getMyBooks = async () => {
+    let response = await getGoogleBooks(index);
+    setGoogleBooks([...googleBooks, ...response.items]);
+    setIndex(index + 40);
+  };
+  console.log(googleBooks);
+
+  const getAuthorList = () => {
     const authors: NewAuthor[] = [];
     googleBooks.map((b) => {
       b.volumeInfo.authors &&
@@ -76,12 +68,9 @@ export function LoadGoogleBooks() {
           if (!seen) authors.push({ name: a });
         });
     });
-    if (isLoaded && !authorsAreLoaded) {
-      // authors.map((a) => addAuthor(a));
-      setAuthorsAreLoaded(true);
-    } else return;
-  }, [isLoaded, authorsAreLoaded]);
-  useEffect(() => {
+    setNewAuthors(authors);
+  };
+  const getCategoryList = () => {
     const categories: NewCategory[] = [];
     googleBooks.map((b) => {
       b.volumeInfo.categories &&
@@ -90,38 +79,31 @@ export function LoadGoogleBooks() {
           if (!seen) categories.push({ name: c });
         });
     });
-    if (isLoaded && authorsAreLoaded && !categoriesAreLoaded) {
-      // categories.map((c) => addCategory(c));
-      setCategoriesAReLoaded(true);
-    } else return;
-  }, [isLoaded, authorsAreLoaded, categoriesAreLoaded]);
-  useEffect(() => {
-    if (
-      isLoaded &&
-      authorsAreLoaded &&
-      categoriesAreLoaded &&
-      !listsAreLoaded
-    ) {
-      const getLists = async () => {
-        try {
-          const authors = await getAuthors();
-          const categories = await getCategories();
-          setAuthorsList(authors);
-          setCategoriesList(categories);
-        } catch (err) {
-          if (err) {
-            setAuthorsList([]);
-            setCategoriesList([]);
-          }
-        }
-        setListsAreLoaded(true);
-      };
-      getLists();
-    }
-    if (isLoaded) return;
-  }, [isLoaded, authorsAreLoaded, categoriesAreLoaded, listsAreLoaded]);
-  console.log(googleBooks);
+    setNewCategories(categories);
+  };
+  console.log(newAuthors);
+  console.log(newCategories);
   console.log(authorsList);
+  console.log(categoriesList);
+  const loadAuthors = () => {
+    newAuthors.map((a) => {
+      const addItem = async () => {
+        await addAuthor(a);
+      };
+      addItem();
+    });
+    setAuthorsIsloaded(false);
+  };
+  const loadCategories = () => {
+    newCategories.map((c) => {
+      const addItem = async () => {
+        await addCategory(c);
+      };
+      addItem();
+    });
+    setCategoriesAReLoaded(false);
+  };
+
   const pushBooks = () => {
     googleBooks.map((b) => {
       const author = authorsList.find((f) => {
@@ -146,16 +128,27 @@ export function LoadGoogleBooks() {
           authorId: author.id,
           categoryId: category.id,
           price: b.saleInfo.listPrice.amount,
-          isbn: +b.volumeInfo.industryIdentifiers[1].identifier,
+          isbn: b.volumeInfo.industryIdentifiers[1].identifier,
         });
       }
     });
   };
   return (
-    <div>
+    <div className="text-center py-5">
       <input type="number" onChange={(e) => setIndex(+e.target.value)} />
-      <button onClick={() => getMyBooks(index)}>Get 40books</button>;
-      <button onClick={pushBooks}>push books</button>;
+      <br />
+      <button onClick={() => getMyBooks()}>Get 40books</button>
+      <br />
+      <button onClick={() => pushBooks()}>PUSH BOOKS</button>
+      <br />
+      <button onClick={() => getAuthorList()}>get authors</button>
+      <br />
+      <button onClick={() => loadAuthors()}>upload authors</button>
+      <br />
+
+      <button onClick={() => getCategoryList()}>get categories</button>
+      <br />
+      <button onClick={() => loadCategories()}>upload categories</button>
     </div>
   );
 }

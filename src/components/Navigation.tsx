@@ -60,17 +60,19 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
                   <Accordion.Header>Kategorier</Accordion.Header>
                   <Accordion.Body>
                     {categories.map((c) => {
-                      return (
-                        <Nav.Link
-                          key={c.id}
-                          onClick={() => navigate(`/category/${c.id}`)}
-                        >
-                          {c.name}
-                          <Badge bg="secondary" className="mx-1">
-                            {c.booksAmount}
-                          </Badge>
-                        </Nav.Link>
-                      );
+                      if (c.booksAmount !== 0) {
+                        return (
+                          <Nav.Link
+                            key={c.id}
+                            onClick={() => navigate(`/category/${c.id}`)}
+                          >
+                            {c.name}
+                            <Badge bg="secondary" className="mx-1">
+                              {c.booksAmount}
+                            </Badge>
+                          </Nav.Link>
+                        );
+                      } else return null;
                     })}
                   </Accordion.Body>
                 </Accordion.Item>
@@ -135,7 +137,6 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
           <Col xs={6} md={3} className="text-end">
             <Nav className="d-flex flex-row justify-content-end gap-3">
               <Nav.Link
-                // href="/account/login"
                 onClick={() => {
                   if (userContext.user) {
                     navigate("/account/orders");
@@ -144,11 +145,9 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
                   }
                 }}
               >
-                {/* <Row className="justify-content-center p-0 m-0"> */}
                 <Col className="text-center fs-5">
                   <Person className="fs-3" />
                 </Col>
-                {/* </Row> */}
                 <Row className="justify-content-center p-0 m-0">
                   {innerWidth >= 768 && (
                     <Col className="text-center">
@@ -159,14 +158,17 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
                 </Row>
               </Nav.Link>
               <Nav.Link onClick={() => setShowCart((s) => !s)}>
-                {/* <Row className="justify-content-center p-0 m-0"> */}
                 <Col className="text-center fs-5 position-relative">
                   <Bag className="fs-3" />{" "}
                   {cartContext.cart.length !== 0 && (
                     <Badge
                       bg="dark"
-                      className="rounded-circle position-absolute translate-middle p-2 top-100"
-                      style={{ fontSize: "0.6rem" }}
+                      className="rounded-circle position-absolute translate-middle pt-2 pb-1 top-100"
+                      style={{
+                        fontSize: "0.6rem",
+                        width: "24px",
+                        height: "24px",
+                      }}
                     >
                       {cartContext.cart.reduce((accumulator, item) => {
                         return accumulator + item.amount;
@@ -178,12 +180,6 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
                     </Badge>
                   )}
                 </Col>
-                {/* </Row> */}
-                {/* <Row className="justify-content-center p-0 m-0">
-                  {innerWidth >= 768 && (
-                    <Col className="text-center">Varukorg</Col>
-                  )}
-                </Row> */}
               </Nav.Link>
             </Nav>
           </Col>

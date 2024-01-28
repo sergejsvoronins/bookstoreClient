@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Carousel, Image } from "react-bootstrap";
-
+// import "../../public/images/books-5937716_1280-fotor-2024012615188.png";
 export function StartPageCarousel() {
   const [index, setIndex] = useState(0);
 

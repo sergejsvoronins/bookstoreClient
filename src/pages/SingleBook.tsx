@@ -51,11 +51,11 @@ export function SingleBook() {
                 </Nav>
               </Card.Header>
             </Col>
-            <Col xs={6} md={4} lg={3} className="p-5">
+            <Col xs={6} sm={5} lg={3} className="p-3">
               <Card.Img
                 variant="top"
                 src={book?.imgUrl || ""}
-                className="p-1"
+                className="p-3"
               />
             </Col>
             <Col xs={12} md={8} lg={9}>
@@ -65,7 +65,7 @@ export function SingleBook() {
                     <p>{book.title}</p>
                     <p>{book.author}</p>
                     <p>{book.year}</p>
-                    <h2>{book.price}</h2>
+                    <h2>{book.price} SEK</h2>
                   </Col>
                 </article>
                 <article className="d-flex flex-row gap-4">

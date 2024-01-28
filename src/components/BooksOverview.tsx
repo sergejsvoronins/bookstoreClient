@@ -17,24 +17,31 @@ export function BooksOverview({ books, err, cartContext }: IBooksOverview) {
         {books.length !== 0 &&
           books.map((b, i) => {
             return (
-              <Col key={i} xs={4} sm={3} md={2}>
-                <Card className="p-0 rounded-0 shadow-none mb-3">
-                  <Card.Img
-                    variant="top"
-                    src={b.imgUrl || ""}
-                    className="rounded-0"
-                    style={{ height: "160px" }}
-                  />
+              <Col key={i} xs={6} sm={4} md={3} lg={2}>
+                <Card
+                  className="p-0 rounded-0 shadow-none mb-5"
+                  style={{ width: "136px" }}
+                >
+                  <div className="text-center">
+                    <Card.Img
+                      variant="top"
+                      src={b.imgUrl || ""}
+                      className="rounded-0"
+                      style={{ height: "160px" }}
+                    />
+                  </div>
                   <Card.Body
                     className="p-0"
                     onClick={() => navigate(`/book/${b.id}`)}
                   >
                     <Card.Text
                       style={{
-                        fontSize: "0.6rem",
+                        fontSize: "0.8rem",
                         lineHeight: "18px",
-                        height: "60px",
+                        height: "75px",
+                        overflow: "hidden",
                       }}
+                      className="fw-bolder"
                     >
                       {b.title}
                     </Card.Text>
@@ -72,7 +79,6 @@ export function BooksOverview({ books, err, cartContext }: IBooksOverview) {
             );
           })}
       </Row>
-      {/* <LoadGoogleBooks /> */}
     </>
   );
 }

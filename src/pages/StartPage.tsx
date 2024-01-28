@@ -4,12 +4,13 @@ import { ICartContext, CartContext } from "../context/cartContext";
 import { BooksOverview } from "../components/BooksOverview";
 import { AxiosError } from "axios";
 import { IUserContext, UserContext } from "../context/userContext";
-import { Container } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { StartPageCarousel } from "../components/startPageCarousel";
 import { useOutletContext } from "react-router-dom";
 import { MainOutletContext } from "../components/Main";
 import { NavSearch } from "../components/NavSearch";
 import { TopBooks } from "../components/TopBooks";
+import { LoadGoogleBooks } from "../components/LoadGoogleBooks";
 
 export function StartPage() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -39,6 +40,9 @@ export function StartPage() {
 
   return (
     <>
+      {/* <Row>
+        <LoadGoogleBooks />
+      </Row> */}
       {innerWidth > 768 && <StartPageCarousel />}
       {innerWidth < 768 && <NavSearch />}
 

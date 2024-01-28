@@ -20,7 +20,7 @@ export function CartToolPanel() {
         <Row className="gap-2  flex-column">
           {cartContext.cart.map((item) => {
             return (
-              <Row className="cart-item mb-4 flex-row">
+              <Row className="cart-item mb-4 flex-row m-0">
                 <Col className="px-0 d-flex" xs={4}>
                   <Image
                     src={item.item.imgUrl || ""}
@@ -136,12 +136,14 @@ export function CartToolPanel() {
               </Row>
             );
           })}
-          <Col className="fs-5">
-            <span>Summa inkl moms: </span>
-            {cartContext.cart.reduce((accumulator, item) => {
-              return accumulator + item.amount * item.item.price;
-            }, 0)}{" "}
-            :-
+          <Col className="fw-bolder d-flex justify-content-between ">
+            <span className="fs-5">Summa inkl moms: </span>
+            <span className="fs-4">
+              {cartContext.cart.reduce((accumulator, item) => {
+                return accumulator + item.amount * item.item.price;
+              }, 0)}{" "}
+              SEK
+            </span>
           </Col>
         </Row>
       )}
