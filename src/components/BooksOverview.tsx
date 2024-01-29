@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 
 interface IBooksOverview {
   books: Book[];
-  err: string | null;
+  err?: string | null;
   cartContext?: ICartContext;
 }
 
-export function BooksOverview({ books, err, cartContext }: IBooksOverview) {
+export function BooksOverview({ books, cartContext }: IBooksOverview) {
   const navigate = useNavigate();
   return (
     <>
@@ -41,7 +41,7 @@ export function BooksOverview({ books, err, cartContext }: IBooksOverview) {
                         height: "75px",
                         overflow: "hidden",
                       }}
-                      className="fw-bolder"
+                      className="fw-bolder mt-2"
                     >
                       {b.title}
                     </Card.Text>

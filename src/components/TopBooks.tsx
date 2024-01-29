@@ -26,8 +26,8 @@ export function TopBooks() {
     <Container className="mb-5">
       <Row className="flex-row">
         {topBooks.map((b) => (
-          <Col key={b.id} xs={4} sm={3} md={2}>
-            <section className="">
+          <Col key={b.id} xs={6} sm={4} md={3} lg={2}>
+            <section className="" style={{ width: "136px" }}>
               <div
                 className="w-100 d-flex align-items-end"
                 style={{ height: "160px" }}
@@ -38,7 +38,15 @@ export function TopBooks() {
                   className="w-100"
                 />
               </div>
-              <div style={{ fontSize: "0.7rem", lineHeight: "18px" }}>
+              <div
+                style={{
+                  fontSize: "0.8rem",
+                  lineHeight: "18px",
+                  height: "75px",
+                  overflow: "hidden",
+                }}
+                className="fw-bolder mt-2"
+              >
                 <a href="#" onClick={() => navigate(`/book/${b.id}`)}>
                   {b.title}
                 </a>
