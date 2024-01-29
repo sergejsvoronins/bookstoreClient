@@ -1,6 +1,6 @@
 # Bookstore Frontend
 
-Frontend is build using React Typescript Library and Bootstrap such as bootstraps own react components and css classes.
+Frontend is built with React Typescript Library and Bootstrap, including Bootstrap's React components and CSS classes.
 
 ## PACKAGE.JSON
   ```
