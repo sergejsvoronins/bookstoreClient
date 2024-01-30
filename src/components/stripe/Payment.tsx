@@ -2,10 +2,11 @@ import { Stripe, loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { useContext, useEffect, useState } from "react";
 import { PaymentForm } from "./PaymentForm";
-import { Row } from "react-bootstrap";
 import { ICartContext, CartContext } from "../../context/cartContext";
-
-export function Payment() {
+interface IPayment {
+  setOrderIsCreated: (status: boolean) => void;
+}
+export function Payment({ setOrderIsCreated }: IPayment) {
   const cartContext = useContext<ICartContext>(CartContext);
   const [stripePromise, setStripePromise] =
     useState<Promise<Stripe | null> | null>(null);
@@ -37,7 +38,7 @@ export function Payment() {
     <>
       {stripePromise && clientSecret && (
         <Elements stripe={stripePromise} options={{ clientSecret }}>
-          <PaymentForm />
+          <PaymentForm setOrderIsCreated={setOrderIsCreated} />
         </Elements>
       )}
     </>

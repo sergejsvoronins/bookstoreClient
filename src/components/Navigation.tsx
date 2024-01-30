@@ -40,6 +40,7 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
       console.error("Error fetching cart from local storage:", error);
     }
   }, []);
+
   return (
     <>
       <Navbar expand={"xs"} className="bg-body-tertiary mb-5">

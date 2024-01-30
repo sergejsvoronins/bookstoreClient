@@ -1,8 +1,11 @@
+import { useContext } from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { ChevronLeft } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
+import { IUserContext, UserContext } from "../../context/userContext";
 
 export function CheckOutNav() {
+  const { user } = useContext<IUserContext>(UserContext);
   const navigate = useNavigate();
   return (
     <Navbar className="bg-body-tertiary mb-5">
@@ -21,7 +24,14 @@ export function CheckOutNav() {
             <Navbar.Brand>Bookstore</Navbar.Brand>
           </Nav>
           <Nav>
-            <Nav.Link onClick={() => navigate("/login")}>Logga in</Nav.Link>
+            {!user && (
+              <Nav.Link
+                onClick={() => navigate("/login")}
+                className={user ? "text-hide" : ""}
+              >
+                Logga in
+              </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

@@ -36,6 +36,10 @@ export const addShipment = async (shipment: NewShipment) => {
     console.error("Error adding shipment:", error);
   }
 };
+export const deleteShipment = async (id: number) => {
+  await axios.delete(`${BASE_URL}/shipments/${id}`);
+  return;
+};
 export const getOneUserOrders = async (id: number) => {
   let response = await axios.get<OrderDetails[]>(
     `${BASE_URL}/user-orders/${id}`

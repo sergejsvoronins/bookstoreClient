@@ -35,8 +35,8 @@ export const updateCategory = async (category: NewCategory) => {
   return response.data;
 };
 export const deleteCategory = async (id: number) => {
-  let response = await axios.delete(`${BASE_URL}/categories/${id}`);
-  return response.data;
+  await axios.delete(`${BASE_URL}/categories/${id}`);
+  return;
 };
 const CategorySchema = z.object({
   id: z.number(),

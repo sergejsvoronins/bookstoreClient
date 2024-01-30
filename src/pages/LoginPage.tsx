@@ -94,12 +94,7 @@ export function LoginPage() {
                     </Button>
                   </Col>
                   <Col className="text-end">
-                    <a
-                      // href="/account/create"
-                      onClick={() => navigate("/create")}
-                    >
-                      Registrera dig
-                    </a>
+                    <a href="/create">Registrera dig</a>
                   </Col>
                 </Row>
               </Form>

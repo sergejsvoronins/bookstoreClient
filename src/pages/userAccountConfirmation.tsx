@@ -1,11 +1,10 @@
 import { Col, Container, Row } from "react-bootstrap";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { MainOutletContext } from "../components/Main";
 import { NotFoundPage } from "./NotFoundPage";
 
 export function UserAccountConfirmation() {
   const { userIsCreated } = useOutletContext<MainOutletContext>();
-  const navigate = useNavigate();
   return (
     <>
       {userIsCreated ? (
@@ -14,13 +13,8 @@ export function UserAccountConfirmation() {
             <Col xs={6}>
               <p className="fs-5">
                 Grattis, du har registrerat dig. Fortsätt vidare till
-                <a
-                  // href="/account/login"
-                  onClick={() => navigate("/account/login")}
-                >
-                  {" "}
-                  inloggningssida.
-                </a>
+                inloggningssida.
+                <a href="/login">Logga in</a>
               </p>
             </Col>
           </Row>

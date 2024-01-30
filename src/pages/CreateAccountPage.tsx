@@ -14,7 +14,6 @@ const emptyUser: NewUser = {
 export function CreateAccountPage() {
   const [newUser, setNewUser] = useState<NewUser>(emptyUser);
   const [validated, setValidated] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { setUserIsCreated } = useOutletContext<MainOutletContext>();
   const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -28,13 +27,14 @@ export function CreateAccountPage() {
     if (form.checkValidity() === true) {
       try {
         let response = await createUser(newUser);
+
         if (response) {
           setUserIsCreated(true);
           navigate(`/account/${response.id}/confirmation`);
         }
       } catch (e) {
         if (e instanceof AxiosError) {
-          setErrorMessage(e.response?.data.error);
+          console.log(e);
         }
       }
     }
@@ -46,11 +46,6 @@ export function CreateAccountPage() {
           <Card>
             <Card.Header className="py-3 fs-2">Skapa ett konto</Card.Header>
             <Card.Body>
-              {errorMessage && (
-                <Row>
-                  <Col style={{ color: "red" }}>{errorMessage}</Col>
-                </Row>
-              )}
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Epost</Form.Label>
@@ -75,7 +70,7 @@ export function CreateAccountPage() {
                   <Form.Control
                     type="password"
                     value={newUser.password}
-                    min={6}
+                    minLength={6}
                     required
                     isValid={newUser.password.length > 5}
                     onChange={(e) =>
@@ -116,11 +111,17 @@ export function CreateAccountPage() {
                   <Form.Check
                     required
                     label={
-                      <a href="#">
-                        Jag godkänner alla köp- och användarvillkor
-                      </a>
+                      <a href="#">Godkänner alla köp- och användarvillkor</a>
                     }
-                    feedback="You must agree before submitting."
+                    feedback="Godkänn för att gå vidare"
+                    feedbackType="invalid"
+                  />
+                  <Form.Check
+                    required
+                    label={
+                      <a href="#">Gogkänner företagets integritetspolicy</a>
+                    }
+                    feedback="Godkänn för att gå vidare"
                     feedbackType="invalid"
                   />
                 </Form.Group>

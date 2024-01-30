@@ -19,6 +19,7 @@ export function Main() {
   const location = useLocation();
   const userContext = useContext<IUserContext>(UserContext);
   const [userIsCreated, setUserIsCreated] = useState(false);
+  const [orderIsCreated, setOrderIsCreated] = useState(false);
   useEffect(() => {
     const handleResize = () => {
       setInnerWidth(window.innerWidth);
@@ -54,9 +55,17 @@ export function Main() {
         ) : (
           <CheckOutNav />
         )}
-        <Outlet
-          context={{ userIsCreated, setUserIsCreated, innerWidth }}
-        ></Outlet>
+        <section style={{ minHeight: "500px" }}>
+          <Outlet
+            context={{
+              userIsCreated,
+              setUserIsCreated,
+              innerWidth,
+              orderIsCreated,
+              setOrderIsCreated,
+            }}
+          ></Outlet>
+        </section>
         <Footer />
       </CartContext.Provider>
     </>

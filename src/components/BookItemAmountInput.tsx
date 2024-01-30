@@ -15,11 +15,12 @@ export function BookItemAmountInput({ cartItem }: { cartItem: ICart }) {
   }, [amount]);
   return (
     <div className="d-flex align-items-center w-100">
-      <Col xs={3} className="p-0">
+      <div>
         <Button
           variant="secondary"
-          className="px-3 m-0 w-100"
+          className="px-3 m-0"
           style={{
+            width: "40px",
             borderStartStartRadius: "50%",
             borderEndStartRadius: "50%",
             borderEndEndRadius: "0",
@@ -30,21 +31,23 @@ export function BookItemAmountInput({ cartItem }: { cartItem: ICart }) {
         >
           -
         </Button>
-      </Col>
-      <Col xs={6}>
-        <FormControl
-          className="rounded-0 px-0 text-center"
+      </div>
+      <div>
+        <input
+          className="rounded-0 px-0 mx-0 text-center border-0"
+          style={{ width: "40px" }}
           type="number"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           onBlur={() => amount === "" && setAmount("1")}
         />
-      </Col>
-      <Col xs={3} className="d-flex p-0">
+      </div>
+      <div>
         <Button
           variant="secondary"
           className="px-3 m-0 w-100"
           style={{
+            width: "40px",
             borderRadius: "50%",
             borderTopLeftRadius: "0",
             borderBottomLeftRadius: "0",
@@ -53,7 +56,7 @@ export function BookItemAmountInput({ cartItem }: { cartItem: ICart }) {
         >
           +
         </Button>
-      </Col>
+      </div>
     </div>
   );
 }

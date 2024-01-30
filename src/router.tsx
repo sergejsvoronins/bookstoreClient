@@ -21,6 +21,7 @@ import { AdminOrderInfoPage } from "./pages/AdminOrderInfoPage";
 import { AccountOrdersPage } from "./pages/AccountOrdersPage";
 import { AccountUserDataPage } from "./pages/AccountUserDataPage";
 import { AccountPage } from "./pages/AccountPage";
+import { CheckOutForm } from "./components/CheckoutForm";
 
 export const router = createBrowserRouter([
   {
@@ -51,11 +52,21 @@ export const router = createBrowserRouter([
           {
             path: "/check-out",
             element: <CheckOut />,
+            children: [
+              {
+                path: "/check-out",
+                element: <CheckOutForm />,
+              },
+              {
+                path: "/check-out/confirmation",
+                element: <Confirmation />,
+              },
+            ],
           },
-          {
-            path: "/confirmation",
-            element: <Confirmation />,
-          },
+          // {
+          //   path: "/confirmation",
+          //   element: <Confirmation />,
+          // },
           {
             path: "/admin",
             element: <AdminPage />,

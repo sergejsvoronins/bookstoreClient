@@ -115,19 +115,19 @@ export function AccountUserDataPage() {
         <Row>
           <Row>
             <Col xs={12} md={6}>
-              <h5 className="mb-2">Medlemsnummer</h5>
-              <h6>{userData.id}</h6>
+              <h6 className="mb-2">Medlemsnummer</h6>
+              <p>{userData.id}</p>
             </Col>
             <Col xs={12} md={6}>
-              <h5>Epost</h5>
-              <h6>{userData.email}</h6>
+              <h6>Epost</h6>
+              <p>{userData.email}</p>
             </Col>
           </Row>
           <Row>
             <Col xs={12} md={6}>
-              <h5 className="mb-2">Förnamn</h5>
+              <h6 className="mb-2">Förnamn</h6>
               {!changeData ? (
-                <h6>{userData.firstName ? userData.firstName : "-"}</h6>
+                <p>{userData.firstName ? userData.firstName : "-"}</p>
               ) : (
                 <Form.Control
                   type="text"
@@ -140,9 +140,9 @@ export function AccountUserDataPage() {
               )}
             </Col>
             <Col xs={12} md={6}>
-              <h5>Efternamn</h5>
+              <h6>Efternamn</h6>
               {!changeData ? (
-                <h6>{userData.lastName ? userData.lastName : "-"}</h6>
+                <p>{userData.lastName ? userData.lastName : "-"}</p>
               ) : (
                 <Form.Control
                   type="text"
@@ -157,9 +157,9 @@ export function AccountUserDataPage() {
           </Row>
           <Row>
             <Col xs={12} md={6}>
-              <h5>Adress</h5>
+              <h6>Adress</h6>
               {!changeData ? (
-                <h6>{userData.address ? userData.address : "-"}</h6>
+                <p>{userData.address ? userData.address : "-"}</p>
               ) : (
                 <Form.Control
                   type="text"
@@ -172,9 +172,9 @@ export function AccountUserDataPage() {
               )}
             </Col>
             <Col xs={12} md={6}>
-              <h5>Ort</h5>
+              <h6>Ort</h6>
               {!changeData ? (
-                <h6>{userData.city ? userData.city : "-"}</h6>
+                <p>{userData.city ? userData.city : "-"}</p>
               ) : (
                 <Form.Control
                   type="text"
@@ -189,9 +189,9 @@ export function AccountUserDataPage() {
           </Row>
           <Row>
             <Col xs={12} md={6}>
-              <h5>Mobil</h5>
+              <h6>Mobil</h6>
               {!changeData ? (
-                <h6>{userData.mobile ? userData.mobile : "-"}</h6>
+                <p>{userData.mobile ? userData.mobile : "-"}</p>
               ) : (
                 <Form.Control
                   type="text"

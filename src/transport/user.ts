@@ -25,7 +25,7 @@ export const getOneUser = async (id: number) => {
 };
 
 export const createUser = async (user: NewUser) => {
-  let response = await axios.post<LoginUser>(`${BASE_URL}/users`, {
+  let response = await axios.post(`${BASE_URL}/users`, {
     email: user.email,
     password: user.password,
   });
