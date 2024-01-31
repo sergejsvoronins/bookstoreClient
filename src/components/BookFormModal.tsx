@@ -9,6 +9,7 @@ import {
   getCategories,
 } from "../transport/categories";
 import { XLg } from "react-bootstrap-icons";
+import { AxiosError } from "axios";
 interface IBookModal {
   id?: number | null;
   openModal: boolean;
@@ -119,7 +120,12 @@ export function BookFormModal({
         setIsLoaded(false);
         setAuthor(null);
       } catch (e) {
-        console.log(e);
+        if (e instanceof AxiosError) {
+          setCreatedMessage({
+            ...createdMessage,
+            authorMessage: e.response?.data.error,
+          });
+        }
       }
     }
   };
@@ -135,7 +141,12 @@ export function BookFormModal({
         setIsLoaded(false);
         setCategory(null);
       } catch (e) {
-        console.log(e);
+        if (e instanceof AxiosError) {
+          setCreatedMessage({
+            ...createdMessage,
+            categoryMessage: e.response?.data.error,
+          });
+        }
       }
     }
   };
@@ -303,7 +314,7 @@ export function BookFormModal({
                   ))}
                 </Form.Select>
                 <div className="my-2 px-2 d-flex">
-                  <Col className="text-success">
+                  <Col className="text-info">
                     {createdMessage.authorMessage}
                   </Col>
                   <Col className="text-end">
@@ -386,7 +397,7 @@ export function BookFormModal({
                   ))}
                 </Form.Select>
                 <div className="my-2 px-2 d-flex">
-                  <Col className="text-success">
+                  <Col className="text-info">
                     {createdMessage.categoryMessage}
                   </Col>
                   <Col className="text-end">

@@ -20,21 +20,8 @@ export const getClientOrderMetaData = async (id: string) => {
   return response.data;
 };
 export const addShipment = async (shipment: NewShipment) => {
-  try {
-    let response = await axios.post(`${BASE_URL}/shipments`, shipment);
-    if (response.status === 201) {
-      const id = response.data.id;
-      const message = {
-        id,
-        message: "Shipment created successfully",
-      };
-      return message;
-    } else {
-      throw new Error(`Error adding shipment: ${response.statusText}`);
-    }
-  } catch (error) {
-    console.error("Error adding shipment:", error);
-  }
+  let response = await axios.post(`${BASE_URL}/shipments`, shipment);
+  return response.data;
 };
 export const deleteShipment = async (id: number) => {
   await axios.delete(`${BASE_URL}/shipments/${id}`);
@@ -47,38 +34,12 @@ export const getOneUserOrders = async (id: number) => {
   return response.data;
 };
 export const addOrder = async (order: NewOrder) => {
-  try {
-    let response = await axios.post(`${BASE_URL}/orders`, order);
-    if (response.status === 201) {
-      const id = response.data.id;
-      const message = {
-        id,
-        message: "Order created successfully",
-      };
-      return message;
-    } else {
-      throw new Error(`Error adding order: ${response.statusText}`);
-    }
-  } catch (error) {
-    console.error("Error adding order:", error);
-  }
+  let response = await axios.post(`${BASE_URL}/orders`, order);
+  return response.data;
 };
 export const addUserOrder = async (order: NewOrder) => {
-  try {
-    let response = await axios.post(`${BASE_URL}/user-orders`, order);
-    if (response.status === 201) {
-      const id = response.data.id;
-      const message = {
-        id,
-        message: "Order created successfully",
-      };
-      return message;
-    } else {
-      throw new Error(`Error adding order: ${response.statusText}`);
-    }
-  } catch (error) {
-    console.error("Error adding order:", error);
-  }
+  let response = await axios.post(`${BASE_URL}/user-orders`, order);
+  return response.data;
 };
 export const updateGuestOrder = async (order: OrderOverview) => {
   let response = await axios.put<boolean>(

@@ -11,21 +11,8 @@ export const getCategoryBooks = async (id: number) => {
   return response.data;
 };
 export const addCategory = async (newCategory: NewCategory) => {
-  try {
-    let response = await axios.post(`${BASE_URL}/categories`, newCategory);
-    if (response.status === 201) {
-      const id = response.data.id;
-      const message = {
-        id,
-        message: "Category added successfully",
-      };
-      return message;
-    } else {
-      throw new Error(`Error adding category: ${response.statusText}`);
-    }
-  } catch (error) {
-    console.error("Error adding category:", error);
-  }
+  let response = await axios.post(`${BASE_URL}/categories`, newCategory);
+  return response.data;
 };
 export const updateCategory = async (category: NewCategory) => {
   let response = await axios.put(

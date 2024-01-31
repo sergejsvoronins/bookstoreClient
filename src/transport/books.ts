@@ -28,21 +28,8 @@ export const getOneBook = async (id: number) => {
 };
 
 export const addBook = async (newBook: NewBook) => {
-  try {
-    let response = await axios.post(`${BASE_URL}/books`, newBook);
-    if (response.status === 201) {
-      const id = response.data.id;
-      const message = {
-        id,
-        message: "Book added successfully",
-      };
-      return message;
-    } else {
-      throw new Error(`Error adding book: ${response.statusText}`);
-    }
-  } catch (error) {
-    console.error("Error adding book:", error);
-  }
+  let response = await axios.post(`${BASE_URL}/books`, newBook);
+  return response.data;
 };
 
 export const updateBook = async (book: NewBook) => {

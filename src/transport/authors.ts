@@ -11,24 +11,11 @@ export const getOneAuthor = async (id: number) => {
   return response.data;
 };
 export const addAuthor = async (newAuthor: NewAuthor) => {
-  try {
-    let response = await axios.post<{ id: number; message: string }>(
-      `${BASE_URL}/authors`,
-      newAuthor
-    );
-    if (response.status === 201) {
-      const id = response.data.id;
-      const message = {
-        id,
-        message: "Author added successfully",
-      };
-      return message;
-    } else {
-      throw new Error(`Error adding author: ${response.statusText}`);
-    }
-  } catch (error) {
-    console.error("Error adding author:", error);
-  }
+  let response = await axios.post<{ id: number; message: string }>(
+    `${BASE_URL}/authors`,
+    newAuthor
+  );
+  return response.data;
 };
 export const updateAuthor = async (author: NewAuthor) => {
   let response = await axios.put(`${BASE_URL}/authors/${author.id}`, author);
