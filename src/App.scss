@@ -14,6 +14,10 @@ input[type="number"]::-webkit-outer-spin-button {
 *:focus {
   outline: none !important;
 }
+.hover:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
 
 // @include media-breakpoint-up(lg) {
 //   * {

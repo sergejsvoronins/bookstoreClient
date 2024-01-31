@@ -14,7 +14,7 @@ export function Footer() {
   const { user } = useContext<IUserContext>(UserContext);
   const navigate = useNavigate();
   return (
-    <Container fluid className="bg-secondary shadow">
+    <Container fluid className="bg-dark shadow text-light">
       <Row className="py-5">
         <Col xs={12} sm={4}>
           <h1>Bookstore</h1>
@@ -23,7 +23,7 @@ export function Footer() {
           <Row style={{ fontSize: "0.8rem" }}>
             <Col sm={6} lg={3} className="d-flex flex-column mb-3">
               <h6>Om oss</h6>
-              <span>Om Bookstore</span>
+              <span className="hover">Om Bookstore</span>
             </Col>
             <Col sm={6} lg={3} className="d-flex flex-column mb-3">
               <h6>Kontakta oss</h6>
@@ -58,6 +58,7 @@ export function Footer() {
                   user ? navigate("/account/orders") : navigate("/login");
                   window.scrollTo(0, 0);
                 }}
+                className="hover"
               >
                 Mina sidor
               </span>
@@ -67,7 +68,7 @@ export function Footer() {
       </Row>
       <hr />
       <Row className="text-light p-3" style={{ fontSize: "0.8rem" }}>
-        Copyright © Bookstore 2023
+        Copyright © Bookstore 2024
       </Row>
     </Container>
   );
