@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { login } from "../transport/user";
+import { login } from "../../transport/user";
 import { AxiosError } from "axios";
-import { IUserContext, UserContext } from "../context/userContext";
+import { IUserContext, UserContext } from "../../context/userContext";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { MainOutletContext } from "../components/Main";
+import { MainOutletContext } from "../../components/Main";
 
 export function LoginPage() {
   const [user, setUser] = useState<{ email: string; password: string }>({

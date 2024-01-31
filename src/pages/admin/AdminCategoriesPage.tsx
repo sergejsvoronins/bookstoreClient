@@ -10,33 +10,37 @@ import {
 import { Gear } from "react-bootstrap-icons";
 import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
-import { ConfirmModal } from "../components/ConfirmModal";
-import { AuthorFormModal } from "../components/AuthorFormModal";
-import { Author, getAuthors, deleteAuthor } from "../transport/authors";
+import { ConfirmModal } from "../../components/ConfirmModal";
+import { CategoryFormModal } from "../../components/CategoryFormModal";
+import {
+  Category,
+  deleteCategory,
+  getCategories,
+} from "../../transport/categories";
 
-export function AdminAuthorsPage() {
-  const [authorsList, setAuthorsList] = useState<Author[]>([]);
+export function AdminCategoriesPage() {
+  const [categoriesList, setCategoriesList] = useState<Category[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [authorId, setAuthorId] = useState<number | null>(null);
+  const [categryId, setCategoryId] = useState<number | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
-  const [deleteAuthorId, setDeleteAuthorId] = useState<number | null>(null);
+  const [deleteCategoryId, setDeleteCategoryId] = useState<number | null>(null);
   useEffect(() => {
-    const getAuthorsLIst = async () => {
+    const getCategoriesList = async () => {
       try {
-        const response = await getAuthors();
-        setAuthorsList(response);
+        const response = await getCategories();
+        setCategoriesList(response);
         setIsLoaded(true);
       } catch (err) {
         if (err instanceof AxiosError) {
-          setAuthorsList([]);
+          setCategoriesList([]);
           console.log(err.message);
         }
       }
     };
     if (isLoaded) return;
-    getAuthorsLIst();
-    setAuthorId(null);
+    getCategoriesList();
+    setCategoryId(null);
   }, [isLoaded]);
   useEffect(() => {
     if (alertMessage) {
@@ -50,15 +54,15 @@ export function AdminAuthorsPage() {
   const closeModal = () => {
     setOpenModal(false);
     setIsLoaded(false);
-    setAuthorId(null);
+    setCategoryId(null);
   };
-  const removeAuthor = async () => {
-    if (deleteAuthorId) {
+  const removeCategory = async () => {
+    if (deleteCategoryId) {
       try {
-        const response = await deleteAuthor(deleteAuthorId);
+        const response = await deleteCategory(deleteCategoryId);
         setIsLoaded(false);
-        setAlertMessage(`Förfatare med ID: ${deleteAuthorId} är borttagen`);
-        setDeleteAuthorId(null);
+        setAlertMessage(`Kategori med ID: ${deleteCategoryId} är borttagen`);
+        setDeleteCategoryId(null);
       } catch (e) {
         console.log(e);
       }
@@ -67,7 +71,7 @@ export function AdminAuthorsPage() {
   return (
     <Container>
       <Nav className="mb-3 justify-content-between">
-        <h3>Författare hantering</h3>
+        <h3>Kategori hantering</h3>
         <Button
           onClick={() => {
             setAlertMessage(null);
@@ -82,9 +86,9 @@ export function AdminAuthorsPage() {
           <Alert variant="success">{alertMessage}</Alert>
         </div>
       </Fade>
-      <AuthorFormModal
+      <CategoryFormModal
         openModal={openModal}
-        id={authorId}
+        id={categryId}
         closeModal={closeModal}
         setAlertMessage={setAlertMessage}
       />
@@ -98,11 +102,11 @@ export function AdminAuthorsPage() {
           </tr>
         </thead>
         <tbody>
-          {authorsList.map((a, index) => (
+          {categoriesList.map((c, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
-              <td>{a.name}</td>
-              <td>{a.id}</td>
+              <td>{c.name}</td>
+              <td>{c.id}</td>
               <td>
                 <Dropdown>
                   <Dropdown.Toggle variant="secondary" id="dropdown-basic">
@@ -111,7 +115,7 @@ export function AdminAuthorsPage() {
                   <Dropdown.Menu>
                     <Dropdown.Item
                       onClick={() => {
-                        setAuthorId(a.id);
+                        setCategoryId(c.id);
                         setOpenModal(true);
                         setAlertMessage(null);
                       }}
@@ -120,7 +124,7 @@ export function AdminAuthorsPage() {
                     </Dropdown.Item>
                     <Dropdown.Item
                       onClick={() => {
-                        setDeleteAuthorId(a.id);
+                        setDeleteCategoryId(c.id);
                       }}
                     >
                       Radera
@@ -132,13 +136,13 @@ export function AdminAuthorsPage() {
           ))}
         </tbody>
       </Table>
-      {deleteAuthorId && (
+      {deleteCategoryId && (
         <ConfirmModal
-          openConfirmModal={!!deleteAuthorId}
+          openConfirmModal={!!deleteCategoryId}
           closeConfirmModal={() => {
-            setDeleteAuthorId(null);
+            setDeleteCategoryId(null);
           }}
-          action={removeAuthor}
+          action={removeCategory}
         />
       )}
     </Container>

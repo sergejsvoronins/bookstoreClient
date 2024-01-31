@@ -55,7 +55,7 @@ export function Main() {
         ) : (
           <CheckOutNav />
         )}
-        <section style={{ minHeight: "500px" }}>
+        <section style={{ minHeight: "500px" }} className="mb-5">
           <Outlet
             context={{
               userIsCreated,

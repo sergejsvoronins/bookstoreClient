@@ -8,11 +8,11 @@ import {
   Table,
 } from "react-bootstrap";
 import { Gear } from "react-bootstrap-icons";
-import { BookFormModal } from "../components/BookFormModal";
+import { BookFormModal } from "../../components/BookFormModal";
 import { useEffect, useState } from "react";
-import { Book, deleteBook, getAllBooks } from "../transport/books";
+import { Book, deleteBook, getAllBooks } from "../../transport/books";
 import { AxiosError } from "axios";
-import { ConfirmModal } from "../components/ConfirmModal";
+import { ConfirmModal } from "../../components/ConfirmModal";
 
 export function AdminBooksPage() {
   const [books, setBooks] = useState<Book[]>([]);

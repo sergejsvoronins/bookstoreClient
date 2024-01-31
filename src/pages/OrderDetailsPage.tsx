@@ -7,7 +7,7 @@ import {
   Table,
 } from "react-bootstrap";
 import {
-  OrderDetailsSchema,
+  OrderDetails,
   OrderStatuses,
   updateClientOrder,
   updateGuestOrder,
@@ -17,7 +17,7 @@ import { format } from "date-fns";
 
 interface IOrderDetailsPage {
   type: "guest" | "client";
-  data: OrderDetailsSchema;
+  data: OrderDetails;
 }
 export function OrderDetailsPage({ type, data }: IOrderDetailsPage) {
   const [status, setStatus] = useState<OrderStatuses>(data.orderStatus);
@@ -68,9 +68,13 @@ export function OrderDetailsPage({ type, data }: IOrderDetailsPage) {
               {data.orderDate && format(data.orderDate * 1000, "yyyy-MM-dd")}
             </td>
           </tr>
+          <tr>
+            <td>Fraktkostnad:</td>
+            <td>39 SEK</td>
+          </tr>
           <tr className="fs-3">
             <td>Total summa ink frakt:</td>
-            <td>{data.totalPrice}:-</td>
+            <td>{data.totalPrice} SEK</td>
           </tr>
           <tr>
             <td>Status:</td>
@@ -109,7 +113,8 @@ export function OrderDetailsPage({ type, data }: IOrderDetailsPage) {
                   <th>BookId</th>
                   <th>Titel</th>
                   <th>Antal</th>
-                  <th>Pris/st (kr)</th>
+                  <th>Pris/st SEK</th>
+                  <th>Summa SEK</th>
                 </tr>
               </thead>
               <tbody>
@@ -119,6 +124,7 @@ export function OrderDetailsPage({ type, data }: IOrderDetailsPage) {
                     <td>{b.title}</td>
                     <td>{b.amount}</td>
                     <td>{b.bookPrice}</td>
+                    <td>{b.bookPrice && b.bookPrice * b.amount}</td>
                   </tr>
                 ))}
               </tbody>

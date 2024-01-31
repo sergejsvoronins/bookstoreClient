@@ -1,12 +1,13 @@
 import { Alert, Button, Col, Fade, Form, Row } from "react-bootstrap";
 import {
   UserData,
+  getCityByZip,
   getOneUser,
   updatePassword,
   updateUserData,
-} from "../transport/user";
+} from "../../transport/user";
 import { useContext, useEffect, useState } from "react";
-import { IUserContext, UserContext } from "../context/userContext";
+import { IUserContext, UserContext } from "../../context/userContext";
 
 export function AccountUserDataPage() {
   const { user } = useContext<IUserContext>(UserContext);
@@ -82,7 +83,6 @@ export function AccountUserDataPage() {
           password: newPassword.password,
           oldPassword: newPassword.oldPasswrod,
         });
-        console.log(response);
 
         response &&
           setAlert({
@@ -99,6 +99,18 @@ export function AccountUserDataPage() {
         }
       }
       setChangePassword(false);
+    }
+  };
+  console.log(userData);
+
+  const getCity = async (zipCode: string) => {
+    try {
+      let response = await getCityByZip(zipCode);
+      setUserData({ ...userData, city: response.results[0].city });
+    } catch (err) {
+      if (err) {
+        setUserData({ ...userData, city: "" });
+      }
     }
   };
   return (
@@ -172,6 +184,24 @@ export function AccountUserDataPage() {
               )}
             </Col>
             <Col xs={12} md={6}>
+              <h6>Postnummer</h6>
+              {!changeData ? (
+                <p>{userData.zipCode ? userData.zipCode : "-"}</p>
+              ) : (
+                <Form.Control
+                  type="text"
+                  className="rounded-pill ms-1 px-3 mb-4"
+                  value={userData.zipCode || ""}
+                  onChange={(e) =>
+                    setUserData({ ...userData, zipCode: e.target.value })
+                  }
+                  onBlur={(e) => getCity(e.target.value)}
+                />
+              )}
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} md={6}>
               <h6>Ort</h6>
               {!changeData ? (
                 <p>{userData.city ? userData.city : "-"}</p>
@@ -180,14 +210,10 @@ export function AccountUserDataPage() {
                   type="text"
                   className="rounded-pill ms-1 px-3 mb-4"
                   value={userData.city || ""}
-                  onChange={(e) =>
-                    setUserData({ ...userData, city: e.target.value })
-                  }
+                  disabled
                 />
               )}
             </Col>
-          </Row>
-          <Row>
             <Col xs={12} md={6}>
               <h6>Mobil</h6>
               {!changeData ? (

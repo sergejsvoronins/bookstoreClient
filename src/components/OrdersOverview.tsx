@@ -24,7 +24,10 @@ export function OrdersOverview({ data, type }: IOrdersOverview) {
       <tbody>
         {data.map((o, i) => {
           return (
-            <tr key={i}>
+            <tr
+              key={i}
+              className={o.orderStatus === "completed" ? "bg-success" : ""}
+            >
               <td>{i + 1}</td>
               <td>{o.orderDate && format(o.orderDate * 1000, "yyyy-MM-dd")}</td>
               <td>{o.id}</td>
@@ -37,10 +40,7 @@ export function OrdersOverview({ data, type }: IOrdersOverview) {
                   <Dropdown.Menu>
                     <Dropdown.Item
                       onClick={() => {
-                        navigate(`/app/admin/orders/${o.id}?type=${type}`);
-                        // setUserId(u.id);
-                        // setOpenModal(true);
-                        // setAlertMessage(null);
+                        navigate(`/admin/orders/${o.id}?type=${type}`);
                       }}
                     >
                       Visa

@@ -5,8 +5,8 @@ import {
   OrderOverview,
   getAllGuestOrders,
   getAllUserOrders,
-} from "../transport/orders";
-import { OrdersOverview } from "../components/OrdersOverview";
+} from "../../transport/orders";
+import { OrdersOverview } from "../../components/OrdersOverview";
 
 export function AdminOrdersPage() {
   const [guestOrders, setGuestOrders] = useState<OrderOverview[]>([]);

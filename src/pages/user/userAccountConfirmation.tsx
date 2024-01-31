@@ -1,7 +1,7 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { useOutletContext } from "react-router-dom";
-import { MainOutletContext } from "../components/Main";
-import { NotFoundPage } from "./NotFoundPage";
+import { MainOutletContext } from "../../components/Main";
+import { NotFoundPage } from "../NotFoundPage";
 
 export function UserAccountConfirmation() {
   const { userIsCreated } = useOutletContext<MainOutletContext>();

@@ -1,9 +1,14 @@
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { NewBook, addBook, getOneBook, updateBook } from "../transport/books";
 import { useState, useEffect } from "react";
-import { Author, getAuthors } from "../transport/authors";
-import { Category, getCategories } from "../transport/categories";
-
+import { Author, NewAuthor, addAuthor, getAuthors } from "../transport/authors";
+import {
+  Category,
+  NewCategory,
+  addCategory,
+  getCategories,
+} from "../transport/categories";
+import { XLg } from "react-bootstrap-icons";
 interface IBookModal {
   id?: number | null;
   openModal: boolean;
@@ -37,8 +42,21 @@ export function BookFormModal({
   const [authorsList, setAuthorsList] = useState<Author[]>([]);
   const [categoriesList, setCategoriesList] = useState<Category[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [validated, setValidated] = useState(false);
-
+  const [validated, setValidated] = useState(!openModal);
+  const [author, setAuthor] = useState<NewAuthor | null>(null);
+  const [category, setCategory] = useState<NewCategory | null>(null);
+  const [createdMessage, setCreatedMessage] = useState<{
+    authorMessage: string | null;
+    categoryMessage: string | null;
+  }>({ categoryMessage: null, authorMessage: null });
+  useEffect(() => {
+    setTimeout(() => {
+      setCreatedMessage({ authorMessage: null, categoryMessage: null });
+    }, 3000);
+  }, [createdMessage]);
+  useEffect(() => {
+    setValidated(false);
+  }, [openModal]);
   useEffect(() => {
     const getBook = async () => {
       if (id) {
@@ -88,7 +106,39 @@ export function BookFormModal({
       closeModal();
     }
   };
+  const createAuthor = async () => {
+    if (author) {
+      try {
+        const response = await addAuthor(author);
 
+        response &&
+          setCreatedMessage({
+            ...createdMessage,
+            authorMessage: response.message,
+          });
+        setIsLoaded(false);
+        setAuthor(null);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+  const createCategory = async () => {
+    if (category) {
+      try {
+        const response = await addCategory(category);
+        response &&
+          setCreatedMessage({
+            ...createdMessage,
+            categoryMessage: response.message,
+          });
+        setIsLoaded(false);
+        setCategory(null);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
   return (
     <>
       <Modal
@@ -117,7 +167,6 @@ export function BookFormModal({
                 <Form.Control
                   required
                   type="text"
-                  // isInvalid={!/\S/.test(newBook.title) || newBook.title[0] === " "}
                   isValid={!!id}
                   onChange={(e) =>
                     setNewBook({ ...newBook, title: e.target.value })
@@ -173,7 +222,6 @@ export function BookFormModal({
                   type="number"
                   required
                   isValid={!!id}
-                  // isInvalid={newBook.pages === 0}
                   value={newBook.pages ? newBook.pages : ""}
                   onChange={(e) =>
                     setNewBook({ ...newBook, pages: +e.target.value })
@@ -193,8 +241,6 @@ export function BookFormModal({
                 <Form.Control
                   type="number"
                   required
-                  // isInvalid={newBook.year === 0}
-                  // isValid={id !== null}
                   value={newBook.year ? newBook.year : ""}
                   onChange={(e) =>
                     setNewBook({ ...newBook, year: +e.target.value })
@@ -216,9 +262,6 @@ export function BookFormModal({
                   required
                   isValid={!!id}
                   value={newBook.language}
-                  // isInvalid={
-                  //   !/\S/.test(newBook.language) || newBook.language[0] === " "
-                  // }
                   onChange={(e) =>
                     setNewBook({ ...newBook, language: e.target.value })
                   }
@@ -235,7 +278,6 @@ export function BookFormModal({
               >
                 <Form.Label>Författare</Form.Label>
                 <Form.Select
-                  // isInvalid={newBook.author === ""}
                   isValid={newBook.authorId !== 0}
                   required
                   as={Col}
@@ -260,6 +302,52 @@ export function BookFormModal({
                     </option>
                   ))}
                 </Form.Select>
+                <div className="my-2 px-2 d-flex">
+                  <Col className="text-success">
+                    {createdMessage.authorMessage}
+                  </Col>
+                  <Col className="text-end">
+                    {!author ? (
+                      <Button
+                        className="text-end p-1"
+                        onClick={() => setAuthor({ name: "" })}
+                        variant="link"
+                      >
+                        Lägg ny
+                      </Button>
+                    ) : (
+                      <Button
+                        className="text-end p-1"
+                        onClick={() => setAuthor(null)}
+                        variant="link"
+                      >
+                        <XLg className="text-dark" />
+                      </Button>
+                    )}
+                  </Col>
+                </div>
+                {author && (
+                  <Row className="py-0 align-items-center">
+                    <h6>Skapa författare</h6>
+                    <Form.Group as={Col} xs="8" controlId="validationTitle">
+                      <Form.Control
+                        required
+                        type="text"
+                        placeholder="Ange namn"
+                        onChange={(e) =>
+                          setAuthor({ ...author, name: e.target.value })
+                        }
+                        value={author ? author.name : ""}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Ange namn
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    <Col xs={4} className="text-center">
+                      <Button onClick={createAuthor}>Skapa</Button>
+                    </Col>
+                  </Row>
+                )}
               </Form.Group>
               <Form.Group
                 as={Col}
@@ -269,7 +357,6 @@ export function BookFormModal({
               >
                 <Form.Label>Kategori</Form.Label>
                 <Form.Select
-                  // isInvalid={newBook.category === ""}
                   isValid={newBook.categoryId > 0}
                   as={Col}
                   aria-label="Default select example"
@@ -298,6 +385,52 @@ export function BookFormModal({
                     </option>
                   ))}
                 </Form.Select>
+                <div className="my-2 px-2 d-flex">
+                  <Col className="text-success">
+                    {createdMessage.categoryMessage}
+                  </Col>
+                  <Col className="text-end">
+                    {!category ? (
+                      <Button
+                        className="text-end p-1"
+                        onClick={() => setCategory({ name: "" })}
+                        variant="link"
+                      >
+                        Lägg ny
+                      </Button>
+                    ) : (
+                      <Button
+                        className="text-end p-1"
+                        onClick={() => setCategory(null)}
+                        variant="link"
+                      >
+                        <XLg className="text-dark" />
+                      </Button>
+                    )}
+                  </Col>
+                </div>
+                {category && (
+                  <Row className="py-0 align-items-center">
+                    <h6>Skapa kategori</h6>
+                    <Form.Group as={Col} xs="8" controlId="validationTitle">
+                      <Form.Control
+                        required
+                        type="text"
+                        placeholder="Ange namn"
+                        onChange={(e) =>
+                          setCategory({ ...category, name: e.target.value })
+                        }
+                        value={category ? category.name : ""}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        Ange namn
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    <Col xs={4} className="text-center">
+                      <Button onClick={createCategory}>Skapa</Button>
+                    </Col>
+                  </Row>
+                )}
               </Form.Group>
               <Form.Group
                 as={Col}
@@ -308,7 +441,6 @@ export function BookFormModal({
                 <Form.Label>Pris</Form.Label>
                 <Form.Control
                   type="number"
-                  // isInvalid={newBook.price === 0}
                   required
                   isValid={!!id}
                   value={newBook.price ? newBook.price : ""}
@@ -328,7 +460,6 @@ export function BookFormModal({
               >
                 <Form.Label>ISBN</Form.Label>
                 <Form.Control
-                  // isInvalid={newBook.price === 0}
                   value={newBook.isbn}
                   type="number"
                   isValid={!!id}

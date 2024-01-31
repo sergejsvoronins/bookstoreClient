@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { NewUser, createUser } from "../transport/user";
+import { NewUser, createUser } from "../../transport/user";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { AxiosError } from "axios";
-import { MainOutletContext } from "../components/Main";
+import { MainOutletContext } from "../../components/Main";
 const emptyUser: NewUser = {
   email: "",
   password: "",

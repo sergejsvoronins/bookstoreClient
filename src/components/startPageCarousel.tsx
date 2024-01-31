@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Carousel, Image } from "react-bootstrap";
-// import "../../public/images/books-5937716_1280-fotor-2024012615188.png";
 export function StartPageCarousel() {
   const [index, setIndex] = useState(0);
 
@@ -18,7 +17,7 @@ export function StartPageCarousel() {
         <Image
           style={{ width: "100%", objectFit: "cover", height: "100%" }}
           alt="Placeholder for reklam"
-          src="../../public/images/books-5937716_1280-fotor-2024012615188.png"
+          src="/images/books-5937716_1280-fotor-2024012615188.png"
         />
         <Carousel.Caption className="top-0">
           <h3>Placeholder för reklam</h3>
@@ -28,7 +27,7 @@ export function StartPageCarousel() {
       <Carousel.Item>
         <Image
           style={{ width: "100%", objectFit: "cover", height: "100%" }}
-          src="../../public/images/books-5937716_1280-fotor-2024012615188.png"
+          src="/images/books-5937716_1280-fotor-2024012615188.png"
         />
         <Carousel.Caption className="top-0">
           <h3>Placeholder för reklam</h3>
@@ -38,7 +37,7 @@ export function StartPageCarousel() {
       <Carousel.Item>
         <Image
           style={{ width: "100%", objectFit: "cover", height: "100%" }}
-          src="../../public/images/books-5937716_1280-fotor-2024012615188.png"
+          src="/images/books-5937716_1280-fotor-2024012615188.png"
         />
         <Carousel.Caption className="top-0">
           <h3>Placeholder för reklam</h3>

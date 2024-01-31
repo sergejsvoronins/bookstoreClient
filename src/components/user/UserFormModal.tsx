@@ -1,6 +1,6 @@
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { NewUser, getOneUser, updateUserLevel } from "../transport/user";
+import { NewUser, getOneUser, updateUserLevel } from "../../transport/user";
 
 interface IModal {
   id?: number | null;

@@ -1,12 +1,12 @@
 import { Container, Nav } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { OrderDetailsPage } from "./OrderDetailsPage";
+import { OrderDetailsPage } from "../OrderDetailsPage";
 import { useEffect, useState } from "react";
 import {
   OrderDetails,
   getClientOrderMetaData,
   getGuestOrderMetaData,
-} from "../transport/orders";
+} from "../../transport/orders";
 
 export function AdminOrderInfoPage() {
   const { id } = useParams();

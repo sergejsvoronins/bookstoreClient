@@ -2,9 +2,9 @@ import { Alert, Container, Dropdown, Fade, Nav, Table } from "react-bootstrap";
 import { Gear } from "react-bootstrap-icons";
 import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
-import { ConfirmModal } from "../components/ConfirmModal";
-import { UserData, deleteUser, getAllUsers } from "../transport/user";
-import { UserFormModal } from "../components/UserFormModal";
+import { ConfirmModal } from "../../components/ConfirmModal";
+import { UserData, deleteUser, getAllUsers } from "../../transport/user";
+import { UserFormModal } from "../../components/user/UserFormModal";
 
 export function AdminUsersPage() {
   const [users, setUsers] = useState<UserData[]>([]);
