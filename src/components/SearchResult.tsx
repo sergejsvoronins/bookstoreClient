@@ -37,12 +37,13 @@ export function SearchResult() {
   }, [searchText]);
 
   return (
-    <Container className="mt-5">
-      <Row className="mb-5">
+    <Container>
+      <Row>
         <Col>
           <h5>Rusultat för: {searchText}</h5>
         </Col>
       </Row>
+      <hr className="mb-5" />
       <Row className="mb-5">
         <Col>
           <BooksOverview

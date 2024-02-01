@@ -35,7 +35,7 @@ export function CategoryBooks() {
 
   return (
     <Container>
-      <h3 className="mb-5">
+      <h3>
         {books.length === 0
           ? "Det finns inga böcker i denna katerogi"
           : `Kategori: ${books[0].category}`}

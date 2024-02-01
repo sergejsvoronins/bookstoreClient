@@ -37,7 +37,7 @@ export function CheckOutCart({
             <Col className="px-0" xs={4} sm={3} md={2} lg={2}>
               <Image
                 src={item.item.imgUrl || ""}
-                className="rounded-0 mb-2 w-100"
+                className="rounded-0 mb-2 w-100 p-3"
               />
             </Col>
             <Col
@@ -51,6 +51,7 @@ export function CheckOutCart({
                 <h6
                   style={{
                     lineHeight: "1rem",
+                    fontSize: "1rem",
                   }}
                   className="mb-3  pe-0"
                 >
@@ -59,6 +60,7 @@ export function CheckOutCart({
                 <p
                   style={{
                     lineHeight: "1rem",
+                    fontSize: "0.8rem",
                   }}
                   className="pe-0"
                 >
@@ -67,6 +69,7 @@ export function CheckOutCart({
                 <p
                   style={{
                     lineHeight: "1rem",
+                    fontSize: "0.8rem",
                   }}
                   className="mb-3 pe-0"
                 >
@@ -76,7 +79,7 @@ export function CheckOutCart({
               <Row className="justify-content-end mb-3">
                 <Col
                   xs={6}
-                  className="d-flex justify-content-end align-items-center fw-bolder fs-2 px-0"
+                  className="d-flex justify-content-end align-items-center fw-bolder fs-4 px-0"
                 >
                   <span>{item.item.price * item.amount + " SEK"}</span>
                 </Col>
@@ -106,20 +109,23 @@ export function CheckOutCart({
           </Row>
         );
       })}
-      <Row className="fs-3 fw-bolder justify-content-between">
+      <Row className="fs-5 justify-content-between">
         <Col xs={3}>Frakt:</Col>
         <Col xs={9} className="text-end">
           {cartContext.freight}
           :-
         </Col>
       </Row>
-      <Row className="fs-2 fw-bolder justify-content-between py-3">
-        <Col xs={6}>Totalt ink moms:</Col>
-        <Col xs={6} className="text-end">
+      <Row className="fw-bolder justify-content-between py-3">
+        <Col xs={6} className="fs-5">
+          Totalt ink moms:
+        </Col>
+        <Col xs={6} className="text-end fs-4">
           {cartContext.cart.reduce((accumulator, item) => {
             return accumulator + item.amount * item.item.price;
-          }, 0) + cartContext.freight}
-          SEK
+          }, 0) +
+            cartContext.freight +
+            " SEK"}
         </Col>
       </Row>
 

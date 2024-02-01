@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Book, getAllBooks } from "../transport/books";
+import { Book, getAllBooks, getTopBooks } from "../transport/books";
 import { ICartContext, CartContext } from "../context/cartContext";
 import { BooksOverview } from "../components/BooksOverview";
 import { AxiosError } from "axios";
@@ -32,17 +32,15 @@ export function StartPage() {
     if (isLoaded) return;
     getBooks();
   }, [isLoaded]);
-
   return (
     <>
       {innerWidth > 768 && <StartPageCarousel />}
       {innerWidth < 768 && <NavSearch />}
 
-      <Container className="mt-3">
-        <h3 className="mb-5">Top böcker</h3>
-        <hr className="mb-5" />
-        <TopBooks />
-        <h3 className="mb-5">Upptäck vårt sortiment</h3>
+      <TopBooks type="top" />
+      <TopBooks type="new" />
+      <Container className="mt-5">
+        <h3>Upptäck vårt sortiment</h3>
         <hr className="mb-5" />
         <BooksOverview books={books} err={err} cartContext={cartContext} />
       </Container>

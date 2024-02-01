@@ -9,8 +9,12 @@ export const getAllBooks = async () => {
   return response.data;
 };
 
-export const getTopFive = async () => {
+export const getTopBooks = async () => {
   let response = await axios.get<BookTop[]>(`${BASE_URL}/top-books`);
+  return response.data;
+};
+export const getNewBooks = async () => {
+  let response = await axios.get<BookTop[]>(`${BASE_URL}/new-books`);
   return response.data;
 };
 

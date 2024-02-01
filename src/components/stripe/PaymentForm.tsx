@@ -4,7 +4,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Col, Form, Row, Spinner } from "react-bootstrap";
 import {
   IShipmentContext,
@@ -32,7 +32,7 @@ export const PaymentForm = ({
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
-  useEffect(() => {}, []);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

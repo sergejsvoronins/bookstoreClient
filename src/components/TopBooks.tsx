@@ -1,17 +1,22 @@
 import { AxiosError } from "axios";
 import { useState, useEffect } from "react";
-import { BookTop, getTopFive } from "../transport/books";
+import { BookTop, getNewBooks, getTopBooks } from "../transport/books";
 import { Container, Row, Image, Col } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-export function TopBooks() {
+export function TopBooks({ type }: { type: string }) {
   const [topBooks, setTopBooks] = useState<BookTop[]>([]);
   const navigate = useNavigate();
   useEffect(() => {
-    const getTopBooks = async () => {
+    const getBooks = async () => {
       try {
-        const response = await getTopFive();
-        setTopBooks(response);
+        if (type === "top") {
+          const response = await getTopBooks();
+          setTopBooks(response);
+        } else if (type === "new") {
+          const response = await getNewBooks();
+          setTopBooks(response);
+        }
       } catch (err) {
         if (err instanceof AxiosError) {
           setTopBooks([]);
@@ -19,11 +24,13 @@ export function TopBooks() {
         }
       }
     };
-    getTopBooks();
+    getBooks();
   }, []);
-  console.log(topBooks);
   return (
-    <Container className="mb-5">
+    <Container className="mt-5">
+      {type === "new" && <h3>Nyheter</h3>}
+      {type === "top" && <h3>Top böcker</h3>}
+      <hr className="mb-5" />
       <Row className="flex-row">
         {topBooks.map((b) => (
           <Col key={b.id} xs={6} sm={4} md={3} lg={2}>

@@ -22,7 +22,6 @@ import { AccountPage } from "./pages/user/AccountPage";
 import { CheckOutForm } from "./components/CheckoutForm";
 import { AdminAuthorsPage } from "./pages/admin/AdminAuthorsPage";
 import { createBrowserRouter } from "react-router-dom";
-
 export const router = createBrowserRouter([
   {
     path: "/",

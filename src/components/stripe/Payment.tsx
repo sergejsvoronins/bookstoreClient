@@ -27,7 +27,7 @@ export function Payment({ setOrderIsCreated }: IPayment) {
         amount:
           cartContext.cart.reduce((accumulator, item) => {
             return accumulator + item.amount * item.item.price;
-          }, 0) * 100,
+          }, 0) + cartContext.freight,
       }),
     }).then(async (result) => {
       var { clientSecret } = await result.json();

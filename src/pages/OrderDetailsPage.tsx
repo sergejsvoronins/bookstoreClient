@@ -138,7 +138,11 @@ export function OrderDetailsPage({ type, data }: IOrderDetailsPage) {
               <tbody>
                 <tr>
                   <td>Mottagare</td>
-                  <td>{data.shipmentDetails.firstName}</td>
+                  <td>
+                    {data.shipmentDetails.firstName +
+                      " " +
+                      data.shipmentDetails.lastName}
+                  </td>
                 </tr>
                 <tr>
                   <td>Adress</td>

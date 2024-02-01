@@ -2,13 +2,24 @@ import { useContext, useEffect, useState } from "react";
 import { IUserContext, UserContext } from "../../context/userContext";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Alert, Button, Col, Container, Fade, Nav, Row } from "react-bootstrap";
+import { getOneUser } from "../../transport/user";
 
 export function AccountPage() {
   const { user, setUser } = useContext<IUserContext>(UserContext);
   const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+  const [userName, setUserName] = useState<string | null>(null);
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  useEffect(() => {
+    if (user?.id) {
+      const getUser = async () => {
+        let response = await getOneUser(user.id);
+        response.firstName && setUserName(response.firstName);
+      };
+      getUser();
+    }
+  }, []);
   useEffect(() => {
     if (showAlert) {
       window.scrollTo(0, 0);
@@ -40,6 +51,11 @@ export function AccountPage() {
     <Container>
       {user && (
         <>
+          {userName && (
+            <Row className="fw-bolder px-2" style={{ fontSize: "3rem" }}>
+              Hej {userName}!
+            </Row>
+          )}
           <Row className="my-5">
             <Col className="d-flex justify-content-between">
               <Button

@@ -12,6 +12,7 @@ import {
   Row,
 } from "react-bootstrap";
 import { ICartContext, CartContext } from "../context/cartContext";
+import { BookItemAmountInput } from "../components/BookItemAmountInput";
 
 export function SingleBook() {
   const { id } = useParams();
@@ -68,76 +69,75 @@ export function SingleBook() {
                     <h2>{book.price} SEK</h2>
                   </Col>
                 </article>
-                <article className="d-flex flex-row gap-4">
-                  <Row className="w-100 justify-content-between">
-                    <Form.Label
-                      column
-                      xs={4}
-                      sm={3}
-                      md={2}
-                      lg={1}
-                      className="d-flex"
-                    >
-                      Antal:
-                    </Form.Label>
-                    <Col
-                      xs={8}
-                      sm={6}
-                      // md={5}
-                      lg={4}
-                      className="d-flex gap-1 justify-content-end"
-                    >
-                      <Button
-                        variant="secondary"
-                        disabled={amount === "1"}
-                        onClick={() => setAmount((+amount - 1).toString())}
-                      >
-                        -
-                      </Button>
-                      <Form.Control
-                        type="number"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        onBlur={() => amount === "" && setAmount("1")}
-                        className="text-center w-50"
-                      />
-                      <Button
-                        variant="secondary"
-                        onClick={() => setAmount((+amount + 1).toString())}
-                      >
-                        +
-                      </Button>
-                    </Col>
-                  </Row>
-                </article>
-              </Card.Body>
-              <Card.Footer>
-                <Row>
-                  <Button
-                    onClick={() => {
-                      if (cartContext.cart.find((b) => b.item.id === book.id)) {
-                        cartContext.updateCart(
-                          cartContext.cart.map((b) =>
-                            b.item.id === book.id
-                              ? {
-                                  ...b,
-                                  amount: +amount + b.amount,
-                                }
-                              : b
-                          )
-                        );
-                      } else {
-                        cartContext.updateCart([
-                          ...cartContext.cart,
-                          { item: book, amount: +amount },
-                        ]);
-                      }
-                    }}
+                {/* <article className="d-flex flex-row gap-4"> */}
+                <Row className="mb-3">
+                  <Col
+                    xs={12}
+                    sm={6}
+                    // md={5}
+                    lg={4}
+                    xl={3}
+                    className="d-flex mb-3 gap-1 justify-content-end"
+                    style={{ maxWidth: "200px" }}
                   >
-                    Lägg till varukorg
-                  </Button>
+                    <Button
+                      variant="secondary"
+                      disabled={amount === "1"}
+                      onClick={() => setAmount((+amount - 1).toString())}
+                    >
+                      -
+                    </Button>
+                    <Form.Control
+                      type="number"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      onBlur={() => amount === "" && setAmount("1")}
+                      className="text-center w-50"
+                    />
+                    <Button
+                      variant="secondary"
+                      onClick={() => setAmount((+amount + 1).toString())}
+                    >
+                      +
+                    </Button>
+                  </Col>
+                  <Col
+                    xs={12}
+                    sm={6}
+                    // md={5}
+                    lg={4}
+                    xl={3}
+                  >
+                    <Button
+                      className="w-100"
+                      onClick={() => {
+                        if (
+                          cartContext.cart.find((b) => b.item.id === book.id)
+                        ) {
+                          cartContext.updateCart(
+                            cartContext.cart.map((b) =>
+                              b.item.id === book.id
+                                ? {
+                                    ...b,
+                                    amount: +amount + b.amount,
+                                  }
+                                : b
+                            )
+                          );
+                        } else {
+                          cartContext.updateCart([
+                            ...cartContext.cart,
+                            { item: book, amount: +amount },
+                          ]);
+                        }
+                      }}
+                    >
+                      Lägg till varukorg
+                    </Button>
+                  </Col>
                 </Row>
-              </Card.Footer>
+                {/* </article> */}
+              </Card.Body>
               <Accordion>
                 {book.description && (
                   <Accordion.Item eventKey="0">

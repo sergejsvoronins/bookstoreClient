@@ -11,9 +11,9 @@ export function UserAccountConfirmation() {
         <Container>
           <Row className="justify-content-center mt-5">
             <Col xs={6}>
-              <p className="fs-5">
-                Grattis, du har registrerat dig. Fortsätt vidare till
-                inloggningssida.
+              <p className="fs-5">Grattis, du har registrerat dig!🎉 </p>
+              <p>
+                Fortsätt vidare till inloggningssida.
                 <a href="/login">Logga in</a>
               </p>
             </Col>

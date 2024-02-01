@@ -52,17 +52,23 @@ export function CheckOutForm() {
         >
           Steg 3 - Betalning
         </ListGroup.Item>
-        <Collapse
-          in={
-            shipmentContext.shipmentDetails !== null && cartIsOk && shipmentIsOk
-          }
-        >
-          <div>
-            <Payment setOrderIsCreated={setOrderIsCreated} />
-          </div>
-        </Collapse>
+        {shipmentContext.shipmentDetails !== null &&
+          cartIsOk &&
+          shipmentIsOk && (
+            <Collapse
+              in={
+                shipmentContext.shipmentDetails !== null &&
+                cartIsOk &&
+                shipmentIsOk
+              }
+            >
+              <div>
+                <Payment setOrderIsCreated={setOrderIsCreated} />
+              </div>
+            </Collapse>
+          )}
       </ListGroup>
-      <h3 className="text-center">Att betala:</h3>
+      <h3 className="text-center mt-3">Att betala:</h3>
       <h1 className="text-center mb-5 fw-bolder">
         {cartContext.cart.reduce((accumulator, item) => {
           return accumulator + item.amount * item.item.price;

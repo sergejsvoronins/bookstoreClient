@@ -14,7 +14,7 @@ export function BooksOverview({ books, cartContext }: IBooksOverview) {
 
   return (
     <>
-      <Row className="mt-3">
+      <Row>
         {books.length !== 0 &&
           books.map((b, i) => {
             return (
