@@ -23,7 +23,7 @@ export function CheckOutForm() {
       <ListGroup>
         <ListGroup.Item
           action
-          className="fs-2"
+          className="fs-5"
           active={!cartIsOk && !shipmentIsOk}
         >
           Steg 1 - Varukorg
@@ -33,7 +33,7 @@ export function CheckOutForm() {
             <CheckOutCart setCartIsOk={setCartIsOk} />
           </div>
         </Collapse>
-        <ListGroup.Item className="fs-2" active={!shipmentIsOk && cartIsOk}>
+        <ListGroup.Item className="fs-5" active={!shipmentIsOk && cartIsOk}>
           Steg 2 - Leveransinformation
         </ListGroup.Item>
         <Collapse in={cartIsOk && !shipmentIsOk} timeout={100}>
@@ -46,7 +46,7 @@ export function CheckOutForm() {
         </Collapse>
         {/* )} */}
         <ListGroup.Item
-          className="fs-2"
+          className="fs-5"
           id="paymentForm"
           active={cartIsOk && shipmentIsOk}
         >

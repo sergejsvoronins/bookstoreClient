@@ -43,7 +43,7 @@ export function Navigation({ innerWidth }: { innerWidth: number }) {
 
   return (
     <>
-      <Navbar expand={"xs"} className="bg-body-tertiary">
+      <Navbar expand={"xs"} className="bg-body-tertiary mb-3">
         <Navbar.Offcanvas
           id={`offcanvasNavbar-expand-${"xs"}`}
           aria-labelledby={`offcanvasNavbarLabel-expand-${"xs"}`}
