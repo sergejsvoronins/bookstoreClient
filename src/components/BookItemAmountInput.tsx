@@ -1,4 +1,4 @@
-import { Button, Col, FormControl } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { CartContext, ICart, ICartContext } from "../context/cartContext";
 import { useContext, useEffect, useState } from "react";
 

@@ -34,12 +34,7 @@ export function AdminOrderInfoPage() {
   return (
     <Container>
       <Nav>
-        <Nav.Link
-          // href="/app/admin/orders"
-          onClick={() => navigate("/admin/orders")}
-        >
-          Tillbaka
-        </Nav.Link>
+        <Nav.Link onClick={() => navigate("/admin/orders")}>Tillbaka</Nav.Link>
       </Nav>
       {order && (type === "guest" || type === "client") && (
         <OrderDetailsPage data={order} type={type} />

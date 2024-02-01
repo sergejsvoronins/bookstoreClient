@@ -59,7 +59,7 @@ export function AdminCategoriesPage() {
   const removeCategory = async () => {
     if (deleteCategoryId) {
       try {
-        const response = await deleteCategory(deleteCategoryId);
+        await deleteCategory(deleteCategoryId);
         setIsLoaded(false);
         setAlertMessage(`Kategori med ID: ${deleteCategoryId} är borttagen`);
         setDeleteCategoryId(null);

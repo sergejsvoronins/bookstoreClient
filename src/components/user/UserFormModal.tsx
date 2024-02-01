@@ -80,7 +80,6 @@ export function UserFormModal({
             >
               <Form.Label>Författare</Form.Label>
               <Form.Select
-                // isInvalid={newBook.author === ""}
                 isValid={
                   user.accountLevel === "user" || user.accountLevel === "admin"
                 }

@@ -55,7 +55,7 @@ export function AdminBooksPage() {
   const removeBook = async () => {
     if (deleteBookId) {
       try {
-        const response = await deleteBook(deleteBookId);
+        await deleteBook(deleteBookId);
         setIsLoaded(false);
       } catch (e) {
         console.log(e);

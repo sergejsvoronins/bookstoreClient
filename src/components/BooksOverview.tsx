@@ -1,7 +1,8 @@
-import { Row, Col, Card, Button } from "react-bootstrap";
+import { Row, Col, Card, Button, Spinner } from "react-bootstrap";
 import { Book } from "../transport/books";
 import { ICartContext } from "../context/cartContext";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 interface IBooksOverview {
   books: Book[];
@@ -11,7 +12,14 @@ interface IBooksOverview {
 
 export function BooksOverview({ books, cartContext }: IBooksOverview) {
   const navigate = useNavigate();
-
+  const [adding, setAdding] = useState<{ id: number; status: boolean } | null>(
+    null
+  );
+  useEffect(() => {
+    setTimeout(() => {
+      setAdding(null);
+    }, 1500);
+  }, [adding]);
   return (
     <>
       <Row>
@@ -51,8 +59,10 @@ export function BooksOverview({ books, cartContext }: IBooksOverview) {
                     <Card.Title>{b.price} SEK</Card.Title>
                     <Button
                       variant="primary"
-                      className="w-100"
+                      className="w-100 position-relative"
+                      style={{ height: "37px" }}
                       onClick={() => {
+                        setAdding({ id: b.id, status: true });
                         if (cartContext) {
                           let seenItem = cartContext.cart.find(
                             (f) => f.item.id === b.id
@@ -72,7 +82,13 @@ export function BooksOverview({ books, cartContext }: IBooksOverview) {
                         }
                       }}
                     >
-                      Köp
+                      {b.id === adding?.id && adding.status ? (
+                        <Spinner size="sm" />
+                      ) : (
+                        <>
+                          <span>Köp</span>
+                        </>
+                      )}
                     </Button>
                   </Card.Footer>
                 </Card>

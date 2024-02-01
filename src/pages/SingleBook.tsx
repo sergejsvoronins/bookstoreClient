@@ -12,7 +12,6 @@ import {
   Row,
 } from "react-bootstrap";
 import { ICartContext, CartContext } from "../context/cartContext";
-import { BookItemAmountInput } from "../components/BookItemAmountInput";
 
 export function SingleBook() {
   const { id } = useParams();
@@ -21,6 +20,7 @@ export function SingleBook() {
   const cartContext = useContext<ICartContext>(CartContext);
   const navigate = useNavigate();
   useEffect(() => {
+    window.scrollTo(0, 0);
     const getBook = async () => {
       if (id) {
         try {
@@ -42,12 +42,7 @@ export function SingleBook() {
               <Card.Header>
                 <Nav defaultActiveKey="/" as="ul">
                   <Nav.Item as="li">
-                    <Nav.Link
-                      // href="/"
-                      onClick={() => navigate("/")}
-                    >
-                      Tillbaka
-                    </Nav.Link>
+                    <Nav.Link onClick={() => navigate("/")}>Tillbaka</Nav.Link>
                   </Nav.Item>
                 </Nav>
               </Card.Header>
@@ -69,12 +64,10 @@ export function SingleBook() {
                     <h2>{book.price} SEK</h2>
                   </Col>
                 </article>
-                {/* <article className="d-flex flex-row gap-4"> */}
                 <Row className="mb-3">
                   <Col
                     xs={12}
                     sm={6}
-                    // md={5}
                     lg={4}
                     xl={3}
                     className="d-flex mb-3 gap-1 justify-content-end"
@@ -101,13 +94,7 @@ export function SingleBook() {
                       +
                     </Button>
                   </Col>
-                  <Col
-                    xs={12}
-                    sm={6}
-                    // md={5}
-                    lg={4}
-                    xl={3}
-                  >
+                  <Col xs={12} sm={6} lg={4} xl={3}>
                     <Button
                       className="w-100"
                       onClick={() => {
@@ -136,7 +123,6 @@ export function SingleBook() {
                     </Button>
                   </Col>
                 </Row>
-                {/* </article> */}
               </Card.Body>
               <Accordion>
                 {book.description && (
