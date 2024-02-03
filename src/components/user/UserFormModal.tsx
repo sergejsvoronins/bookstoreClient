@@ -78,7 +78,7 @@ export function UserFormModal({
               className="py-3"
               controlId="validationUser"
             >
-              <Form.Label>Författare</Form.Label>
+              <Form.Label>Behörighets nivå</Form.Label>
               <Form.Select
                 isValid={
                   user.accountLevel === "user" || user.accountLevel === "admin"
