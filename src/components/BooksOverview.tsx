@@ -20,6 +20,7 @@ export function BooksOverview({ books, cartContext }: IBooksOverview) {
       setAdding(null);
     }, 1500);
   }, [adding]);
+
   return (
     <>
       <Row>
@@ -34,7 +35,7 @@ export function BooksOverview({ books, cartContext }: IBooksOverview) {
                   <div className="text-center">
                     <Card.Img
                       variant="top"
-                      src={b.imgUrl || ""}
+                      src={b.imgUrl || "/images/noImage.png"}
                       className="rounded-0"
                       style={{ height: "160px" }}
                     />
@@ -63,6 +64,7 @@ export function BooksOverview({ books, cartContext }: IBooksOverview) {
                       style={{ height: "37px" }}
                       onClick={() => {
                         setAdding({ id: b.id, status: true });
+
                         if (cartContext) {
                           let seenItem = cartContext.cart.find(
                             (f) => f.item.id === b.id
@@ -82,7 +84,7 @@ export function BooksOverview({ books, cartContext }: IBooksOverview) {
                         }
                       }}
                     >
-                      {b.id === adding?.id && adding.status ? (
+                      {b.id === adding?.id && adding?.status ? (
                         <Spinner size="sm" />
                       ) : (
                         <>

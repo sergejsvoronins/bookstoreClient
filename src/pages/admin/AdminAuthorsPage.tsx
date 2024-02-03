@@ -43,7 +43,6 @@ export function AdminAuthorsPage() {
       window.scrollTo(0, 0);
       setTimeout(() => {
         setAlertMessage(null);
-        console.log("timeout");
       }, 3000);
     }
   }, [alertMessage]);

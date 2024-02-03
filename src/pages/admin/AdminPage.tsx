@@ -6,7 +6,6 @@ import { NotFoundPage } from "../NotFoundPage";
 
 export function AdminPage() {
   const userContext = useContext<IUserContext>(UserContext);
-  console.log(userContext.user);
 
   return (
     <>

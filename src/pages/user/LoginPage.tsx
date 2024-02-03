@@ -27,7 +27,6 @@ export function LoginPage() {
           email: "",
           password: "",
         });
-        console.log(saveLogin);
 
         saveLogin
           ? localStorage.setItem("user", JSON.stringify(response))
@@ -36,6 +35,8 @@ export function LoginPage() {
       }
     } catch (e) {
       if (e instanceof AxiosError) {
+        console.log(e);
+
         setErrorMessage(e.response?.data.error);
       }
     }

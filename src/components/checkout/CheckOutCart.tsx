@@ -28,10 +28,10 @@ export function CheckOutCart({
   }
   return (
     <Col lg={12}>
-      {cartContext.cart.map((item) => {
+      {cartContext.cart.map((item, i) => {
         return (
           <Row
-            key={item.item.id}
+            key={i}
             className="cart-item flex-row mx-0 pt-3 px-1 justify-content-between"
           >
             <Col className="px-0" xs={4} sm={3} md={2} lg={2}>

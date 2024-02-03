@@ -5,7 +5,6 @@ import { OrderDetails } from "../transport/orders";
 
 export function UserOrderOverview({ order }: { order: OrderDetails }) {
   const [open, setOpen] = useState(false);
-  console.log(order);
 
   const getLocalStatusTitle = (title: string) => {
     let status = "";

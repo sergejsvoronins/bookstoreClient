@@ -101,8 +101,6 @@ export function AccountUserDataPage() {
       setChangePassword(false);
     }
   };
-  console.log(userData);
-
   const getCity = async (zipCode: string) => {
     try {
       let response = await getCityByZip(zipCode);
@@ -210,7 +208,6 @@ export function AccountUserDataPage() {
                   type="text"
                   className="rounded-pill ms-1 px-3 mb-4"
                   value={userData.city || ""}
-                  disabled
                 />
               )}
             </Col>

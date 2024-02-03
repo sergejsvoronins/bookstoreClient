@@ -57,7 +57,6 @@ export function LoadGoogleBooks() {
     setGoogleBooks([...googleBooks, ...response.items]);
     setIndex(index + 40);
   };
-  console.log(googleBooks);
 
   const getAuthorList = () => {
     const authors: NewAuthor[] = [];
@@ -81,10 +80,6 @@ export function LoadGoogleBooks() {
     });
     setNewCategories(categories);
   };
-  console.log(newAuthors);
-  console.log(newCategories);
-  console.log(authorsList);
-  console.log(categoriesList);
   const loadAuthors = () => {
     newAuthors.map((a) => {
       const addItem = async () => {

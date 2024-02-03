@@ -19,6 +19,7 @@ export function CategoryBooks() {
       const getBooks = async () => {
         try {
           let response = await getCategoryBooks(+id);
+
           if (response) {
             setBooks(response.books);
           }
@@ -35,11 +36,6 @@ export function CategoryBooks() {
 
   return (
     <Container>
-      <h3>
-        {books.length === 0
-          ? "Det finns inga böcker i denna katerogi"
-          : `Kategori: ${books[0].category}`}
-      </h3>
       <hr className="mb-5" />
       {dataIsLoaded ? (
         <BooksOverview books={books} err={err} cartContext={cartContext} />

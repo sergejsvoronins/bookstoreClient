@@ -19,8 +19,6 @@ export function AdminOrderInfoPage() {
       const getOrderDetails = async (id: string) => {
         if (type === "client") {
           const response = await getClientOrderMetaData(id);
-          console.log(response);
-
           setOrder(response);
         } else {
           const response = await getGuestOrderMetaData(id);

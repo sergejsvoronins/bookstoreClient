@@ -18,9 +18,9 @@ export function CartToolPanel() {
         <Row>Varukorg är tom</Row>
       ) : (
         <Row className="gap-2  flex-column">
-          {cartContext.cart.map((item) => {
+          {cartContext.cart.map((item, i) => {
             return (
-              <Row key={item.item.id} className="cart-item mb-4 flex-row m-0">
+              <Row key={i} className="cart-item mb-4 flex-row m-0">
                 <Col className="px-0 d-flex" xs={4}>
                   <Image
                     src={item.item.imgUrl || ""}

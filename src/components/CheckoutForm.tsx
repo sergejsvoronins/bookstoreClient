@@ -61,6 +61,7 @@ export function CheckOutForm() {
                 cartIsOk &&
                 shipmentIsOk
               }
+              className="text-center my-3"
             >
               <div>
                 <Payment setOrderIsCreated={setOrderIsCreated} />

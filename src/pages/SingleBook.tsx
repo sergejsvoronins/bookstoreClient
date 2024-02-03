@@ -50,7 +50,7 @@ export function SingleBook() {
             <Col xs={6} sm={5} lg={3} className="p-3">
               <Card.Img
                 variant="top"
-                src={book?.imgUrl || ""}
+                src={book?.imgUrl || "/images/noImage.png"}
                 className="p-3"
               />
             </Col>
@@ -124,7 +124,7 @@ export function SingleBook() {
                   </Col>
                 </Row>
               </Card.Body>
-              <Accordion>
+              <Accordion className="mb-5 px-3">
                 {book.description && (
                   <Accordion.Item eventKey="0">
                     <Accordion.Header>Beskrivning</Accordion.Header>

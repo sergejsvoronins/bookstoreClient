@@ -37,7 +37,6 @@ export function AuthorFormModal({
     };
     getAuthor();
   }, [id]);
-  console.log(author);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

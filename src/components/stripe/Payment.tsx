@@ -3,11 +3,13 @@ import { Elements } from "@stripe/react-stripe-js";
 import { useContext, useEffect, useState } from "react";
 import { PaymentForm } from "./PaymentForm";
 import { ICartContext, CartContext } from "../../context/cartContext";
+import { Spinner } from "react-bootstrap";
 interface IPayment {
   setOrderIsCreated: (status: boolean) => void;
 }
 export function Payment({ setOrderIsCreated }: IPayment) {
   const cartContext = useContext<ICartContext>(CartContext);
+  const [isLoading, setIsLoading] = useState(false);
   const [stripePromise, setStripePromise] =
     useState<Promise<Stripe | null> | null>(null);
   const [clientSecret, setClientSecret] = useState("");
@@ -18,6 +20,7 @@ export function Payment({ setOrderIsCreated }: IPayment) {
     });
   }, []);
   useEffect(() => {
+    if (isLoading) return;
     fetch("http://localhost:5252/create-payment-intent", {
       method: "POST",
       headers: {
@@ -32,14 +35,17 @@ export function Payment({ setOrderIsCreated }: IPayment) {
     }).then(async (result) => {
       var { clientSecret } = await result.json();
       setClientSecret(clientSecret);
+      setIsLoading(true);
     });
   }, []);
   return (
     <>
-      {stripePromise && clientSecret && (
+      {stripePromise && clientSecret && isLoading ? (
         <Elements stripe={stripePromise} options={{ clientSecret }}>
           <PaymentForm setOrderIsCreated={setOrderIsCreated} />
         </Elements>
+      ) : (
+        <Spinner />
       )}
     </>
   );

@@ -10,12 +10,17 @@ export function AccountOrdersPage() {
   useEffect(() => {
     if (user) {
       const getAllUserOrders = async () => {
-        const response = await getOneUserOrders(user?.id);
-        setOrders(response);
+        try {
+          const response = await getOneUserOrders(user?.id);
+          setOrders(response);
+        } catch (e) {
+          setOrders([]);
+        }
       };
       getAllUserOrders();
     }
   }, []);
+
   return (
     <>
       {orders.length !== 0 ? (

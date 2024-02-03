@@ -27,41 +27,45 @@ export function TopBooks({ type }: { type: string }) {
     getBooks();
   }, []);
   return (
-    <Container className="mt-5">
-      {type === "new" && <h3>Nyheter</h3>}
-      {type === "top" && <h3>Top böcker</h3>}
-      <hr className="mb-5" />
-      <Row className="flex-row">
-        {topBooks.map((b) => (
-          <Col key={b.id} xs={6} sm={4} md={3} lg={2}>
-            <section className="" style={{ width: "136px" }}>
-              <div
-                className="w-100 d-flex align-items-end"
-                style={{ height: "160px" }}
-              >
-                <Image
-                  src={b.imgUrl || ""}
-                  style={{ height: "160px" }}
-                  className="w-100"
-                />
-              </div>
-              <div
-                style={{
-                  fontSize: "0.8rem",
-                  lineHeight: "18px",
-                  height: "75px",
-                  overflow: "hidden",
-                }}
-                className="fw-bolder mt-2"
-              >
-                <a href="#" onClick={() => navigate(`/book/${b.id}`)}>
-                  {b.title}
-                </a>
-              </div>
-            </section>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <>
+      {topBooks.length > 0 && (
+        <Container className="mt-5">
+          {type === "new" && <h3>Nyheter</h3>}
+          {type === "top" && <h3>Top böcker</h3>}
+          <hr className="mb-5" />
+          <Row className="flex-row">
+            {topBooks.map((b) => (
+              <Col key={b.id} xs={6} sm={4} md={3} lg={2}>
+                <section className="" style={{ width: "136px" }}>
+                  <div
+                    className="w-100 d-flex align-items-end"
+                    style={{ height: "160px" }}
+                  >
+                    <Image
+                      src={b.imgUrl || "/images/noImage.png"}
+                      style={{ height: "160px" }}
+                      className="w-100"
+                    />
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.8rem",
+                      lineHeight: "18px",
+                      height: "75px",
+                      overflow: "hidden",
+                    }}
+                    className="fw-bolder mt-2"
+                  >
+                    <a href="#" onClick={() => navigate(`/book/${b.id}`)}>
+                      {b.title}
+                    </a>
+                  </div>
+                </section>
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      )}
+    </>
   );
 }
